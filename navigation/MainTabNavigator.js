@@ -8,24 +8,29 @@ import Map from '../screens/MapScreen';
 import List from '../screens/UserList';
 import SettingsScreen from '../screens/SettingsScreen';
 import Testing from '../screens/Testing';
+import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+const Home = createStackNavigator({
+  LoginScreen: LoginScreen,
+  RegisterScreen: RegisterScreen,
+  HomeScreen: HomeScreen
 });
 
-HomeStack.navigationOptions = {
+const Loginstack = createStackNavigator({
+  LoginScreen: Home
+});
+
+Home.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'andriod'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+      name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'}
     />
   ),
 };
+
 
 const Mapstack = createStackNavigator({
   Map: Map,
@@ -36,7 +41,7 @@ Mapstack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
     />
   ),
 };
@@ -50,7 +55,7 @@ SettingsStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
     />
   ),
 };
@@ -67,10 +72,24 @@ Liststack.navigationOptions = {
       name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
     />
   ),
-}; 
+};
 export default createBottomTabNavigator({
-  HomeStack,
+  Home,
   Mapstack,
   SettingsStack,
   Liststack
-});
+
+},
+  {
+    tabBarOptions: {
+      style: {
+        backgroundColor: '#ba68c8',//color you want to change
+      },
+      activeTintColor: "#FFFFFF",
+      inactiveTintColor: "#4a148c",
+      labelStyle: {
+        fontWeight: "bold"
+      }
+    }
+  }
+);

@@ -9,27 +9,24 @@ import {
   TextInput,
   TouchableOpacity,
   View,
+  Alert
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { ImagePicker } from 'expo';
+import firebase from 'firebase'
 
 import { MonoText } from '../components/StyledText';
-import firebase from 'firebase'
 import db from '../db.js'
-import { uploadImageAsync } from '../ImageUtils.js'
 
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
-
   state = {
-    name: "",
-    email: "",
-    password: "",
-    avatar: null,
-    caption: ""
+    UserName: "",
+    password: ""
+
   }
 
 
@@ -42,126 +39,91 @@ export default class LoginScreen extends React.Component {
     console.log(result);
 
     if (!result.cancelled) {
-      this.setState({ avatar: result.uri });
+      this.setState({ Avatar: result.uri });
     }
   };
 
-  pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [4, 3],
-    });
 
-    console.log(result);
-
-    if (!result.cancelled) {
-      await uploadImageAsync("images", result.uri, this.state.email)
-      await db.collection('users').doc(this.state.email).update({ caption: this.state.caption })
-    }
-  };
-
-  finishLoginOrRegister = async () => {
-
-  }
-
-  loginOrRegister = async () => {
-    let avatar = "default.png"
+  Login = async () => {
     try {
+      if (this.state.UserName === "admin@admin.com") {
+        await firebase.auth().signInWithEmailAndPassword(this.state.UserName, this.state.password)
+        { this.props.navigation.navigate('HomeScreen') }
+        if (this.state.Avatar) {
+          Avatar = this.state.UserName
+          await uploadImageAsync("Avatars", this.state.Avatar, this.state.UserName)
+          // await db.collection('User').doc(this.state.UserName).update({ Avatar })
+        }
+        await db.collection('User').doc(this.state.UserName).update({ online: true })
 
-      await firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
-      // upload this.state.avatar called this.state.email to firebase storage
-      if (this.state.avatar) {
-        avatar = this.state.email
-        await uploadImageAsync("avatars", this.state.avatar, this.state.email)
+        // if (this.state.name) {
+        //   await db.collection('User').doc(this.state.UserName).update({ name: this.state.name })
+        // }
+        // console.log("Avatar upload: ", result)
       }
+      else if (this.state.UserName !== "admin@admin.com" && this.state.UserName !== "") {
+        { this.props.navigation.navigate('HomeScreen') }
+      }
+      else {
+        Alert.alert(
+          'Error UnValid Username/Password', "Please Enter a Valid Username/Password",
 
-      console.log("avatar upload: ", avatar)
-      const name = this.state.name || this.state.email
-      await db.collection('users').doc(this.state.email).set({ name, avatar, online: true })
+          [
+
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ],
+          { cancelable: false },
+        );
+      }
     } catch (error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       // ...
-      console.log(errorCode)
       console.log(errorMessage)
-      if (errorCode == "auth/email-already-in-use") {
-        try {
-          await firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-
-          if (this.state.avatar) {
-            avatar = this.state.email
-            await uploadImageAsync("avatars", this.state.avatar, this.state.email)
-            await db.collection('users').doc(this.state.email).update({ avatar })
-          }
-
-          await db.collection('users').doc(this.state.email).update({ online: true })
-
-          if (this.state.name) {
-            await db.collection('users').doc(this.state.email).update({ name: this.state.name })
-          }
-          console.log("avatar upload: ", result)
-        } catch (error) {
-
-          // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
-          // ...
-          console.log(errorMessage)
-        }
-      }
     }
+
   }
 
+  Register = () => {
+    this.props.navigation.navigate('RegisterScreen')
+  }
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            {
-              this.state.avatar
-              &&
-              <Image
-                style={{ width: 25, height: 25 }}
-                source={{ uri: this.state.avatar }}
-              />
+        {/* <View style={styles.contentContainer}> */}
+        <View style={styles.welcomeContainer}>
+          <Image
+            source={
+              require('../assets/images/logo.jpg')
+
             }
-            <TextInput
-              autoCapitalize="none"
-              placeholder="Name"
-              onChangeText={name => this.setState({ name })}
-              value={this.state.name}
-            />
+            style={styles.welcomeImage}
+          />
+          <TextInput
+            style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
+            autoCapitalize="none"
+            placeholder="  Email"
+            onChangeText={UserName => this.setState({ UserName })}
+            value={this.state.UserName}
+          />
 
-            <TextInput
-              autoCapitalize="none"
-              placeholder="Email"
-              onChangeText={email => this.setState({ email })}
-              value={this.state.email}
-            />
+          <TextInput
+            style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
+            autoCapitalize="none"
+            placeholder="  Password"
+            onChangeText={password => this.setState({ password })}
+            value={this.state.password}
+          />
 
-            <TextInput
-              autoCapitalize="none"
-              placeholder="Password"
-              onChangeText={password => this.setState({ password })}
-              value={this.state.password}
-            />
+          <Button onPress={this.Login} title="Login" color="black" />
+          {/* <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} /> */}
+          <Button onPress={this.Register} title="Register" style={{ width: 100, paddingTop: 20 }} />
 
-            <Button onPress={this.loginOrRegister} title="Login / Register" style={{ width: 100, paddingTop: 20 }} />
-            <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} />
-
-            <TextInput
-              autoCapitalize="none"
-              placeholder="Caption"
-              onChangeText={caption => this.setState({ caption })}
-              value={this.state.caption}
-            />
-
-            <Button onPress={this.pickImage} title="Upload new image" style={{ width: 100, paddingTop: 20 }} />
-          </View>
         </View>
-
       </View>
+
+      // </View>
     );
   }
 }
@@ -169,7 +131,7 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#e1bee7',
   },
   contentContainer: {
     paddingTop: 30,
@@ -184,8 +146,8 @@ const styles = StyleSheet.create({
     width: 100,
     height: 80,
     resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
+
+
   },
   getStartedContainer: {
     alignItems: 'center',

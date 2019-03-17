@@ -15,7 +15,7 @@ var db = firebase.firestore();
 
 // Disable deprecated features
 db.settings({
-  timestampsInSnapshots: false
+
 });
 
 export default db

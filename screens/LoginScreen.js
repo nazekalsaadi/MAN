@@ -9,7 +9,7 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  Alert
+  Alert, Header, ImageBackground
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { ImagePicker } from 'expo';
@@ -21,12 +21,12 @@ import db from '../db.js'
 
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Login ',
   };
   state = {
     UserName: "",
-    password: ""
-
+    password: "",
+    backgroundImage: require('../assets/images/background.jpg')
   }
 
 
@@ -90,16 +90,19 @@ export default class LoginScreen extends React.Component {
   }
   render() {
     return (
+
       <View style={styles.container}>
+        {/* <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
+        </ImageBackground> */}
         {/* <View style={styles.contentContainer}> */}
         <View style={styles.welcomeContainer}>
-          <Image
+          {/* <Image
             source={
               require('../assets/images/logo.jpg')
-
             }
             style={styles.welcomeImage}
-          />
+          /> */}
+
           <TextInput
             style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
             autoCapitalize="none"
@@ -116,10 +119,11 @@ export default class LoginScreen extends React.Component {
             value={this.state.password}
           />
 
-          <Button onPress={this.Login} title="Login" color="black" />
-          {/* <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} /> */}
-          <Button onPress={this.Register} title="Register" style={{ width: 100, paddingTop: 20 }} />
-
+          <View style={{ margin: "auto", marginTop: 25, flexDirection: "row", justifyContent: "space-between", marginLeft: 10 }}>
+            <Button onPress={this.Login} title="Login" color="black" />
+            {/* <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} /> */}
+            <Button onPress={this.Register} title="Register" color="black" />
+          </View>
         </View>
       </View>
 
@@ -139,7 +143,7 @@ const styles = StyleSheet.create({
   welcomeContainer: {
     alignItems: 'center',
     flexDirection: 'column',
-    marginTop: 300,
+    marginTop: 150,
     marginBottom: 20,
   },
   welcomeImage: {

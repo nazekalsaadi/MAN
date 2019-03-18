@@ -17,8 +17,7 @@ import firebase from 'firebase'
 import db from '../db.js'
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
-
+    title: 'Home',
   };
 
   state = {
@@ -33,6 +32,7 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
@@ -97,7 +97,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e1bee7',
+    backgroundColor: '#fff',
   },
   developmentModeText: {
     marginBottom: 20,

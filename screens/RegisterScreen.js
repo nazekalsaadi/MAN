@@ -10,7 +10,9 @@ import {
     TouchableOpacity,
     View,
     FormLabel,
-    Picker
+    Picker,
+    Header,
+    ImageBackground
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
@@ -37,8 +39,12 @@ export default class RegisterScreen extends React.Component {
         Shifts: [],
         End_Date: Date,
         Start_Date: Date,
-        online: Boolean
+        online: Boolean,
+        backgroundImage: require('../assets/images/background.jpg')
     }
+    static navigationOptions = {
+        title: 'Register',
+    };
     pickAvatar = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             allowsEditing: true,
@@ -123,6 +129,7 @@ export default class RegisterScreen extends React.Component {
                             source={{ uri: this.state.Avatar }}
                         />
                     }
+
                     <TextInput
                         style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
                         autoCapitalize="none"

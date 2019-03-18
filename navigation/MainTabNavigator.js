@@ -14,7 +14,9 @@ import RegisterScreen from '../screens/RegisterScreen';
 const Home = createStackNavigator({
   LoginScreen: LoginScreen,
   RegisterScreen: RegisterScreen,
-  HomeScreen: HomeScreen
+  HomeScreen: HomeScreen,
+
+
 });
 
 const Loginstack = createStackNavigator({
@@ -84,7 +86,9 @@ export default createBottomTabNavigator({
     tabBarOptions: {
       style: {
         backgroundColor: '#ba68c8',//color you want to change
+
       },
+
       activeTintColor: "#FFFFFF",
       inactiveTintColor: "#4a148c",
       labelStyle: {

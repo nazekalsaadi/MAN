@@ -7,9 +7,11 @@ import HomeScreen from '../screens/HomeScreen';
 import Map from '../screens/MapScreen';
 import List from '../screens/UserList';
 import SettingsScreen from '../screens/SettingsScreen';
-import Testing from '../screens/Testing';
+
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import UserList from '../screens/UserList';
+import CalendarScreen from '../screens/CalendarScreen';
 
 const Home = createStackNavigator({
   LoginScreen: LoginScreen,
@@ -48,6 +50,34 @@ Mapstack.navigationOptions = {
   ),
 };
 
+const UserStack = createStackNavigator({
+  User: UserList,
+});
+
+UserStack.navigationOptions = {
+  tabBarLabel: 'User',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
+    />
+  ),
+};
+
+const CalendStack = createStackNavigator({
+  CalendarScreen: CalendarScreen,
+});
+
+CalendStack.navigationOptions = {
+  tabBarLabel: 'Calendar',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-md-calendar' : 'md-md-calendar'}
+    />
+  ),
+};
+
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
@@ -79,18 +109,19 @@ export default createBottomTabNavigator({
   Home,
   Mapstack,
   SettingsStack,
-  Liststack
+  // Liststack,
+  CalendarScreen
 
 },
   {
     tabBarOptions: {
       style: {
-        backgroundColor: '#ba68c8',//color you want to change
+        backgroundColor: '#330000',//color you want to change
 
       },
 
-      activeTintColor: "#FFFFFF",
-      inactiveTintColor: "#4a148c",
+      activeTintColor: "white",
+      inactiveTintColor: "white",
       labelStyle: {
         fontWeight: "bold"
       }

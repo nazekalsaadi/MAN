@@ -6,24 +6,24 @@ export default class UserList extends Component {
     state = {
         users: []
     }
-    // componentDidMount() {
-    //     // go to db and get all the users
-    //     db.collection("users")
-    //         .onSnapshot(querySnapshot => {
-    //             this.state.users = []
-    //             querySnapshot.forEach(doc => {
-    //                 this.users.push({ id: doc.id, ...doc.data() })
-    //             })
-    //             console.log("Current users: ", this.users.length)
-    //         })
-    // }
+    componentDidMount() {
+        // go to db and get all the users
+        db.collection("users")
+            .onSnapshot(querySnapshot => {
+                this.state.users = []
+                querySnapshot.forEach(doc => {
+                    this.users.push({ id: doc.id, ...doc.data() })
+                })
+                console.log("Current users: ", this.users.length)
+            })
+    }
     render() {
         return (
             <View style={styles.container}>
                 <SectionList
                     sections={[
                         { title: 'GroupA', data: this.state.users.find(u => u.GroupNo === "1") },
-                        { title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie'] },
+                       
                     ]}
                     renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
                     renderSectionHeader={({ section }) => <Text style={styles.sectionHeader}>{section.title}</Text>}

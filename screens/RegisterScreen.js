@@ -63,17 +63,12 @@ export default class RegisterScreen extends React.Component {
         try {
             await firebase.auth().createUserWithEmailAndPassword(this.state.UserName, this.state.password)
             if (this.state.Avatar) {
-                Avatar = this.state.email
-                await uploadImageAsync("Avatars", this.state.Avatar, this.state.email)
+                Avatar = this.state.UserName
+                await uploadImageAsync("avatars", this.state.Avatar, this.state.UserName)
             }
-
             console.log("Avatar upload: ", Avatar)
+            await db.collection('User').doc(this.state.UserName).set({ Avatar })
 
-            // upload this.state.Avatar called this.state.UserName to firebase storage
-            // if (this.state.Avatar) {
-            //     Avatar = this.state.UserName
-            //     await uploadImageAsync("Avatars", this.state.Avatar, this.state.UserName)
-            // }
 
             // await db.collection('User/nazek@nazek.com/Shifts').doc().set({
             await db.collection('User').doc(this.state.UserName).set({
@@ -117,9 +112,7 @@ export default class RegisterScreen extends React.Component {
         // });
         return (
             <View style={styles.container}>
-
                 <Text style={{ color: "#ba68c8", textAlign: "center", fontSize: 28, fontWeight: "bold", marginTop: 80 }}>Registeration Page</Text>
-
                 <View style={styles.getStartedContainer}>
                     {
                         this.state.Avatar
@@ -129,7 +122,6 @@ export default class RegisterScreen extends React.Component {
                             source={{ uri: this.state.Avatar }}
                         />
                     }
-
                     <TextInput
                         style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
                         autoCapitalize="none"

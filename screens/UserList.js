@@ -1,34 +1,56 @@
-import React, { Component } from 'react';
-import { AppRegistry, SectionList, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { Image, Button, TextInput, Text, View, ScrollView, StyleSheet } from 'react-native';
 import firebase from 'firebase'
+import functions from 'firebase/functions'
 import db from '../db.js'
-export default class UserList extends Component {
+export default class UserList extends React.Component {
+    static navigationOptions = {
+        title: 'UserList',
+    };
+
     state = {
-        users: []
+
     }
-    // componentDidMount() {
-    //     // go to db and get all the users
-    //     db.collection("users")
-    //         .onSnapshot(querySnapshot => {
-    //             this.state.users = []
-    //             querySnapshot.forEach(doc => {
-    //                 this.users.push({ id: doc.id, ...doc.data() })
-    //             })
-    //             console.log("Current users: ", this.users.length)
-    //         })
-    // }
+    users = []
+
+    componentDidMount() {
+        // go to db and get all the users
+        db.collection("User")
+            .onSnapshot(querySnapshot => {
+                this.users = []
+                querySnapshot.forEach(doc => {
+                    this.users.push({ id: doc.id, ...doc.data() })
+                })
+                console.log("Current users: ", this.users.length)
+                console.log("ALL users: ", this.users)
+            })
+    }
+
+    avatarURL = (UserName) => {
+        return "avatars%2F" + this.users.find(u => u.id === UserName).Avatar.replace("@", "%40")
+    }
     render() {
         return (
             <View style={styles.container}>
-                <SectionList
-                    sections={[
-                        { title: 'GroupA', data: this.state.users.find(u => u.GroupNo === "1") },
-                        { title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie'] },
-                    ]}
-                    renderItem={({ item }) => <Text style={styles.item}>{item}</Text>}
-                    renderSectionHeader={({ section }) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-                    keyExtractor={(item, index) => index}
-                />
+                <ScrollView>
+                    {
+                        this.users.map(v =>
+                            <Text style={{ fontSize: 20 }} key={v.id}>
+                                <Image
+                                    style={{ width: 25, height: 25 }}
+                                    source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }}
+                                />
+                                <Text style={{ fontWeight: "bold" }}>{this.users.find(u => console.log("id = ", u.id) || u.id === v.UserName).FirstName}</Text>
+                                <Text> </Text>
+                                <Text>{v.Role}</Text>
+                            </Text>
+                        )
+                    }
+                </ScrollView>
+                <View style={{ flexDirection: 'row' }} keyboardShouldPersistTaps={'handled'}>
+
+
+                </View>
             </View>
         );
     }
@@ -37,23 +59,7 @@ export default class UserList extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 22
+        paddingTop: 15,
+        backgroundColor: '#fff',
     },
-    sectionHeader: {
-        paddingTop: 2,
-        paddingLeft: 10,
-        paddingRight: 10,
-        paddingBottom: 2,
-        fontSize: 14,
-        fontWeight: 'bold',
-        backgroundColor: 'rgba(247,247,247,1.0)',
-    },
-    item: {
-        padding: 10,
-        fontSize: 18,
-        height: 44,
-    },
-})
-
-// skip this line if using Create React Native App
-AppRegistry.registerComponent('AwesomeProject', () => SectionListBasics);
+});

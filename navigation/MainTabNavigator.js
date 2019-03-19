@@ -10,6 +10,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import Table from '../screens/TableScreen';
 import UserList from '../screens/UserList';
 import CalendarScreen from '../screens/CalendarScreen';
 import ChatScreen from '../screens/ChatScreen';
@@ -120,14 +121,29 @@ Liststack.navigationOptions = {
     />
   ),
 };
+
+const TableStack = createStackNavigator({
+  TableScreen: Table,
+});
+
+TableStack.navigationOptions = {
+  tabBarLabel: 'Table',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
+    />
+  ),
+};
 export default createBottomTabNavigator({
   Home,
   Mapstack,
   SettingsStack,
+  Liststack,
+  TableStack
   // Liststack,
   ChatStack,
   CalendStack
-
 },
   {
     tabBarOptions: {

@@ -51,17 +51,7 @@ export default class LoginScreen extends React.Component {
       if (this.state.UserName === "admin@admin.com") {
         await firebase.auth().signInWithEmailAndPassword(this.state.UserName, this.state.password)
         { this.props.navigation.navigate('HomeScreen') }
-        if (this.state.Avatar) {
-          Avatar = this.state.UserName
-          await uploadImageAsync("Avatars", this.state.Avatar, this.state.UserName)
-          // await db.collection('User').doc(this.state.UserName).update({ Avatar })
-        }
-        await db.collection('User').doc(this.state.UserName).update({ online: true })
 
-        // if (this.state.name) {
-        //   await db.collection('User').doc(this.state.UserName).update({ name: this.state.name })
-        // }
-        // console.log("Avatar upload: ", result)
       }
       else if (this.state.UserName !== "admin@admin.com" && this.state.UserName !== "") {
         { this.props.navigation.navigate('HomeScreen') }

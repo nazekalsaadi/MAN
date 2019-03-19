@@ -90,21 +90,16 @@ export default class MapScreen extends React.Component {
         >
           {this.state.markers.map((marker, index) => {
             return (
-              <TouchableOpacity onPress={console.log('hi')} key={index}>
-                <MapView.Marker
-                  key={index}
-                  coordinate={marker.coordinate}
-                  onPress={() => this.props.navigation.navigate('Settings', { place: marker.place })}>
+              <MapView.Marker
+                key={index}
+                coordinate={marker.coordinate}
+                onPress={() => this.props.navigation.navigate('Settings', { place: marker.place })}>
+                <Image source={listOfImages[index]} style={{
+                  width: (5 * width) / 100,
+                  height: (5 * height) / 100
+                }} />
 
-
-
-                  <Image source={listOfImages[index]} style={{
-                    width: (5 * width) / 100,
-                    height: (5 * height) / 100
-                  }} />
-
-                </MapView.Marker>
-              </TouchableOpacity>
+              </MapView.Marker>
             );
           })}
         </MapView>

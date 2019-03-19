@@ -10,6 +10,7 @@ import SettingsScreen from '../screens/SettingsScreen';
 import Testing from '../screens/Testing';
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
+import Table from '../screens/TableScreen';
 
 const Home = createStackNavigator({
   LoginScreen: LoginScreen,
@@ -75,11 +76,26 @@ Liststack.navigationOptions = {
     />
   ),
 };
+
+const TableStack = createStackNavigator({
+  TableScreen: Table,
+});
+
+TableStack.navigationOptions = {
+  tabBarLabel: 'Table',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
+    />
+  ),
+};
 export default createBottomTabNavigator({
   Home,
   Mapstack,
   SettingsStack,
-  Liststack
+  Liststack,
+  TableStack
 
 },
   {

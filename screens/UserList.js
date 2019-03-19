@@ -9,46 +9,52 @@ export default class UserList extends React.Component {
     };
 
     state = {
+        Role: "",
+        FirstName: "",
+        LastName: "",
+        GroupNo: "",
+        user: []
 
     }
-    users = []
-
+    User = []
     componentDidMount() {
         // go to db and get all the users
         db.collection("User")
             .onSnapshot(querySnapshot => {
-                this.users = []
+                let user = []
                 querySnapshot.forEach(doc => {
-                    this.users.push({ id: doc.id, ...doc.data() })
+                    user.push({ id: doc.id, ...doc.data() })
                 })
-                console.log("Current users: ", this.users.length)
-                console.log("ALL users: ", this.users)
+                this.setState({ user })
+                console.log("Current users: ", this.User.length)
             })
     }
 
     avatarURL = (UserName) => {
-        return "avatars%2F" + this.users.find(u => u.id === UserName).Avatar.replace("@", "%40")
+        return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
     }
     render() {
         return (
             <View style={styles.container}>
                 <ScrollView>
+                    {/* {this.state.user.map(u => <Text>{u.LastName}</Text>)} */}
                     {
-                        this.users.map(v =>
+                        this.state.user.map(v =>
                             <Text style={{ fontSize: 20 }} key={v.id}>
                                 <Image
                                     style={{ width: 25, height: 25 }}
                                     source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }}
                                 />
-                                <Text style={{ fontWeight: "bold" }}>{this.users.find(u => console.log("id = ", u.id) || u.id === v.UserName).FirstName}</Text>
-                                <Text> </Text>
-                                <Text>{v.Role}</Text>
+                                {/* <Text style={{ fontWeight: "bold" }}>{this.User.find(u => console.log("id = ", u.id) || u.id === v.UserName).FirstName}</Text> */}
+                                <Text>{v.FirstName}</Text>
+                                <Text>{v.LastName} </Text>
+                                <Text>{v.Role} </Text>
+                                <Text>{v.GroupNo} </Text>
                             </Text>
                         )
                     }
                 </ScrollView>
                 <View style={{ flexDirection: 'row' }} keyboardShouldPersistTaps={'handled'}>
-
 
                 </View>
             </View>

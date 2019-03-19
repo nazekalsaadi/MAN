@@ -8,16 +8,16 @@ export default class ChatScreen extends React.Component {
   };
   state = {
     messages: [],
-    chat:[]
+    chat: []
   }
 
-  chat=[]
+  chat = []
   componentWillMount() {
     this.setState({
       messages: [
         {
           _id: 1,
-          text: 'Hello developer',
+          text: 'Hello from Manager',
           createdAt: new Date(),
           user: {
             _id: 2,
@@ -31,15 +31,15 @@ export default class ChatScreen extends React.Component {
   componentDidMount() {
     // go to db and get all the users
     db.collection("Chat")
-        .onSnapshot(querySnapshot => {
-            this.chat = []
-            querySnapshot.forEach(doc => {
-                this.chat.push({ id: doc.id, ...doc.data() })
-            })
-            this.setState({chat: this.chat})
-            console.log("Current chat: ", this.chat.length)
+      .onSnapshot(querySnapshot => {
+        this.chat = []
+        querySnapshot.forEach(doc => {
+          this.chat.push({ id: doc.id, ...doc.data() })
         })
-}
+        this.setState({ chat: this.chat })
+        console.log("Current chat: ", this.chat.length)
+      })
+  }
 
 
   onSend(messages = []) {

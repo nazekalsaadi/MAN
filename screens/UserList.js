@@ -57,6 +57,7 @@ export default class UserList extends React.Component {
                 <View style={{ flexDirection: 'row' }} keyboardShouldPersistTaps={'handled'}>
 
                 </View>
+
             </View>
         );
     }

@@ -22,6 +22,8 @@ import db from '../db.js'
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
     title: 'Login ',
+    backgroundColor:"#cc6600"
+    
   };
   state = {
     UserName: "",
@@ -110,9 +112,9 @@ export default class LoginScreen extends React.Component {
           />
 
           <View style={{ margin: "auto", marginTop: 25, flexDirection: "row", justifyContent: "space-between", marginLeft: 10 }}>
-            <Button onPress={this.Login} title="Login" color="black" />
+            <Button onPress={this.Login} title="Login" color="#330000" />
             {/* <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} /> */}
-            <Button onPress={this.Register} title="Register" color="black" />
+            <Button onPress={this.Register} title="Register" color="#330000" />
           </View>
         </View>
       </View>
@@ -125,7 +127,7 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e1bee7',
+    backgroundColor: 'white',
   },
   contentContainer: {
     paddingTop: 30,

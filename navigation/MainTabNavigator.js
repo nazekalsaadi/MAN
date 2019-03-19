@@ -12,6 +12,7 @@ import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import UserList from '../screens/UserList';
 import CalendarScreen from '../screens/CalendarScreen';
+import ChatScreen from '../screens/ChatScreen';
 
 const Home = createStackNavigator({
   LoginScreen: LoginScreen,
@@ -73,7 +74,7 @@ CalendStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-md-calendar' : 'md-md-calendar'}
+      name={Platform.OS === 'ios' ? 'ios-calendar' : 'md-calendar'}
     />
   ),
 };
@@ -88,6 +89,20 @@ SettingsStack.navigationOptions = {
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
+    />
+  ),
+};
+
+const ChatStack = createStackNavigator({
+  ChatScreen: ChatScreen,
+});
+
+ChatStack.navigationOptions = {
+  tabBarLabel: 'Chat',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'}
     />
   ),
 };
@@ -110,7 +125,8 @@ export default createBottomTabNavigator({
   Mapstack,
   SettingsStack,
   // Liststack,
-  CalendarScreen
+  ChatStack,
+  CalendStack
 
 },
   {

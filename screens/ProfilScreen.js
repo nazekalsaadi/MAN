@@ -13,19 +13,80 @@ import {
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
+import firebase from 'firebase'
+import db from '../db.js'
+export default class Profile extends React.Component {
+  static navigationOptions = {
+    title: 'Profile',
+  };
 
-export default class Testing extends React.Component {
-
+  state = {
+    UserName: ""
+  }
+  
   render() {
     return (
       <View style={styles.container}>
-        <Text>Main</Text>
+
+        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+          <View style={styles.welcomeContainer}>
+            <Image
+              source={
+                require('../assets/images/logo.jpg')
+
+              }
+              style={styles.welcomeImage}
+            />
+          </View>
+
+          <View style={styles.getStartedContainer}>
+
+
+            <Button title="Add Users"
+              type="outline" onPress={this.Register} color="#330000" />
+
+          </View>
+
+
+        </ScrollView>
 
       </View>
 
     );
   }
 
+  _maybeRenderDevelopmentModeWarning() {
+    if (__DEV__) {
+      const learnMoreButton = (
+        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
+          Learn more
+        </Text>
+      );
+
+      return (
+        <Text style={styles.developmentModeText}>
+          Development mode is enabled, your app will be slower but you can use useful development
+          tools. {learnMoreButton}
+        </Text>
+      );
+    } else {
+      return (
+        <Text style={styles.developmentModeText}>
+          You are not in development mode, your app will run at full speed.
+        </Text>
+      );
+    }
+  }
+
+  _handleLearnMorePress = () => {
+    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
+  };
+
+  _handleHelpPress = () => {
+    WebBrowser.openBrowserAsync(
+      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
+    );
+  };
 }
 
 const styles = StyleSheet.create({

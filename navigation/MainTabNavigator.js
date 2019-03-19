@@ -5,26 +5,37 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import Map from '../screens/MapScreen';
+import List from '../screens/UserList';
 import SettingsScreen from '../screens/SettingsScreen';
-import Testing from '../screens/Testing';
 
-const HomeStack = createStackNavigator({
-  Home: HomeScreen,
+import LoginScreen from '../screens/LoginScreen';
+import RegisterScreen from '../screens/RegisterScreen';
+import UserList from '../screens/UserList';
+import CalendarScreen from '../screens/CalendarScreen';
+import ChatScreen from '../screens/ChatScreen';
+
+const Home = createStackNavigator({
+  LoginScreen: LoginScreen,
+  RegisterScreen: RegisterScreen,
+  HomeScreen: HomeScreen,
+
+
 });
 
-HomeStack.navigationOptions = {
+const Loginstack = createStackNavigator({
+  LoginScreen: Home
+});
+
+Home.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={
-        Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
-          : 'md-information-circle'
-      }
+      name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'}
     />
   ),
 };
+
 
 const Mapstack = createStackNavigator({
   Map: Map,
@@ -35,7 +46,35 @@ Mapstack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
+    />
+  ),
+};
+
+const UserStack = createStackNavigator({
+  User: UserList,
+});
+
+UserStack.navigationOptions = {
+  tabBarLabel: 'User',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
+    />
+  ),
+};
+
+const CalendStack = createStackNavigator({
+  CalendarScreen: CalendarScreen,
+});
+
+CalendStack.navigationOptions = {
+  tabBarLabel: 'Calendar',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-calendar' : 'md-calendar'}
     />
   ),
 };
@@ -49,14 +88,59 @@ SettingsStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-options' : 'md-options'}
+      name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
     />
   ),
 };
 
+const ChatStack = createStackNavigator({
+  ChatScreen: ChatScreen,
+});
 
+ChatStack.navigationOptions = {
+  tabBarLabel: 'Chat',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'}
+    />
+  ),
+};
+
+const Liststack = createStackNavigator({
+  List: List,
+});
+
+Liststack.navigationOptions = {
+  tabBarLabel: 'List',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    />
+  ),
+};
 export default createBottomTabNavigator({
-  HomeStack,
+  Home,
   Mapstack,
   SettingsStack,
-});
+  // Liststack,
+  ChatStack,
+  CalendStack
+
+},
+  {
+    tabBarOptions: {
+      style: {
+        backgroundColor: '#330000',//color you want to change
+
+      },
+
+      activeTintColor: "white",
+      inactiveTintColor: "white",
+      labelStyle: {
+        fontWeight: "bold"
+      }
+    }
+  }
+);

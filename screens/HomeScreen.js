@@ -13,15 +13,26 @@ import {
 import { WebBrowser } from 'expo';
 
 import { MonoText } from '../components/StyledText';
-
+import firebase from 'firebase'
+import db from '../db.js'
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    title: 'Home',
   };
 
+  state = {
+    UserName: ""
+  }
+  Register = async () => {
+
+
+    { this.props.navigation.navigate('RegisterScreen') }
+
+  }
   render() {
     return (
       <View style={styles.container}>
+
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
@@ -36,12 +47,9 @@ export default class HomeScreen extends React.Component {
           <View style={styles.getStartedContainer}>
 
 
-            <Text style={styles.getStartedText}>Login To CCSystem</Text>
+            <Button title="Add Users"
+              type="outline" onPress={this.Register} color="#330000" />
 
-            <TextInput> UserName </TextInput>
-            <TextInput> Password </TextInput>
-
-            <Button title="Login" />
           </View>
 
 

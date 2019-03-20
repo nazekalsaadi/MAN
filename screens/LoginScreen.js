@@ -22,6 +22,8 @@ import db from '../db.js'
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
     title: 'Login ',
+    backgroundColor:"#cc6600"
+    
   };
   state = {
     UserName: "",
@@ -49,17 +51,7 @@ export default class LoginScreen extends React.Component {
       if (this.state.UserName === "admin@admin.com") {
         await firebase.auth().signInWithEmailAndPassword(this.state.UserName, this.state.password)
         { this.props.navigation.navigate('HomeScreen') }
-        if (this.state.Avatar) {
-          Avatar = this.state.UserName
-          await uploadImageAsync("Avatars", this.state.Avatar, this.state.UserName)
-          // await db.collection('User').doc(this.state.UserName).update({ Avatar })
-        }
-        await db.collection('User').doc(this.state.UserName).update({ online: true })
 
-        // if (this.state.name) {
-        //   await db.collection('User').doc(this.state.UserName).update({ name: this.state.name })
-        // }
-        // console.log("Avatar upload: ", result)
       }
       else if (this.state.UserName !== "admin@admin.com" && this.state.UserName !== "") {
         { this.props.navigation.navigate('HomeScreen') }
@@ -120,9 +112,9 @@ export default class LoginScreen extends React.Component {
           />
 
           <View style={{ margin: "auto", marginTop: 25, flexDirection: "row", justifyContent: "space-between", marginLeft: 10 }}>
-            <Button onPress={this.Login} title="Login" color="black" />
+            <Button onPress={this.Login} title="Login" color="#330000" />
             {/* <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} /> */}
-            <Button onPress={this.Register} title="Register" color="black" />
+            <Button onPress={this.Register} title="Register" color="#330000" />
           </View>
         </View>
       </View>
@@ -135,7 +127,7 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#e1bee7',
+    backgroundColor: 'white',
   },
   contentContainer: {
     paddingTop: 30,

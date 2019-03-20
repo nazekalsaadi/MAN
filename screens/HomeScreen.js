@@ -48,7 +48,7 @@ export default class HomeScreen extends React.Component {
 
 
             <Button title="Add Users"
-              type="outline" onPress={this.Register} color="black" />
+              type="outline" onPress={this.Register} color="#330000" />
 
           </View>
 

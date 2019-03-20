@@ -1,13 +1,18 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font, Icon } from 'expo';
+import { Permissions, AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
-
+  async componentWillMount() {
+    const prompt = await Permissions.askAsync(Permissions.CAMERA_ROLL)
+    console.log("Camera permission 1: ", prompt)
+    const result = await Permissions.getAsync(Permissions.CAMERA_ROLL)
+    console.log("Camera permission 2: ", result)
+  }
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
       return (

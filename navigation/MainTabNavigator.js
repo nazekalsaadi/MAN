@@ -140,8 +140,7 @@ export default createBottomTabNavigator({
   Mapstack,
   SettingsStack,
   Liststack,
-  TableStack
-  // Liststack,
+  TableStack,
   ChatStack,
   CalendStack
 },

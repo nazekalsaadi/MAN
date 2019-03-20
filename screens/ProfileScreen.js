@@ -6,7 +6,6 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  Button,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -15,7 +14,7 @@ import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
 import db from '../db.js'
-export default class Profile extends React.Component {
+export default class ProfileScreen extends React.Component {
   static navigationOptions = {
     title: 'Profile',
   };
@@ -23,7 +22,7 @@ export default class Profile extends React.Component {
   state = {
     UserName: ""
   }
-  
+
   render() {
     return (
       <View style={styles.container}>
@@ -38,16 +37,10 @@ export default class Profile extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
-
           <View style={styles.getStartedContainer}>
-
-
             <Button title="Add Users"
               type="outline" onPress={this.Register} color="#330000" />
-
           </View>
-
-
         </ScrollView>
 
       </View>

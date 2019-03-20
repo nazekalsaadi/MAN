@@ -4,7 +4,7 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import Map from '../screens/MapScreen';
+import Map from '../navigation/MapTabNavigator';
 import List from '../screens/UserList';
 import SettingsScreen from '../screens/SettingsScreen';
 import Testing from '../screens/Testing';
@@ -15,8 +15,6 @@ const Home = createStackNavigator({
   LoginScreen: LoginScreen,
   RegisterScreen: RegisterScreen,
   HomeScreen: HomeScreen,
-
-
 });
 
 const Loginstack = createStackNavigator({

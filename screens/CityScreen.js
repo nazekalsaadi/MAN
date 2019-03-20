@@ -65,13 +65,24 @@ export default class MapScreen extends React.Component {
       latitudeDelta: 0.9,
       longitudeDelta: 0.9
     },
+    Cities:[]
   }
+
+  componentDidMount() {
+    // go to db and get all the users
+    db.collection("Cities")
+      .onSnapshot(querySnapshot => {
+        this.Cities = []
+        querySnapshot.forEach(doc => {
+          this.users.push({ id: doc.id, ...doc.data() })
+        })
+        console.log("Current Cities: ", this.Cities.length)
+      })
+    }
 
   render() {
     listOfImages = [
       require("../assets/images/red.png"),
-      require("../assets/images/red.png"),
-      require("../assets/images/yellow.png"),
       require("../assets/images/yellow.png"),
       require("../assets/images/green.png")
     ];
@@ -88,12 +99,17 @@ export default class MapScreen extends React.Component {
 
         //  style={{  width: width }} 
         >
-          {this.state.markers.map((marker, index) => {
+          {this.state.Cities.map((marker, index) => {
             return (
+              CityCoordinate= {
+                latitude: marker.Latitude,
+                longitude: marker.Longitude,
+                place: marker.Name
+              },
               <TouchableOpacity onPress={console.log('hi')} key={index}>
                 <MapView.Marker
                   key={index}
-                  coordinate={marker.coordinate}
+                  coordinate={CityCoordinate}
                   onPress={() => this.props.navigation.navigate('Settings', { place: marker.place })}>
 
 

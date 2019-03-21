@@ -21,36 +21,59 @@ export default class Profile extends React.Component {
   };
 
   state = {
-    UserName: ""
+    UserName: "",
+    Role: "",
+    FirstName: "",
+    LastName: "",
+    GroupNo: "",
+    user: []
+
   }
-  
+  User = []
+  componentDidMount() {
+    // go to db and get all the users
+    db.collection("User")
+      .onSnapshot(querySnapshot => {
+        let user = []
+        querySnapshot.forEach(doc => {
+          user.push({ id: doc.id, ...doc.data() })
+        })
+        this.setState({ user })
+        console.log("Current users: ", this.User.length)
+      })
+  }
+
+  avatarURL = (UserName) => {
+    return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
+  }
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
+        <View style={styles.header}><Text> Joyp </Text></View>
+        {
+          this.state.user.map(v =>
+            <View key={v.id}>
 
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={styles.welcomeContainer}>
-            <Image
-              source={
-                require('../assets/images/logo.jpg')
+              <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
+              {/* <Text style={{ fontWeight: "bold" }}>{this.User.find(u => console.log("id = ", u.id) || u.id === v.UserName).FirstName}</Text> */}
+              <View style={styles.body}>
+                <View style={styles.bodyContent}>
+                  <Text style={styles.name}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "}</Text>
+                  <Text style={styles.info}>Mobile no: {" " + v.Phone}</Text>
+                  <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} has been assigned to Group number {" " + v.GroupNo}</Text>
 
-              }
-              style={styles.welcomeImage}
-            />
-          </View>
-
-          <View style={styles.getStartedContainer}>
-
-
-            <Button title="Add Users"
-              type="outline" onPress={this.Register} color="#330000" />
-
-          </View>
-
-
-        </ScrollView>
-
-      </View>
+                  <TouchableOpacity style={styles.buttonContainer}>
+                    <Text>Opcion 1</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.buttonContainer}>
+                    <Text>Opcion 2</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )
+        }
+      </ScrollView>
 
     );
   }
@@ -90,90 +113,59 @@ export default class Profile extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
+  header: {
+    backgroundColor: "#00BFFF",
+    height: 200,
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
-  },
-  contentContainer: {
-    paddingTop: 30,
-  },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
-  },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
+  avatar: {
+    width: 130,
+    height: 130,
+    borderRadius: 63,
+    borderWidth: 4,
+    borderColor: "white",
+    marginBottom: 10,
+    alignSelf: 'center',
     position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
+    marginTop: 130
+  },
+  name: {
+    fontSize: 22,
+    color: "#FFFFFF",
+    fontWeight: '600',
+  },
+  body: {
+    marginTop: 40,
+  },
+  bodyContent: {
+    flex: 1,
     alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
+    padding: 30,
   },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
+  name: {
+    fontSize: 28,
+    color: "#696969",
+    fontWeight: "600"
   },
-  navigationFilename: {
-    marginTop: 5,
+  info: {
+    fontSize: 16,
+    color: "#00BFFF",
+    marginTop: 10
   },
-  helpContainer: {
-    marginTop: 15,
+  description: {
+    fontSize: 16,
+    color: "#696969",
+    marginTop: 10,
+    textAlign: 'center'
+  },
+  buttonContainer: {
+    marginTop: 10,
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'center',
     alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
+    marginBottom: 20,
+    width: 250,
+    borderRadius: 30,
+    backgroundColor: "#00BFFF",
   },
 });

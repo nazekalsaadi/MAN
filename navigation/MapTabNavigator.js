@@ -2,22 +2,22 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
+import TabBarIcon from '../components/TabBarIcon';
+import TrashMapScreen from '../screens/TrashScreen';
+import CitiesMapScreen from '../screens/CityScreen';
 
-import Trash from '../screens/TrashScreen';
-import City from '../screens/CityScreen';
 
+// const Home = createStackNavigator({
+//   CitiesMapScreen: CitiesMapScreen,
+//   TrashMapScreen: TrashMapScreen,
 
-const Home = createStackNavigator({
-  CitiesMapScreen: CitiesMapScreen,
-  TrashMapScreen: TrashMapScreen,
-
-});
+// });
 
 const Citiesstack = createStackNavigator({
-    CitiesMapScreen: City
+    CitiesMapScreen: CitiesMapScreen
 });
 
-Home.navigationOptions = {
+Citiesstack.navigationOptions = {
   tabBarLabel: 'Cities',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -27,11 +27,11 @@ Home.navigationOptions = {
   ),
 };
 
-const Trashtack = createStackNavigator({
-    TrashMapScreen: Trash,
+const Trashstack = createStackNavigator({
+    TrashMapScreen: TrashMapScreen,
 });
 
-Mapstack.navigationOptions = {
+Trashstack.navigationOptions = {
   tabBarLabel: 'Trash',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
@@ -42,21 +42,18 @@ Mapstack.navigationOptions = {
 };
 
 export default createBottomTabNavigator({
-  Home,
-  Mapstack,
-  SettingsStack,
-  Liststack
-
+  Trashstack,
+  Citiesstack
 },
   {
     tabBarOptions: {
       style: {
-        backgroundColor: '#ba68c8',//color you want to change
+        backgroundColor: '#330000',//color you want to change
 
       },
 
-      activeTintColor: "#FFFFFF",
-      inactiveTintColor: "#4a148c",
+      activeTintColor: "#fff",
+      inactiveTintColor: "#fff",
       labelStyle: {
         fontWeight: "bold"
       }

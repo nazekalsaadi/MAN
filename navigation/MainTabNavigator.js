@@ -7,17 +7,17 @@ import HomeScreen from '../screens/HomeScreen';
 import Map from '../navigation/MapTabNavigator';
 import List from '../screens/UserList';
 import SettingsScreen from '../screens/SettingsScreen';
-
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import Table from '../screens/TableScreen';
 import UserList from '../screens/UserList';
 import CalendarScreen from '../screens/CalendarScreen';
 import ChatScreen from '../screens/ChatScreen';
+import ProfileScreen from '../screens/ProfilScreen';
 
 const Home = createStackNavigator({
-  LoginScreen: LoginScreen,
-  RegisterScreen: RegisterScreen,
+  // LoginScreen: LoginScreen,
+  // RegisterScreen: RegisterScreen,
   HomeScreen: HomeScreen,
 });
 
@@ -56,6 +56,19 @@ const UserStack = createStackNavigator({
 
 UserStack.navigationOptions = {
   tabBarLabel: 'User',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
+    />
+  ),
+};
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
+});
+
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -136,12 +149,14 @@ TableStack.navigationOptions = {
 export default createBottomTabNavigator({
   Home,
   Mapstack,
-  SettingsStack,
-  Liststack,
-  TableStack,
+  UserStack,
+  // SettingsStack,
   // Liststack,
-  ChatStack,
-  CalendStack
+  // TableStack,
+  // // Liststack,
+  // ChatStack,
+  // CalendStack,
+  ProfileStack
 },
   {
     tabBarOptions: {

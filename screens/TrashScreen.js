@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions, TextInput } from 'react-native';
 import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
 import { Ionicons, Octicons, Foundation, Entypo, Feather } from '@expo/vector-icons';
-
+import db from '../db';
 import MapView from 'react-native-maps';
 
 
@@ -23,62 +23,32 @@ const NODE5_LONGITUDE = 51.4432;
 
 const { width, height } = Dimensions.get("window");
 
-export default class MapScreen extends React.Component {
+export default class TrashScreen extends React.Component {
 
   state = {
-    markers: [
-      {
-        coordinate: {
-          latitude: NODE1_LATITUDE,
-          longitude: NODE1_LONGITUDE,
-          place: "CNA"
-        }
-      },
-      {
-        coordinate: {
-          latitude: NODE2_LATITUDE,
-          longitude: NODE2_LONGITUDE
-        }
-      },
-      {
-        coordinate: {
-          latitude: NODE3_LATITUDE,
-          longitude: NODE3_LONGITUDE
-        }
-      },
-      {
-        coordinate: {
-          latitude: NODE4_LATITUDE,
-          longitude: NODE4_LONGITUDE
-        }
-      },
-      {
-        coordinate: {
-          latitude: NODE5_LATITUDE,
-          longitude: NODE5_LONGITUDE
-        }
-      }
-    ],
+    Trash: [],
     region: {
-      latitude: 25.55,
-      longitude: 51.27,
-      latitudeDelta: 0.9,
-      longitudeDelta: 0.9
+      latitude: 25.286106,
+      longitude: 51.534817,
+      // latitudeDelta:0.04,
+      // longitudeDelta: 0.04
     },
-    Cities:[]
   }
+
 
   componentDidMount() {
     // go to db and get all the users
-    db.collection("Cities")
-      .onSnapshot(querySnapshot => {
-        this.Cities = []
+
+    db.collection("Trash")
+      .onSnapshot(async querySnapshot => {
+        const Trash = []
         querySnapshot.forEach(doc => {
-          this.users.push({ id: doc.id, ...doc.data() })
+          Trash.push({ id: doc.id, ...doc.data() })
         })
-        console.log("Current Cities: ", this.Cities.length)
+        await this.setState({ Trash })
+       
       })
-    }
+  }
 
   render() {
     listOfImages = [
@@ -99,26 +69,31 @@ export default class MapScreen extends React.Component {
 
         //  style={{  width: width }} 
         >
-          {this.state.Cities.map((marker, index) => {
+
+          {this.state.Trash.map((marker, index) => {
             return (
-              CityCoordinate= {
-                latitude: marker.Latitude,
-                longitude: marker.Longitude,
+              CityCoordinate = {
+                latitude: marker.Location._lat,
+                longitude: marker.Location._long,
                 place: marker.Name
               },
+              console.log("MapView Trash: ", this.state.Trash),
               <TouchableOpacity onPress={console.log('hi')} key={index}>
                 <MapView.Marker
                   key={index}
                   coordinate={CityCoordinate}
                   onPress={() => this.props.navigation.navigate('Settings', { place: marker.place })}>
-
-
-
                   <Image source={listOfImages[index]} style={{
                     width: (5 * width) / 100,
                     height: (5 * height) / 100
                   }} />
-
+                  <MapView.Callout>
+                    <View style={styles.calloutView} >
+                      <TextInput style={styles.calloutSearch}
+                        placeholder={"Search"}
+                      />
+                    </View>
+                  </MapView.Callout>
                 </MapView.Marker>
               </TouchableOpacity>
             );
@@ -135,6 +110,23 @@ const styles = StyleSheet.create(
       flex: 1,
       justifyContent: 'center',
 
+    },
+    calloutView: {
+      flexDirection: "row",
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
+      borderRadius: 10,
+      width: "40%",
+      marginLeft: "30%",
+      marginRight: "30%",
+      marginTop: 20
+    },
+    calloutSearch: {
+      borderColor: "transparent",
+      marginLeft: 10,
+      width: "90%",
+      marginRight: 10,
+      height: 40,
+      borderWidth: 0.0
     }
   }
 )
@@ -210,6 +202,15 @@ const myMapStyle = [
   },
   {
     "featureType": "poi",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "poi",
     "elementType": "labels.text.fill",
     "stylers": [
       {
@@ -236,11 +237,23 @@ const myMapStyle = [
     ]
   },
   {
+    "featureType": "poi.place_of_worship",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
     "featureType": "road",
     "elementType": "geometry",
     "stylers": [
       {
         "color": "#f5f1e6"
+      },
+      {
+        "visibility": "simplified"
       }
     ]
   },
@@ -250,6 +263,18 @@ const myMapStyle = [
     "stylers": [
       {
         "color": "#fdfcf8"
+      }
+    ]
+  },
+  {
+    "featureType": "road.arterial",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#709bdc"
+      },
+      {
+        "visibility": "on"
       }
     ]
   },
@@ -264,10 +289,22 @@ const myMapStyle = [
   },
   {
     "featureType": "road.highway",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "road.highway",
     "elementType": "geometry.stroke",
     "stylers": [
       {
         "color": "#e9bc62"
+      },
+      {
+        "visibility": "on"
       }
     ]
   },
@@ -291,10 +328,46 @@ const myMapStyle = [
   },
   {
     "featureType": "road.local",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "geometry.stroke",
+    "stylers": [
+      {
+        "color": "#0d310e"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
     "elementType": "labels.text.fill",
     "stylers": [
       {
-        "color": "#806b63"
+        "color": "#3d0a01"
+      }
+    ]
+  },
+  {
+    "featureType": "road.local",
+    "elementType": "labels.text.stroke",
+    "stylers": [
+      {
+        "visibility": "on"
+      }
+    ]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "visibility": "off"
       }
     ]
   },

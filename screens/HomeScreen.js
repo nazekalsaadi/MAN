@@ -15,6 +15,8 @@ import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
 import db from '../db.js'
+
+// const { width, height } = Dimensions.get("window");
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
@@ -24,12 +26,12 @@ export default class HomeScreen extends React.Component {
     UserName: ""
   }
   Register = async () => {
-
-
     { this.props.navigation.navigate('RegisterScreen') }
 
   }
   render() {
+    // const currentUser = localStorage.setItem("user", this.state.UserName);
+    
     return (
       <View style={styles.container}>
 
@@ -45,11 +47,11 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-
-
+                
+             {this.currentUser === "admin@admin.com" &&
             <Button title="Add Users"
               type="outline" onPress={this.Register} color="#330000" />
-
+            }
           </View>
 
 
@@ -115,11 +117,11 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeImage: {
-    width: 100,
-    height: 80,
+    width: 300,
+    height: 150,
     resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
+
+
   },
   getStartedContainer: {
     alignItems: 'center',

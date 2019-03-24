@@ -1,86 +1,86 @@
 import React from 'react';
-import { Image, Button, TextInput, Text, View, ScrollView, StyleSheet,TouchableOpacity} from 'react-native';
+import { Image, Button, TextInput, Text, View, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import firebase from 'firebase'
 import functions from 'firebase/functions'
 import db from '../db.js'
 import call from 'react-native-phone-call';
 import Communications from 'react-native-communications';
 export default class UserList extends React.Component {
-    static navigationOptions = {
-        title: 'UserList',
+  static navigationOptions = {
+    title: 'UserList',
+  };
+
+  state = {
+    Role: "",
+    FirstName: "",
+    LastName: "",
+    GroupNo: "",
+    user: []
+
+  }
+  User = []
+
+  componentDidMount() {
+    // go to db and get all the users
+    db.collection("User")
+      .onSnapshot(querySnapshot => {
+        let user = []
+        querySnapshot.forEach(doc => {
+          user.push({ id: doc.id, ...doc.data() })
+        })
+        this.setState({ user })
+        console.log("Current users: ", this.User.length)
+      })
+  }
+
+  avatarURL = (UserName) => {
+    return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
+  }
+  call = (phone) => {
+    //handler to make a call
+    const args = {
+      number: phone,
+      prompt: false,
     };
+    call(args).catch(console.error);
+  };
 
-    state = {
-        Role: "",
-        FirstName: "",
-        LastName: "",
-        GroupNo: "",
-        user: []
+  render() {
+    return (
+      <ScrollView style={styles.container}>
+        {/* <View style={styles.header}><Text  style={styles.header}> Users </Text></View> */}
+        {
+          this.state.user.map(v =>
+            <View key={v.id}>
 
-    }
-    User = []
-    
-     componentDidMount() {
-        // go to db and get all the users
-        db.collection("User")
-            .onSnapshot(querySnapshot => {
-                let user = []
-                querySnapshot.forEach(doc => {
-                    user.push({ id: doc.id, ...doc.data() })
-                })
-                this.setState({ user })
-                console.log("Current users: ", this.User.length)
-            })
-    }
+              <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
+              {/* <Text style={{ fontWeight: "bold" }}>{this.User.find(u => console.log("id = ", u.id) || u.id === v.UserName).FirstName}</Text> */}
 
-    avatarURL = (UserName) => {
-        return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
-    }
-    call = (phone) => {
-        //handler to make a call
-        const args = {
-            number: phone,
-            prompt: false,
-          };
-        call(args).catch(console.error);
-      };
-    
-    render() {
-        return (
-            <ScrollView style={styles.container}>
-      {/* <View style={styles.header}><Text  style={styles.header}> Users </Text></View> */}
-      {
-                        this.state.user.map(v =>
-                            <View  key={v.id}>
-                           
-                               <Image style={styles.avatar} source={{uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }}/>
-                                {/* <Text style={{ fontWeight: "bold" }}>{this.User.find(u => console.log("id = ", u.id) || u.id === v.UserName).FirstName}</Text> */}
+              <View style={styles.body}>
+                <View style={styles.bodyContent}>
+                  <Text style={styles.name}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "}</Text>
+                  <Text style={styles.info}>Mobile no: {" " + v.Phone}</Text>
+                  <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} has been assigned to Group number {" " + v.GroupNo}</Text>
 
-      <View style={styles.body}>
-        <View style={styles.bodyContent}>
-          <Text style={styles.name}>{v.Role+"  "}{v.FirstName+" "}{v.LastName+" "}</Text>
-          <Text style={styles.info}>Mobile no: {" "+v.Phone}</Text>
-          <Text style={styles.description}>{v.Role+"  "}{v.FirstName+" "}{v.LastName+" "} has been assigned to Group number {" "+ v.GroupNo}</Text>
-          
-          <TouchableOpacity style={styles.buttonContainer} onPress={()=>this.call(v.Phone)}>
-         
-          <Text>Contact {v.FirstName}</Text>
-          
-          </TouchableOpacity>              
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.email([v.UserName],null,null,'My Subject','My body text')}>
-          <Text> Send Mail </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
-        
-            <Text>Send a text/iMessage</Text>
-          
-        </TouchableOpacity>
-        </View>
-    </View>
-    </View>
-      )
-    }
-  </ScrollView>
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
+
+                    <Text>Contact {v.FirstName}</Text>
+
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.email([v.UserName], null, null, 'My Subject', 'My body text')}>
+                    <Text> Send Mail </Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
+
+                    <Text>Send a text/iMessage</Text>
+
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+          )
+        }
+      </ScrollView>
 
     );
   }
@@ -120,9 +120,9 @@ export default class UserList extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  header:{
+  header: {
     backgroundColor: "#00BFFF",
-    height:200,
+    height: 200,
   },
   avatar: {
     width: 130,
@@ -130,50 +130,50 @@ const styles = StyleSheet.create({
     borderRadius: 63,
     borderWidth: 4,
     borderColor: "white",
-    marginBottom:10,
-    alignSelf:'center',
+    marginBottom: 10,
+    alignSelf: 'center',
     position: 'absolute',
-    marginTop:130
+    marginTop: 130
   },
-  name:{
-    fontSize:22,
-    color:"#FFFFFF",
-    fontWeight:'600',
+  name: {
+    fontSize: 22,
+    color: "#FFFFFF",
+    fontWeight: '600',
   },
-  body:{
-    marginTop:40,
+  body: {
+    marginTop: 40,
   },
   bodyContent: {
     flex: 1,
     alignItems: 'center',
-    padding:30,
+    padding: 30,
   },
-  name:{
-    fontSize:28,
+  name: {
+    fontSize: 28,
     color: "#696969",
     fontWeight: "600"
   },
-  info:{
-    fontSize:16,
+  info: {
+    fontSize: 16,
     color: "#00BFFF",
-    marginTop:10
+    marginTop: 10
   },
-  description:{
-    fontSize:16,
+  description: {
+    fontSize: 16,
     color: "#696969",
-    marginTop:10,
+    marginTop: 10,
     textAlign: 'center'
   },
   buttonContainer: {
-    marginTop:10,
-    height:45,
+    marginTop: 10,
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
-    width:250,
-    borderRadius:30,
+    marginBottom: 20,
+    width: 250,
+    borderRadius: 30,
     backgroundColor: "#00BFFF",
   },
 });
- 
+

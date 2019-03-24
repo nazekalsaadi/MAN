@@ -31,7 +31,7 @@ export default class HomeScreen extends React.Component {
   }
   render() {
     // const currentUser = localStorage.setItem("user", this.state.UserName);
-    
+
     return (
       <View style={styles.container}>
 
@@ -47,10 +47,10 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
-                
-             {this.currentUser === "admin@admin.com" &&
-            <Button title="Add Users"
-              type="outline" onPress={this.Register} color="#330000" />
+
+            {this.currentUser === "admin@admin.com" &&
+              <Button title="Add Users"
+                type="outline" onPress={this.Register} color="#330000" />
             }
           </View>
 

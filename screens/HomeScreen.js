@@ -23,13 +23,37 @@ export default class HomeScreen extends React.Component {
   };
 
   state = {
-    UserName: ""
+    UserName: "",
+    currentUser: ""
   }
   Register = async () => {
     { this.props.navigation.navigate('RegisterScreen') }
 
   }
+  UserList = async () => {
+    { this.props.navigation.navigate('UserList') }
+
+  }
+  async componentDidMount() {
+    console.log("the email logged in is ", firebase.auth().currentUser.email)
+    this.setState({ currentUser: firebase.auth().currentUser.email })
+    //   chat = []
+    // await db.collection(`Chat`)
+    // .onSnapshot(querySnapshot => {
+    //   querySnapshot.forEach(doc => {
+    //     chat.push({ id: doc.id, ...doc.data() })
+    //   })
+    //   console.log("Current chat: ", this.state.chat.length)
+    //   console.log("Current chat: ", this.state.chat)
+    //   this.setState({chat})
+
+    // console.log("Current chat after method: ", this.state.chat)
+
+
+
+  }
   render() {
+
     // const currentUser = localStorage.setItem("user", this.state.UserName);
 
     return (
@@ -48,9 +72,14 @@ export default class HomeScreen extends React.Component {
 
           <View style={styles.getStartedContainer}>
 
-            {this.currentUser === "admin@admin.com" &&
-              <Button title="Add Users"
-                type="outline" onPress={this.Register} color="#330000" />
+            {this.state.currentUser === "admin@admin.com" &&
+              <View>
+                <Button title="Add Users"
+                  type="outline" onPress={this.Register} color="#330000" />
+
+                <Button title="All Users"
+                  type="outline" onPress={this.UserList} color="#330000" />
+              </View>
             }
           </View>
 

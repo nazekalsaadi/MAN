@@ -2,16 +2,20 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Permissions, AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-import LoginScreen from'./screens/LoginScreen';
+import LoginScreen from './screens/LoginScreen';
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
+
+
   async componentWillMount() {
+    console.disableYellowBox = true
     const prompt = await Permissions.askAsync(Permissions.CAMERA_ROLL)
     console.log("Camera permission 1: ", prompt)
     const result = await Permissions.getAsync(Permissions.CAMERA_ROLL)
     console.log("Camera permission 2: ", result)
+
   }
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {

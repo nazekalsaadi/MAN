@@ -17,8 +17,9 @@ import ProfileScreen from '../screens/ProfilScreen';
 
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
-  // RegisterScreen: RegisterScreen,
+
   HomeScreen: HomeScreen,
+  RegisterScreen: RegisterScreen,
 });
 
 const Loginstack = createStackNavigator({
@@ -36,20 +37,6 @@ Home.navigationOptions = {
 };
 
 
-const Mapstack = createStackNavigator({
-  Map: Map,
-});
-
-Mapstack.navigationOptions = {
-  tabBarLabel: 'Map',
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
-    />
-  ),
-};
-
 const UserStack = createStackNavigator({
   User: UserList,
 });
@@ -63,6 +50,21 @@ UserStack.navigationOptions = {
     />
   ),
 };
+
+const Mapstack = createStackNavigator({
+  Map: Map,
+});
+Mapstack.navigationOptions = {
+  tabBarLabel: 'Map',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
+    />
+  ),
+};
+
+
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
 });
@@ -155,7 +157,7 @@ export default createBottomTabNavigator({
   // TableStack,
   // // Liststack,
   // ChatStack,
-  // CalendStack,
+  CalendStack,
   ProfileStack
 },
   {

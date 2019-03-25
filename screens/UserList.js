@@ -7,7 +7,7 @@ import call from 'react-native-phone-call';
 import Communications from 'react-native-communications';
 export default class UserList extends React.Component {
   static navigationOptions = {
-    title: 'UserList',
+    header: null,
   };
 
   state = {
@@ -53,8 +53,10 @@ export default class UserList extends React.Component {
           this.state.user.map(v =>
             <View key={v.id}>
 
-              <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
-              {/* <Text style={{ fontWeight: "bold" }}>{this.User.find(u => console.log("id = ", u.id) || u.id === v.UserName).FirstName}</Text> */}
+              <View style={styles.header}>
+                <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
+
+              </View>
 
               <View style={styles.body}>
                 <View style={styles.bodyContent}>

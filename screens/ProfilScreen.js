@@ -26,11 +26,13 @@ export default class Profile extends React.Component {
     FirstName: "",
     LastName: "",
     GroupNo: "",
-    user: []
+    user: [],
+    currentUser: ""
 
   }
   User = []
   componentDidMount() {
+    this.setState({ currentUser: firebase.auth().currentUser.email })
     // go to db and get all the users
     db.collection("User")
       .onSnapshot(querySnapshot => {
@@ -47,29 +49,35 @@ export default class Profile extends React.Component {
     return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
   }
   render() {
+
     return (
       <ScrollView style={styles.container}>
-        <View style={styles.header}><Text> Joyp </Text></View>
+
         {
           this.state.user.map(v =>
             <View key={v.id}>
+              {this.state.currentUser === v.UserName &&
+                <View>
+                  <View style={styles.header}>
+                    <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
 
-              <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
-              {/* <Text style={{ fontWeight: "bold" }}>{this.User.find(u => console.log("id = ", u.id) || u.id === v.UserName).FirstName}</Text> */}
-              <View style={styles.body}>
-                <View style={styles.bodyContent}>
-                  <Text style={styles.name}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "}</Text>
-                  <Text style={styles.info}>Mobile no: {" " + v.Phone}</Text>
-                  <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} has been assigned to Group number {" " + v.GroupNo}</Text>
+                  </View>
+                  <View style={styles.body}>
+                    <View style={styles.bodyContent}>
+                      <Text style={styles.name}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "}</Text>
+                      <Text style={styles.info}>Mobile no: {" " + v.Phone}</Text>
+                      <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} has been assigned to Group number {" " + v.GroupNo}</Text>
 
-                  <TouchableOpacity style={styles.buttonContainer}>
-                    <Text>Opcion 1</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity style={styles.buttonContainer}>
-                    <Text>Opcion 2</Text>
-                  </TouchableOpacity>
+                      <TouchableOpacity style={styles.buttonContainer}>
+                        <Text>Opcion 1</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity style={styles.buttonContainer}>
+                        <Text>Opcion 2</Text>
+                      </TouchableOpacity>
+                    </View>
+                  </View>
                 </View>
-              </View>
+              }
             </View>
           )
         }

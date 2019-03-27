@@ -43,10 +43,10 @@ export default class MapScreen extends React.Component {
   state = {
     Cities: [],
     region: {
-      latitude: 25.286106,
-      longitude: 51.534817,
-      latitudeDelta: 0.04,
-      longitudeDelta: 0.04
+      latitude: 25.269539833,
+      longitude: 51.212769833,
+      latitudeDelta: 2,
+      longitudeDelta: 2
     }
   };
 
@@ -82,7 +82,7 @@ export default class MapScreen extends React.Component {
               (CityCoordinate = {
                 latitude: marker.Location._lat,
                 longitude: marker.Location._long,
-                place: marker.Name
+                place: marker.City
               }),
               console.log("MapView Cities: ", this.state.Cities),
               (
@@ -91,8 +91,8 @@ export default class MapScreen extends React.Component {
                     key={index}
                     coordinate={CityCoordinate}
                     onPress={() =>
-                      this.props.navigation.navigate("Settings", {
-                        place: marker.place
+                      this.props.navigation.navigate("CityStatusScreen", {
+                        place: marker.City
                       })
                     }
                   >

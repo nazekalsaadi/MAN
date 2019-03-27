@@ -29,10 +29,10 @@ export default class TrashScreen extends React.Component {
   state = {
     Trash: [],
     region: {
-      latitude: 25.3548,
-      longitude: 51.1839,
-      latitudeDelta: 0.09,
-      longitudeDelta: 0.09
+      latitude: 25.269539833,
+      longitude: 51.212769833,
+      latitudeDelta: 2,
+      longitudeDelta: 2
     }
   };
 
@@ -143,11 +143,11 @@ const styles = StyleSheet.create({
   calloutView: {
     flexDirection: "row",
     backgroundColor: "rgba(255, 255, 255, 0.9)",
-    borderRadius: 10,
-    width: "40%",
-    marginLeft: "30%",
-    marginRight: "30%",
-    marginTop: 20
+    borderRadius: 10
+    // width: "40%",
+    // marginLeft: "30%",
+    // marginRight: "30%",
+    // marginTop: 20
   },
   calloutSearch: {
     borderColor: "transparent",

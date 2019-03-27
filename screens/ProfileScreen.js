@@ -11,7 +11,8 @@ import {
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-
+import call from "react-native-phone-call";
+import Communications from "react-native-communications";
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
 import db from '../db.js'
@@ -44,7 +45,14 @@ export default class Profile extends React.Component {
         console.log("Current users: ", this.User.length)
       })
   }
-
+  call = phone => {
+    //handler to make a call
+    const args = {
+      number: phone,
+      prompt: false
+    };
+    call(args).catch(console.error);
+  };
   avatarURL = (UserName) => {
     return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
   }
@@ -68,11 +76,31 @@ export default class Profile extends React.Component {
                       <Text style={styles.info}>Mobile no: {" " + v.Phone}</Text>
                       <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} has been assigned to Group number {" " + v.GroupNo}</Text>
 
-                      <TouchableOpacity style={styles.buttonContainer}>
-                        <Text>Opcion 1</Text>
+                      <TouchableOpacity
+                        style={styles.buttonContainer}
+                        onPress={() => this.call(v.Phone)}
+                      >
+                        <Text>Contact {v.FirstName}</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={styles.buttonContainer}>
-                        <Text>Opcion 2</Text>
+                      <TouchableOpacity
+                        style={styles.buttonContainer}
+                        onPress={() =>
+                          Communications.email(
+                            [v.UserName],
+                            null,
+                            null,
+                            "My Subject",
+                            "Sent By: " + `${this.state.currentUser}`
+                          )
+                        }
+                      >
+                        <Text> Send Mail </Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={styles.buttonContainer}
+                        onPress={() => Communications.text(v.Phone)}
+                      >
+                        <Text>Send a text/iMessage</Text>
                       </TouchableOpacity>
                     </View>
                   </View>

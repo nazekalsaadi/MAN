@@ -29,6 +29,7 @@ export default class LoginScreen extends React.Component {
   state = {
     UserName: "",
     password: "",
+    First_Name: "",
 
     flag: false,
     backgroundImage: require('../assets/images/background.jpg')
@@ -59,7 +60,6 @@ export default class LoginScreen extends React.Component {
       if (this.state.UserName === "") {
         Alert.alert(
           'Error UnValid Username/Password', "Please Enter a Valid Username/Password",
-
           [
 
             { text: 'OK', onPress: () => console.log('OK Pressed') },
@@ -67,8 +67,8 @@ export default class LoginScreen extends React.Component {
           { cancelable: false },
         );
       }
-      else{
-        console.log("current ma5loo2",firebase.auth().currentUser.UserName)
+      else {
+        console.log("current ma5loo2", firebase.auth().currentUser.UserName)
       }
     } catch (error) {
       // Handle Errors here.
@@ -83,6 +83,12 @@ export default class LoginScreen extends React.Component {
   Register = () => {
     this.props.navigation.navigate('RegisterScreen')
   }
+  // Chat = () => {
+  //   this.props.navigation.navigate('Chat', {
+  //     First_Name: this.state.First_Name,
+  //     UserName: this.state.UserName
+  //   })
+  // }
   render() {
     const Email = this.state.UserName;
 

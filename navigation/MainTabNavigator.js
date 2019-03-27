@@ -13,13 +13,15 @@ import Table from '../screens/TableScreen';
 import UserList from '../screens/UserList';
 import CalendarScreen from '../screens/CalendarScreen';
 import ChatScreen from '../screens/ChatScreen';
-import ProfileScreen from '../screens/ProfilScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import Chat from '../screens/Chat';
 
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
 
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
+  Chat: Chat
 });
 
 const Loginstack = createStackNavigator({
@@ -35,6 +37,7 @@ Home.navigationOptions = {
     />
   ),
 };
+
 
 
 const UserStack = createStackNavigator({
@@ -108,7 +111,7 @@ SettingsStack.navigationOptions = {
 };
 
 const ChatStack = createStackNavigator({
-  ChatScreen: ChatScreen,
+  Chat: Chat,
 });
 
 ChatStack.navigationOptions = {
@@ -156,7 +159,7 @@ export default createBottomTabNavigator({
   // Liststack,
   // TableStack,
   // // Liststack,
-  ChatStack,
+
   CalendStack,
   ProfileStack
 },

@@ -34,6 +34,7 @@ export default class HomeScreen extends React.Component {
     { this.props.navigation.navigate('UserList') }
 
   }
+
   async componentDidMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
@@ -83,7 +84,12 @@ export default class HomeScreen extends React.Component {
             }
           </View>
 
-
+          <Button title="Navigate to Chat"
+            onPress={() => this.props.navigation.navigate('Chat', {
+              First_Name: this.state.First_Name,
+              UserName: this.state.UserName
+            })}
+          />
         </ScrollView>
 
       </View>

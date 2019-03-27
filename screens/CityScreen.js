@@ -1,10 +1,26 @@
-import React from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity, Dimensions } from 'react-native';
-import { createBottomTabNavigator, createAppContainer, createStackNavigator } from 'react-navigation';
-import { Ionicons, Octicons, Foundation, Entypo, Feather } from '@expo/vector-icons';
-import db from '../db';
-import MapView from 'react-native-maps';
-
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions
+} from "react-native";
+import {
+  createBottomTabNavigator,
+  createAppContainer,
+  createStackNavigator
+} from "react-navigation";
+import {
+  Ionicons,
+  Octicons,
+  Foundation,
+  Entypo,
+  Feather
+} from "@expo/vector-icons";
+import db from "../db";
+import MapView from "react-native-maps";
 
 const NODE1_LATITUDE = 25.3607; //cna
 const NODE1_LONGITUDE = 51.4811;
@@ -24,29 +40,29 @@ const NODE5_LONGITUDE = 51.4432;
 const { width, height } = Dimensions.get("window");
 
 export default class MapScreen extends React.Component {
-
   state = {
-    Cities:[]
+    Cities: [],
+    region: {
+      latitude: 25.286106,
+      longitude: 51.534817,
+      latitudeDelta: 0.04,
+      longitudeDelta: 0.04
+    }
+  };
+
+  componentDidMount() {
+    // go to db and get all the users
+    db.collection("Cities").onSnapshot(async querySnapshot => {
+      const Cities = [];
+      querySnapshot.forEach(doc => {
+        Cities.push({ id: doc.id, ...doc.data() });
+      });
+      await this.setState({ Cities });
+    });
   }
 
-   componentDidMount() {
-    // go to db and get all the users
-    db.collection("Cities") 
-      .onSnapshot(async querySnapshot => {
-        const Cities = []
-        querySnapshot.forEach(doc => {
-          Cities.push({ id: doc.id, ...doc.data() })
-        })
-        await this.setState({Cities})
-    
-
-      })
-    }
-
   render() {
-    listOfImages = [
-      require("../assets/images/marker.png"),
-    ];
+    listOfImages = [require("../assets/images/marker.png")];
     return (
       <View style={styles.container}>
         <MapView
@@ -58,341 +74,345 @@ export default class MapScreen extends React.Component {
           showsScale
           CustomMapStyle={myMapStyle}
 
-        //  style={{  width: width }} 
+          //  style={{  width: width }}
         >
-        
-          {
-          // console.log("MapView Cities: " , this.state.Cities) &&
-           this.state.Cities.map((marker, index) => {
+          {// console.log("MapView Cities: " , this.state.Cities) &&
+          this.state.Cities.map((marker, index) => {
             return (
-              CityCoordinate= {
+              (CityCoordinate = {
                 latitude: marker.Location._lat,
                 longitude: marker.Location._long,
                 place: marker.Name
-              },
-              console.log("MapView Cities: " , this.state.Cities),
-              <TouchableOpacity key={index}>
-                <MapView.Marker
-                  key={index}
-                  coordinate={CityCoordinate}
-                  onPress={() => this.props.navigation.navigate('Settings', { place: marker.place })}>
-                  <Image source={listOfImages[index]} style={{
-                    width: (5 * width) / 100,
-                    height: (5 * height) / 100
-                  }} />
-
-                </MapView.Marker>
-              </TouchableOpacity>
+              }),
+              console.log("MapView Cities: ", this.state.Cities),
+              (
+                <TouchableOpacity key={index}>
+                  <MapView.Marker
+                    key={index}
+                    coordinate={CityCoordinate}
+                    onPress={() =>
+                      this.props.navigation.navigate("Settings", {
+                        place: marker.place
+                      })
+                    }
+                  >
+                    <Image
+                      source={listOfImages[0]}
+                      style={{
+                        width: (5 * width) / 100,
+                        height: (5 * height) / 100
+                      }}
+                    />
+                  </MapView.Marker>
+                </TouchableOpacity>
+              )
             );
           })}
         </MapView>
       </View>
-    )
+    );
   }
 }
 
-const styles = StyleSheet.create(
-  {
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-
-    }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center"
   }
-)
+});
 const myMapStyle = [
   {
-    "elementType": "geometry",
-    "stylers": [
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#ebe3cd"
+        color: "#ebe3cd"
       }
     ]
   },
   {
-    "elementType": "labels.text.fill",
-    "stylers": [
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#523735"
+        color: "#523735"
       }
     ]
   },
   {
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    elementType: "labels.text.stroke",
+    stylers: [
       {
-        "color": "#f5f1e6"
+        color: "#f5f1e6"
       }
     ]
   },
   {
-    "featureType": "administrative",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "administrative",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#c9b2a6"
+        color: "#c9b2a6"
       }
     ]
   },
   {
-    "featureType": "administrative.land_parcel",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "administrative.land_parcel",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#dcd2be"
+        color: "#dcd2be"
       }
     ]
   },
   {
-    "featureType": "administrative.land_parcel",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "administrative.land_parcel",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#ae9e90"
+        color: "#ae9e90"
       }
     ]
   },
   {
-    "featureType": "landscape.natural",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "landscape.natural",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#dfd2ae"
+        color: "#dfd2ae"
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "poi",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#dfd2ae"
+        color: "#dfd2ae"
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "poi",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "visibility": "on"
+        visibility: "on"
       }
     ]
   },
   {
-    "featureType": "poi",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "poi",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#93817c"
+        color: "#93817c"
       }
     ]
   },
   {
-    "featureType": "poi.park",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "poi.park",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "color": "#a5b076"
+        color: "#a5b076"
       }
     ]
   },
   {
-    "featureType": "poi.park",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "poi.park",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#447530"
+        color: "#447530"
       }
     ]
   },
   {
-    "featureType": "poi.place_of_worship",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "poi.place_of_worship",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "visibility": "on"
+        visibility: "on"
       }
     ]
   },
   {
-    "featureType": "road",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "road",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#f5f1e6"
+        color: "#f5f1e6"
       },
       {
-        "visibility": "simplified"
+        visibility: "simplified"
       }
     ]
   },
   {
-    "featureType": "road.arterial",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "road.arterial",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#fdfcf8"
+        color: "#fdfcf8"
       }
     ]
   },
   {
-    "featureType": "road.arterial",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "road.arterial",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "color": "#709bdc"
+        color: "#709bdc"
       },
       {
-        "visibility": "on"
+        visibility: "on"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#f8c967"
+        color: "#f8c967"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "visibility": "on"
+        visibility: "on"
       }
     ]
   },
   {
-    "featureType": "road.highway",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "road.highway",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#e9bc62"
+        color: "#e9bc62"
       },
       {
-        "visibility": "on"
+        visibility: "on"
       }
     ]
   },
   {
-    "featureType": "road.highway.controlled_access",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "road.highway.controlled_access",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#e98d58"
+        color: "#e98d58"
       }
     ]
   },
   {
-    "featureType": "road.highway.controlled_access",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "road.highway.controlled_access",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#db8555"
+        color: "#db8555"
       }
     ]
   },
   {
-    "featureType": "road.local",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "road.local",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "visibility": "on"
+        visibility: "on"
       }
     ]
   },
   {
-    "featureType": "road.local",
-    "elementType": "geometry.stroke",
-    "stylers": [
+    featureType: "road.local",
+    elementType: "geometry.stroke",
+    stylers: [
       {
-        "color": "#0d310e"
+        color: "#0d310e"
       }
     ]
   },
   {
-    "featureType": "road.local",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "road.local",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#3d0a01"
+        color: "#3d0a01"
       }
     ]
   },
   {
-    "featureType": "road.local",
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    featureType: "road.local",
+    elementType: "labels.text.stroke",
+    stylers: [
       {
-        "visibility": "on"
+        visibility: "on"
       }
     ]
   },
   {
-    "featureType": "transit",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "transit",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "visibility": "off"
+        visibility: "off"
       }
     ]
   },
   {
-    "featureType": "transit.line",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "transit.line",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#dfd2ae"
+        color: "#dfd2ae"
       }
     ]
   },
   {
-    "featureType": "transit.line",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "transit.line",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#8f7d77"
+        color: "#8f7d77"
       }
     ]
   },
   {
-    "featureType": "transit.line",
-    "elementType": "labels.text.stroke",
-    "stylers": [
+    featureType: "transit.line",
+    elementType: "labels.text.stroke",
+    stylers: [
       {
-        "color": "#ebe3cd"
+        color: "#ebe3cd"
       }
     ]
   },
   {
-    "featureType": "transit.station",
-    "elementType": "geometry",
-    "stylers": [
+    featureType: "transit.station",
+    elementType: "geometry",
+    stylers: [
       {
-        "color": "#dfd2ae"
+        color: "#dfd2ae"
       }
     ]
   },
   {
-    "featureType": "water",
-    "elementType": "geometry.fill",
-    "stylers": [
+    featureType: "water",
+    elementType: "geometry.fill",
+    stylers: [
       {
-        "color": "#b9d3c2"
+        color: "#b9d3c2"
       }
     ]
   },
   {
-    "featureType": "water",
-    "elementType": "labels.text.fill",
-    "stylers": [
+    featureType: "water",
+    elementType: "labels.text.fill",
+    stylers: [
       {
-        "color": "#92998d"
+        color: "#92998d"
       }
     ]
   }
-]
+];

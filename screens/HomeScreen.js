@@ -85,10 +85,7 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <Button title="Navigate to Chat"
-            onPress={() => this.props.navigation.navigate('Chat', {
-              First_Name: this.state.First_Name,
-              UserName: this.state.UserName
-            })}
+            onPress={() => this.props.navigation.navigate('ChatList')}
           />
         </ScrollView>
 

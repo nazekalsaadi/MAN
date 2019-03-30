@@ -73,8 +73,6 @@ export default class Chat extends React.Component {
     };
     keyExtractor = (item, index) => index
     handleChat = ({ item }) => {
-        console.log(item.Title);
-
         for (i = 0; i < item.Users.length; i++) {
             console.log("the Users in chat are ", item.Users[i])
             if (item.Users[i] === firebase.auth().currentUser.email) {

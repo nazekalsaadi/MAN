@@ -41,13 +41,14 @@ export default class ChatList extends React.Component {
   };
   state = {
     email: "",
-    text: "",
+    Text: "",
     messages: [],
     MeTitle: "",
     Sender_id: "",
     Receiver_id: "",
     MainUser: "",
     OtherUser: "",
+    Time: Date
   };
   user = "";
 
@@ -59,7 +60,7 @@ export default class ChatList extends React.Component {
     const Title = navigation.getParam("Title");
     console.log("id : ", id);
     console.log("Users Boss : ", User1);
-
+    console.log("Other Boss : ", User2);
     console.log("title : ", Title);
     this.setState({ MeTitle: Title, MainUser: User1, OtherUser: User2 })
 
@@ -78,36 +79,25 @@ export default class ChatList extends React.Component {
         console.log("Current messages: ", this.state.messages);
 
       });
-
-
   }
 
   keyExtractor = (item, index) => index;
 
-
   handleChat = ({ item }) => {
     const content = String(item.Text);
     console.log("the content : ", content);
-    const first = String(item.Text).substring(0, 4);
-    console.log("first is : ", first);
+  }
 
-    if (item.Sender_Id == User1) {
-      return (
-        <View>
-          {/* <ListItem
-            rightAvatar={{
-              source: {
-                uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(User1)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5`,
-                activeOpacity: 0.9
-              }
+  handleSend = () => {
+    // await db.collection('User/nazek@nazek.com/Shifts').doc().set({
+    db.collection(`Chat`).doc().collection("Messages").doc().set({
+      Text: this.state.Text,
+      Sender_id: this.state.currentUser,
+      Time: this.state.Time
+      // Start_Date: this.state.Users.Shifts.Start_Date,
+      // End_Date: this.state.Users.Shifts.End_Date
+    })
 
-            }}
-
-          /> */}
-          <Text> SHTA'3AL</Text>
-        </View>
-      );
-    }
   }
 
   render() {
@@ -122,15 +112,47 @@ export default class ChatList extends React.Component {
           <View key={m.id}>
 
             {m.Sender_id == this.state.MainUser &&
-              <Text style={{ backgroundColor: "blue" }}>{m.Text}</Text>
-              &&
-              <Text >{" "}</Text>
-            }
-            {m.Sender_id == this.state.OtherUser &&
-              <Text style={{ backgroundColor: "grey" }}>{m.Text}</Text>
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+
+              }}>
+                <Text style={{ backgroundColor: "lightblue", color: "white" }}>{m.Text}</Text>
+              </View>
+              ||
+              <View style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+              }}>
+                {m.Sender_id == this.state.OtherUser &&
+                  <Text style={{ backgroundColor: "lightgrey", color: "black" }}>{m.Text}</Text>
+                }</View>
             }
           </View>
         ))}
+        <Text style={styles.title}>
+          {this.state.title}
+        </Text>
+        <FlatList
+          data={this.state.messages}
+          renderItem={this.handleChat}
+        // inverted
+        />
+        <KeyboardAvoidingView behavior="padding">
+          <View style={styles.footer}>
+            <TextInput
+              value={this.state.Text}
+              style={styles.input}
+              underlineColorAndroid="transparent"
+              placeholder="Write Message Here"
+              onChangeText={Text => this.setState({ Text: this.state.Text })}
+            />
+
+            <TouchableOpacity onPress={this.handleSend}>
+              <Text style={styles.send}>Send</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
       </View>
 
     );

@@ -68,7 +68,7 @@ export default class LoginScreen extends React.Component {
         );
       }
       else {
-        console.log("current ma5loo2", firebase.auth().currentUser.UserName)
+        console.log("current user is", firebase.auth().currentUser.UserName)
       }
     } catch (error) {
       // Handle Errors here.

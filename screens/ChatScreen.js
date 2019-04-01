@@ -43,6 +43,7 @@ export default class ChatList extends React.Component {
     email: "",
     Text: "",
     messages: [],
+    message: "",
     MeTitle: "",
     Sender_id: "",
     Receiver_id: "",
@@ -88,20 +89,17 @@ export default class ChatList extends React.Component {
     console.log("the content : ", content);
   }
 
-  handleSend = () => {
-    // await db.collection('User/nazek@nazek.com/Shifts').doc().set({
-    db.collection(`Chat`).doc().collection("Messages").doc().set({
-      Text: this.state.Text,
-      Sender_id: this.state.currentUser,
-      Time: this.state.Time
-      // Start_Date: this.state.Users.Shifts.Start_Date,
-      // End_Date: this.state.Users.Shifts.End_Date
-    })
+  handleSend = async () => {
+    const { navigation } = this.props;
+    const id = navigation.getParam('data');
 
+    const addMessage = firebase.functions().httpsCallable('addMessage')
+    const result = await addMessage({ message: this.state.Text, id: id })
+    this.setState({ Text: "" })
   }
 
   render() {
-    console.log("the chatttttt: ", this.state.chat)
+    console.log("the chatttttt: ", this.state.Text)
     return (
       <View style={styles.container}>
         <View style={styles.header}>
@@ -145,7 +143,7 @@ export default class ChatList extends React.Component {
               style={styles.input}
               underlineColorAndroid="transparent"
               placeholder="Write Message Here"
-              onChangeText={Text => this.setState({ Text: this.state.Text })}
+              onChangeText={Text => this.setState({ Text })}
             />
 
             <TouchableOpacity onPress={this.handleSend}>

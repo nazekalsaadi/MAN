@@ -115,8 +115,8 @@ export default class TrashScreen extends React.Component {
                     {console.log(`../assets/images/${marker.Status}.png`)}
                     <MapView.Callout>
                       <View>
-                        <Text style={styles.calloutView}>
-                          Status : {marker.Status}
+                        <Text style={styles.calloutSearch}>
+                          Level : {marker.Level}%
                         </Text>
 
                         {/* <TextInput
@@ -142,15 +142,15 @@ const styles = StyleSheet.create({
   },
   calloutView: {
     flexDirection: "row",
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
-    borderRadius: 10
-    // width: "40%",
+    // backgroundColor: "rgba(255, 255, 255, 0.9)",
+    // borderRadius: 10,
+    width: "60%"
     // marginLeft: "30%",
     // marginRight: "30%",
     // marginTop: 20
   },
   calloutSearch: {
-    borderColor: "transparent",
+    // borderColor: "transparent",
     marginLeft: 10,
     width: "90%",
     marginRight: 10,

@@ -1,6 +1,14 @@
 import React from "react";
 import { ExpoConfigView } from "@expo/samples";
-import FlatList from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  FlatList
+} from "react-native";
 import db from "../db";
 
 export default class CityStatusScreen extends React.Component {
@@ -16,6 +24,7 @@ export default class CityStatusScreen extends React.Component {
   componentDidMount() {
     const { navigation } = this.props;
     const place = navigation.getParam("place");
+    console.log("Place = ", place);
     // go to db and get all the Trashes
     db.collection("Trash")
       .where("City", "==", place)
@@ -28,24 +37,23 @@ export default class CityStatusScreen extends React.Component {
       });
 
     // go to db and get all the Users
-    db.collection("Users").onSnapshot(async querySnapshot => {
+    /*   db.collection("Users").onSnapshot(async querySnapshot => {
       const Users = [];
       querySnapshot.forEach(doc => {
         Users.push({ id: doc.id, ...doc.data() });
       });
       await this.setState({ Users });
-    });
+    });*/
   }
 
   render() {
-    <FlatList
-      style={{ height: 300 }}
-      data={this.state.Trash}
-      keyExtractor={(x, i) => x.email}
-      renderItem={({ item, i }) =>
-        this.handleItems(item, Math.floor(Math.random() * 100), "male")
-      }
-    />;
-    return <ExpoConfigView />;
+    return (
+      <View>
+        <FlatList
+          data={this.state.Trash}
+          renderItem={({ item }) => <Text>{item.City}</Text>}
+        />
+      </View>
+    );
   }
 }

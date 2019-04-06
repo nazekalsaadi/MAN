@@ -22,20 +22,6 @@ import {
 import db from "../db";
 import MapView from "react-native-maps";
 
-const NODE1_LATITUDE = 25.3607; //cna
-const NODE1_LONGITUDE = 51.4811;
-
-const NODE2_LATITUDE = 25.314; // education city
-const NODE2_LONGITUDE = 51.4416;
-
-const NODE3_LATITUDE = 25.2606; // Hamad airport
-const NODE3_LONGITUDE = 51.6138;
-
-const NODE4_LATITUDE = 25.3193; // Tornado tawer
-const NODE4_LONGITUDE = 51.528;
-
-const NODE5_LATITUDE = 25.2604; // Villaggio mall
-const NODE5_LONGITUDE = 51.4432;
 
 const { width, height } = Dimensions.get("window");
 
@@ -87,6 +73,7 @@ export default class MapScreen extends React.Component {
               (
                 <TouchableOpacity key={index}>
                   <MapView.Marker
+                  
                     key={index}
                     coordinate={CityCoordinate}
                     onPress={() =>

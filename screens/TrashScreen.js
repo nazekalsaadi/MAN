@@ -77,6 +77,7 @@ export default class TrashScreen extends React.Component {
               (
                 <TouchableOpacity onPress={console.log("hi")} key={index}>
                   <MapView.Marker
+                  tracksViewChanges = {false}
                     key={index}
                     coordinate={CityCoordinate}
                     onPress={() =>

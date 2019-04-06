@@ -11,13 +11,18 @@ import {
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-
+import Communications from 'react-native-communications';
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
 import db from '../db.js'
 export default class Profile extends React.Component {
   static navigationOptions = {
-    title: 'Profile',
+    title: 'My Profile',
+    headerStyle: {
+      backgroundColor: '#330000',
+    },
+    headerTintColor: '#fff',
+
   };
 
   state = {
@@ -44,6 +49,14 @@ export default class Profile extends React.Component {
         console.log("Current users: ", this.User.length)
       })
   }
+  call = (phone) => {
+    //handler to make a call
+    const args = {
+      number: phone,
+      prompt: false,
+    };
+    call(args).catch(console.error);
+  };
 
   avatarURL = (UserName) => {
     return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
@@ -64,15 +77,16 @@ export default class Profile extends React.Component {
                   </View>
                   <View style={styles.body}>
                     <View style={styles.bodyContent}>
-                      <Text style={styles.name}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "}</Text>
-                      <Text style={styles.info}>Mobile no: {" " + v.Phone}</Text>
-                      <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} has been assigned to Group number {" " + v.GroupNo}</Text>
+                      <Text style={styles.name}>{v.FirstName + " "}{v.LastName + " "}</Text>
+                      <Text style={styles.name2}>{v.Role + " "}</Text>
+                      <Text style={styles.description}> GroupNo is {" " + v.GroupNo}</Text>
 
-                      <TouchableOpacity style={styles.buttonContainer}>
-                        <Text>Opcion 1</Text>
+                      <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
+                        <Text>Contact {v.FirstName}</Text>
                       </TouchableOpacity>
-                      <TouchableOpacity style={styles.buttonContainer}>
-                        <Text>Opcion 2</Text>
+                      <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
+                        <Text>Send a text/iMessage</Text>
+
                       </TouchableOpacity>
                     </View>
                   </View>
@@ -122,7 +136,7 @@ export default class Profile extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#00BFFF",
+    backgroundColor: "#ffffff",
     height: 200,
   },
   avatar: {
@@ -138,7 +152,12 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 22,
-    color: "#FFFFFF",
+    color: "#330000",
+    fontWeight: '600',
+  },
+  name2: {
+    fontSize: 22,
+    color: "#330000",
     fontWeight: '600',
   },
   body: {

@@ -26,12 +26,13 @@ import moment, { now } from 'moment';
 import CalendarPicker from 'react-native-calendar-picker';
 import Moment from 'react-moment';
 
-
-
-
 export default class CalendarScreen extends React.Component {
   static navigationOptions = {
     title: 'Calendar ',
+    headerStyle: {
+      backgroundColor: '#330000',
+    },
+    headerTintColor: '#fff',
 
   };
 
@@ -204,11 +205,11 @@ export default class CalendarScreen extends React.Component {
 
 
                   <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>
-                 
 
-                    
+
+
                 </ScrollView> : null
-             
+
               }
               {moment(startDate).format("DD MMM YYYY") === (moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")) &&
 
@@ -218,7 +219,7 @@ export default class CalendarScreen extends React.Component {
                   {(todayDate) > moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY") ?
                     <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event Ended Since {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")}</Text>
                     :
-                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event wil End in  {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event will End in  {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
                   }
 
                   <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>

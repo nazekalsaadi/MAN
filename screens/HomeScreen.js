@@ -11,15 +11,32 @@ import {
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
+import NotificationScreen from '../screens/NotificationScreen';
 
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
 import db from '../db.js'
-
+import {
+  Ionicons,
+  Octicons,
+  Foundation,
+  Entypo,
+  Feather
+} from "@expo/vector-icons";
+import { Header, Icon } from "react-native-elements";
 // const { width, height } = Dimensions.get("window");
 export default class HomeScreen extends React.Component {
+
   static navigationOptions = {
     title: 'Home',
+    headerStyle: {
+      backgroundColor: '#330000',
+    },
+    headerTintColor: '#fff',
+    headerRight: (
+      <Ionicons name="ios-notifications" size={30} color="#fff" backgroundColor="#fff" onPress={() => this.props.navigation.navigate('NotificationScreen')} />
+    ),
+
   };
 
   state = {
@@ -34,6 +51,12 @@ export default class HomeScreen extends React.Component {
     { this.props.navigation.navigate('UserList') }
 
   }
+
+  Notify = async () => {
+    { this.props.navigation.navigate('NotificationScreen') }
+  }
+
+
   async componentDidMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
@@ -57,8 +80,12 @@ export default class HomeScreen extends React.Component {
     // const currentUser = localStorage.setItem("user", this.state.UserName);
 
     return (
-      <View style={styles.container}>
 
+      <View style={styles.container}>
+        {/* <Header
+          placement="left"
+          rightComponent={<Ionicons name="ios-notifications" size={30} color="#fff" backgroundColor="#fff" onPress={() => this.props.navigation.navigate('NotificationScreen')} />}
+        /> */}
         <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
           <View style={styles.welcomeContainer}>
             <Image
@@ -71,6 +98,8 @@ export default class HomeScreen extends React.Component {
           </View>
 
           <View style={styles.getStartedContainer}>
+            <Button title="Notification"
+              type="outline" onPress={this.Notify} color="#330000" />
 
             {this.state.currentUser === "admin@admin.com" &&
               <View>
@@ -79,10 +108,12 @@ export default class HomeScreen extends React.Component {
 
                 <Button title="All Users"
                   type="outline" onPress={this.UserList} color="#330000" />
+
+
+
               </View>
             }
           </View>
-
 
         </ScrollView>
 
@@ -90,7 +121,6 @@ export default class HomeScreen extends React.Component {
 
     );
   }
-
   _maybeRenderDevelopmentModeWarning() {
     if (__DEV__) {
       const learnMoreButton = (

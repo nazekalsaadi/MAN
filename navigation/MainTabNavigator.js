@@ -13,13 +13,16 @@ import Table from '../screens/TableScreen';
 import UserList from '../screens/UserList';
 import CalendarScreen from '../screens/CalendarScreen';
 import ChatScreen from '../screens/ChatScreen';
-import ProfileScreen from '../screens/ProfilScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
 
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
+  UserList: UserList,
+  NotificationScreen: NotificationScreen
 });
 
 const Loginstack = createStackNavigator({
@@ -36,7 +39,19 @@ Home.navigationOptions = {
   ),
 };
 
+// const NotificationStack = createStackNavigator({
+//   NotificationScreen: NotificationScreen
+// });
 
+// NotificationStack.navigationOptions = {
+//   tabBarLabel: 'NotificationScreen',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === 'ios' ? 'ios-people' : 'md-people'}
+//     />
+//   ),
+// };
 const UserStack = createStackNavigator({
   User: UserList,
 });
@@ -151,7 +166,7 @@ TableStack.navigationOptions = {
 export default createBottomTabNavigator({
   Home,
   Mapstack,
-  UserStack,
+  // UserStack,
   // SettingsStack,
   // Liststack,
   // TableStack,

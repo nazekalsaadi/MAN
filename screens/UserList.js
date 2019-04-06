@@ -15,12 +15,14 @@ export default class UserList extends React.Component {
     FirstName: "",
     LastName: "",
     GroupNo: "",
-    user: []
+    user: [],
+    currentUser: ""
 
   }
   User = []
 
   componentDidMount() {
+    this.setState({ currentUser: firebase.auth().currentUser.email })
     // go to db and get all the users
     db.collection("User")
       .onSnapshot(querySnapshot => {
@@ -47,12 +49,18 @@ export default class UserList extends React.Component {
 
   render() {
     return (
+
       <ScrollView style={styles.container}>
+
         {/* <View style={styles.header}><Text  style={styles.header}> Users </Text></View> */}
+
         {
+
           this.state.user.map(v =>
+
             <View key={v.id}>
 
+              {/* <View style={{ height: 200, backgroundColor: v.Role == "employee " ? "#ffb200" : "pink" }}> */}
               <View style={styles.header}>
                 <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
 
@@ -60,9 +68,9 @@ export default class UserList extends React.Component {
 
               <View style={styles.body}>
                 <View style={styles.bodyContent}>
-                  <Text style={styles.name}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "}</Text>
-                  <Text style={styles.info}>Mobile no: {" " + v.Phone}</Text>
-                  <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} has been assigned to Group number {" " + v.GroupNo}</Text>
+                  <Text style={styles.name}>{v.FirstName + " "}{v.LastName + " "}</Text>
+                  <Text style={styles.name2}>{v.Role + " "}</Text>
+                  <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} Has Been Assigned To Group Number {" " + v.GroupNo}</Text>
 
                   <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
 
@@ -123,7 +131,7 @@ export default class UserList extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#00BFFF",
+    backgroundColor: "#a82538",
     height: 200,
   },
   avatar: {
@@ -139,7 +147,12 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 22,
-    color: "#FFFFFF",
+    color: "#330000",
+    fontWeight: '600',
+  },
+  name2: {
+    fontSize: 22,
+    color: "#330000",
     fontWeight: '600',
   },
   body: {
@@ -164,7 +177,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#696969",
     marginTop: 10,
-    textAlign: 'center'
+    textAlign: 'center',
+    fontWeight: '600'
   },
   buttonContainer: {
     marginTop: 10,

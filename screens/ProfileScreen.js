@@ -32,7 +32,8 @@ export default class Profile extends React.Component {
     LastName: "",
     GroupNo: "",
     user: [],
-    currentUser: ""
+    currentUser: "",
+    Trash: []
 
   }
   User = []
@@ -48,6 +49,14 @@ export default class Profile extends React.Component {
         this.setState({ user })
         console.log("Current users: ", this.User.length)
       })
+
+    db.collection("Trash").onSnapshot(async querySnapshot => {
+      const Trash = [];
+      querySnapshot.forEach(doc => {
+        Trash.push({ id: doc.id, ...doc.data() });
+      });
+      this.setState({ Trash });
+    });
   }
   call = (phone) => {
     //handler to make a call
@@ -69,7 +78,8 @@ export default class Profile extends React.Component {
         {
           this.state.user.map(v =>
             <View key={v.id}>
-              {this.state.currentUser === v.UserName &&
+              {this.state.currentUser != "admin@admin.com" ?
+                this.state.currentUser === v.UserName &&
                 <View>
                   <View style={styles.header}>
                     <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
@@ -90,8 +100,34 @@ export default class Profile extends React.Component {
                       </TouchableOpacity>
                     </View>
                   </View>
+
+
                 </View>
+                :
+
+                <View key={v.id}>
+
+                  <View>
+
+
+                    <View style={styles.body} >
+                      {this.state.Trash.map(t => t.Status == "Full" &&
+                        <View style={styles.bodyContent}>
+                          <Text style={styles.name}> {t.City}</Text>
+
+
+
+                        </View>
+
+                      )}
+                    </View>
+
+                  </View>
+
+                </View>
+
               }
+
             </View>
           )
         }

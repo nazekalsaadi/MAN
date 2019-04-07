@@ -37,7 +37,7 @@ export default class TrashScreen extends React.Component {
   };
 
   componentDidMount() {
-    // go to db and get all the users
+    // go to db and get all the trashes
 
     db.collection("Trash").onSnapshot(async querySnapshot => {
       const Trash = [];
@@ -65,7 +65,7 @@ export default class TrashScreen extends React.Component {
           showsScale
           CustomMapStyle={myMapStyle}
 
-          //  style={{  width: width }}
+        //  style={{  width: width }}
         >
           {this.state.Trash.map((marker, index) => {
             return (
@@ -102,16 +102,16 @@ export default class TrashScreen extends React.Component {
                         }}
                       />
                     ) : (
-                      marker.Status === "Partial" && (
-                        <Image
-                          source={listOfImages[2]}
-                          style={{
-                            width: (5 * width) / 100,
-                            height: (5 * height) / 100
-                          }}
-                        />
-                      )
-                    )}
+                          marker.Status === "Partial" && (
+                            <Image
+                              source={listOfImages[2]}
+                              style={{
+                                width: (5 * width) / 100,
+                                height: (5 * height) / 100
+                              }}
+                            />
+                          )
+                        )}
                     {console.log(`../assets/images/${marker.Status}.png`)}
                     <MapView.Callout>
                       <View>

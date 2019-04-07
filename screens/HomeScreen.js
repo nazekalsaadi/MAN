@@ -41,7 +41,8 @@ export default class HomeScreen extends React.Component {
 
   state = {
     UserName: "",
-    currentUser: ""
+    currentUser: "",
+    count: 4
   }
   Register = async () => {
     { this.props.navigation.navigate('RegisterScreen') }
@@ -99,7 +100,9 @@ export default class HomeScreen extends React.Component {
 
           <View style={styles.getStartedContainer}>
             <Button title="Notification"
-              type="outline" onPress={this.Notify} color="#330000" />
+              type="outline" onPress={this.Notify} color="#330000">
+              {this.state.count}
+            </Button>
 
             {this.state.currentUser === "admin@admin.com" &&
               <View>

@@ -18,7 +18,6 @@ import NotificationScreen from '../screens/NotificationScreen';
 
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
-
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,

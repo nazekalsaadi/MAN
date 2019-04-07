@@ -6,10 +6,12 @@ import {
   View,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   Dimensions,
   FlatList
 } from "react-native";
 import db from "../db";
+import { Card } from "react-native-elements";
 
 export default class CityStatusScreen extends React.Component {
   static navigationOptions = {
@@ -90,14 +92,17 @@ export default class CityStatusScreen extends React.Component {
         <Text> Trash List </Text>
         <FlatList
           data={this.state.Trash}
-          renderItem={({ item }) => <Text>{item.City} |  {item.Level}% |  {item.Status}</Text>}
+          renderItem={({ item }) => <Text>{item.City} has a trash with level |  {item.Level}% |  {item.Status}</Text>}
         />
+        <Card >
+          <Text style={{ textAlign: "center" }}> Users List </Text>
 
-        <Text> Users List </Text>
-        <FlatList
-          data={this.state.Users}
-          renderItem={({ item }) => <Text>Name : {item.FirstName} {item.LastName}  |  Role : {item.Role}</Text>}
-        />
+          <FlatList
+            data={this.state.Users}
+            renderItem={({ item }) => <Text style={{ textAlign: "center" }}>Name : {item.FirstName} {item.LastName}  |  Role : {item.Role}</Text>}
+          />
+        </Card>
+
       </View>
     );
   }

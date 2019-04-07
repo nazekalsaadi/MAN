@@ -2,7 +2,7 @@ import * as functions from 'firebase-functions';
 import * as admin from "firebase-admin";
 // Start writing Firebase Functions
 // https://firebase.google.com/docs/functions/typescript
-
+admin.initializeApp(functions.config().firebase)
 export const helloWorld = functions.https.onRequest((request, response) => {
     response.send("Hello from Firebase!");
 });
@@ -18,6 +18,7 @@ export const addMessage = functions.https.onCall((data, context) => {
 
 
 })
+
 export const trashLevel = functions.https.onRequest(async (req, res) => {
 
     const querySnapshot = await admin.firestore().collection("Trash").get()
@@ -55,28 +56,28 @@ export const trashLevel = functions.https.onRequest(async (req, res) => {
     res.status(200).send();
 })
 
-export const TrashLocation = functions.https.onRequest(async (req, res) => {
+// export const TrashLocation = functions.https.onRequest(async (req, res) => {
 
-    const querySnapshot = await admin.firestore().collection("Trash").get()
+//     const querySnapshot = await admin.firestore().collection("Trash").get()
 
-    // level from 0 to 100
-    querySnapshot.forEach(async doc => {
-        const Location = doc.data().Location + Math.random() - 0.5
-        await admin.firestore().collection("Trash").doc(doc.id).update({ Location })
-    })
-
-
-
-    // simulate random location:
-    // - get starting location: lat, long
-    // - add or subtract a random amount. e.g. lat + Math.random() - .5
-    // might get an impossible situation, must check for this
+//     // level from 0 to 100
+//     querySnapshot.forEach(async doc => {
+//         const Location = doc.data().Location + Math.random() - 0.5
+//         await admin.firestore().collection("Trash").doc(doc.id).update({ Location })
+//     })
 
 
 
+//     // simulate random location:
+//     // - get starting location: lat, long
+//     // - add or subtract a random amount. e.g. lat + Math.random() - .5
+//     // might get an impossible situation, must check for this
 
-    res.status(200).send();
-})
+
+
+
+//     res.status(200).send();
+// })
 
 export const TruckTracking = functions.https.onRequest(async (req, res) => {
 
@@ -84,10 +85,10 @@ export const TruckTracking = functions.https.onRequest(async (req, res) => {
 
     // level from 0 to 100
     querySnapshot.forEach(async doc => {
-        const Latitude = doc.data().Latitude + Math.random() - 0.5
+        let Latitude = doc.data().Latitude + Math.random() - 0.5
         await admin.firestore().collection("Truck").doc(doc.id).update({ Latitude })
-        const Longtitude = doc.data().Longtitude + Math.random() - 0.5
-        await admin.firestore().collection("Truck").doc(doc.id).update({ Longtitude })
+        let longitude = doc.data().longitude + Math.random() - 0.5
+        await admin.firestore().collection("Truck").doc(doc.id).update({ longitude })
     })
 
 

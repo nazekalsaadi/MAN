@@ -19,9 +19,9 @@ export default class Profile extends React.Component {
   static navigationOptions = {
     title: 'My Profile',
     headerStyle: {
-      backgroundColor: '#330000',
+      backgroundColor: '#e6e6e6',
     },
-    headerTintColor: '#fff',
+    headerTintColor: '#000000',
 
   };
 
@@ -70,27 +70,29 @@ export default class Profile extends React.Component {
           this.state.user.map(v =>
             <View key={v.id}>
               {this.state.currentUser === v.UserName &&
-                <View>
-                  <View style={styles.header}>
-                    <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
+                
+                  <View>
+                    <View style={styles.header}>
+                      <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
 
-                  </View>
-                  <View style={styles.body}>
-                    <View style={styles.bodyContent}>
-                      <Text style={styles.name}>{v.FirstName + " "}{v.LastName + " "}</Text>
-                      <Text style={styles.name2}>{v.Role + " "}</Text>
-                      <Text style={styles.description}> GroupNo is {" " + v.GroupNo}</Text>
+                    </View>
+                    <View style={styles.body}>
+                      <View style={styles.bodyContent}>
+                        <Text style={styles.name}>{v.FirstName + " "}{v.LastName + " "}</Text>
+                        <Text style={styles.name2}>{v.Role + " "}</Text>
+                        <Text style={styles.description}> GroupNo is {" " + v.GroupNo}</Text>
 
-                      <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
-                        <Text>Contact {v.FirstName}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
-                        <Text>Send a text/iMessage</Text>
+                        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
+                          <Text>Contact {v.FirstName}</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
+                          <Text>Send a text/iMessage</Text>
 
-                      </TouchableOpacity>
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
-                </View>
+                
               }
             </View>
           )
@@ -136,7 +138,7 @@ export default class Profile extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#25a868",
     height: 200,
   },
   avatar: {

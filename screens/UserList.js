@@ -131,7 +131,7 @@ export default class UserList extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#a82538",
+    backgroundColor: "#25a868",
     height: 200,
   },
   avatar: {

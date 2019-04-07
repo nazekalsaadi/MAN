@@ -21,7 +21,8 @@ const Home = createStackNavigator({
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
-  NotificationScreen: NotificationScreen
+  NotificationScreen: NotificationScreen,
+ 
 });
 
 const Loginstack = createStackNavigator({
@@ -177,12 +178,12 @@ export default createBottomTabNavigator({
   {
     tabBarOptions: {
       style: {
-        backgroundColor: '#330000',//color you want to change
+        backgroundColor: '#e6e6e6',//color you want to change
 
-      },
+      },pressColor:"#ff6600",
 
-      activeTintColor: "white",
-      inactiveTintColor: "white",
+      activeTintColor: "#ff6600",
+      inactiveTintColor: "#ff6600",
       labelStyle: {
         fontWeight: "bold"
       }

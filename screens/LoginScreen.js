@@ -31,7 +31,7 @@ export default class LoginScreen extends React.Component {
     password: "",
 
     flag: false,
-    backgroundImage: require('../assets/images/background.jpg')
+    backgroundImage: require('../assets/images/background2.jpg')
   }
 
 
@@ -88,24 +88,20 @@ export default class LoginScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-        {/* <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
-        </ImageBackground> */}
+      <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}> 
+       
         {/* <View style={styles.contentContainer}> */}
         {this.state.flag === false ? (
           <View style={styles.welcomeContainer} >
-            {/* <Image
-            source={
-              require('../assets/images/logo.jpg')
-            }
-            style={styles.welcomeImage}
-          /> */}
+           
             <Image
               source={
-                require('../assets/images/logo.jpg')
+                require('../assets/images/logos2.png')
 
               }
               style={styles.welcomeImage}
             />
+            <Text  style={{ fontWeight:"800", color: "white" , paddingBottom: 50}}> Qatar Cleaning System (QLS)</Text>
             <TextInput
               style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
               autoCapitalize="none"
@@ -141,6 +137,8 @@ export default class LoginScreen extends React.Component {
           <AppNavigator />
         }
         {/* {console.log("Email: ", this.state.Username)} */}
+
+         </ImageBackground> 
       </View>
     )
   }
@@ -149,21 +147,19 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    
   },
-  contentContainer: {
-    paddingTop: 30,
-  },
+ 
   welcomeContainer: {
     alignItems: 'center',
     flexDirection: 'column',
-    marginTop: 150,
-    marginBottom: 20,
+    marginTop: 100,
+    marginBottom: 150,
   },
   welcomeImage: {
     width: 300,
-    height: 150,
-    resizeMode: 'contain',
+    height: 300,
+    resizeMode:'center',
 
 
   },
@@ -238,6 +234,6 @@ const styles = StyleSheet.create({
 
     textDecorationColor: "white",
     borderRadius: 30,
-    backgroundColor: "#330000",
+    backgroundColor: "#ff6600",
   },
 });

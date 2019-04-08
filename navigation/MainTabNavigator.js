@@ -15,13 +15,15 @@ import CalendarScreen from '../screens/CalendarScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import NotificationScreen from '../screens/NotificationScreen';
+import Complain from '../screens/Complain';
 
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
-  NotificationScreen: NotificationScreen
+  NotificationScreen: NotificationScreen,
+ 
 });
 
 const Loginstack = createStackNavigator({
@@ -81,6 +83,7 @@ Mapstack.navigationOptions = {
 
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
+  Complain :Complain
 });
 
 ProfileStack.navigationOptions = {
@@ -177,12 +180,12 @@ export default createBottomTabNavigator({
   {
     tabBarOptions: {
       style: {
-        backgroundColor: '#330000',//color you want to change
+        backgroundColor: '#e6e6e6',//color you want to change
 
-      },
+      },pressColor:"#ff6600",
 
-      activeTintColor: "white",
-      inactiveTintColor: "white",
+      activeTintColor: "#ff6600",
+      inactiveTintColor: "#ff6600",
       labelStyle: {
         fontWeight: "bold"
       }

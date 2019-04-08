@@ -9,12 +9,13 @@ import {
   Button,
   TouchableOpacity,
   View,
+  ImageBackground,
   ProgressBarAndroid
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import NotificationScreen from '../screens/NotificationScreen';
+import ProgressCircle from 'react-native-progress-circle'
 import * as Progress from 'react-native-progress';
-
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
 import db from '../db.js'
@@ -25,34 +26,48 @@ import {
   Entypo,
   Feather
 } from "@expo/vector-icons";
-import { Header, Icon } from "react-native-elements";
+import { Header, Overlay, Input, Card, Icon } from 'react-native-elements';
+
 // const { width, height } = Dimensions.get("window");
 import ProgressCircle from 'react-native-progress-circle'
 
 export default class HomeScreen extends React.Component {
 
+  // static navigationOptions = {
+  //   title: 'Home',
+  //   headerStyle: {
+  //     backgroundColor: '#330000',
+  //   },
+  //   headerTintColor: '#fff',
+  //   headerRight: (
+  //     <Ionicons name="ios-notifications" size={30} color="#fff" backgroundColor="#fff" onPress={() => this.props.navigation.navigate('NotificationScreen')} />
+  //   ),
+
+  // };
   static navigationOptions = {
     title: 'Home',
+    drawerLabel: 'Home',
     headerStyle: {
-      backgroundColor: '#330000',
+      backgroundColor: '#e6e6e6',
     },
-    headerTintColor: '#fff',
-    headerRight: (
-      <Ionicons name="ios-notifications" size={30} color="#fff" backgroundColor="#fff" onPress={() => this.props.navigation.navigate('NotificationScreen')} />
-    ),
+    headerTintColor: '#000000',
 
   };
-
   state = {
     UserName: "",
     currentUser: "",
     count: 4,
+
+    isVisible: true,
+    backgroundImage: require('../assets/images/background3.jpg'),
+
     Events: [],
     Users: [],
     Trashs: [],
     fullTrash: 0,
     partialTrash: 0,
     emptyTrash: 0,
+
     motivate: [],
     messageNeeded: "",
   }
@@ -68,7 +83,6 @@ export default class HomeScreen extends React.Component {
   Notify = async () => {
     { this.props.navigation.navigate('NotificationScreen') }
   }
-
 
   async componentWillMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
@@ -133,14 +147,14 @@ export default class HomeScreen extends React.Component {
     // const currentUser = localStorage.setItem("user", this.state.UserName);
 
     return (
-
       <View style={styles.container}>
-        {/* <Header
-          placement="left"
-          rightComponent={<Ionicons name="ios-notifications" size={30} color="#fff" backgroundColor="#fff" onPress={() => this.props.navigation.navigate('NotificationScreen')} />}
-        /> */}
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
+
+
+
+
           <View style={styles.welcomeContainer}>
+
             <Image
               source={
                 require('../assets/images/logo.jpg')
@@ -149,43 +163,7 @@ export default class HomeScreen extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
-          <View style={styles.progress}>
-            <ProgressCircle
-              percent={this.state.fullTrash}
-              radius={50}
-              borderWidth={8}
-              color="#ffd232"
-              shadowColor="#000"
-              bgColor="red"
-              style={{ marginRight: 40 }}
-            >
-              <Text style={{ fontSize: 18 }}>{this.state.fullTrash} {' %'}</Text>
-            </ProgressCircle>
-            <ProgressCircle
-              percent={this.state.partialTrash}
-              radius={50}
-              borderWidth={8}
-              color="#ffd232"
-              shadowColor="#000"
-              bgColor="yellow"
-              style={{ marginRight: 40 }}
-            >
-              <Text style={{ fontSize: 18 }}>{this.state.partialTrash} {' %'}</Text>
-            </ProgressCircle>
 
-            <ProgressCircle
-              percent={this.state.emptyTrash}
-              radius={50}
-              borderWidth={8}
-              color="#ffd232"
-              shadowColor="#000"
-              bgColor="green"
-              style={{ marginRight: 40 }}
-            >
-
-              <Text style={{ fontSize: 18 }}>{this.state.emptyTrash}{' %'}</Text>
-            </ProgressCircle>
-          </View>
 
           <View style={styles.getStartedContainer}>
             <Button title="Notification"
@@ -204,51 +182,84 @@ export default class HomeScreen extends React.Component {
               </View>
             }
 
-            {this.state.motivate.map(m => (
-              m.id === this.state.messageNeeded &&
-              <Text>{m.message}</Text>
-
-            ))}
+            
           </View>
 
-        </ScrollView>
+       <View style={styles.progress}>
+            <ProgressCircle
+              percent={this.state.fullTrash}
+              radius={50}
+              borderWidth={8}
+              color="#b30000"
+              shadowColor="#000"
+              bgColor="#b30000"
+              style={{ marginRight: 40 }}
+            >
+              <Text style={{ fontSize: 18 }}>{this.state.fullTrash} {' %'}</Text>
+            </ProgressCircle>
+            <ProgressCircle
+              percent={this.state.partialTrash}
+              radius={50}
+              borderWidth={8}
+              color="#ff751a"
+              shadowColor="#000"
+              bgColor="#ff751a"
+              style={{ marginRight: 40 }}
+            >
+              <Text style={{ fontSize: 18 }}>{this.state.partialTrash} {' %'}</Text>
+            </ProgressCircle>
 
+            <ProgressCircle
+              percent={this.state.emptyTrash}
+              radius={50}
+              borderWidth={8}
+              color="#00b36b"
+              shadowColor="#000"
+              bgColor="#00b36b"
+              style={{ marginRight: 40 }}
+            >
+
+              <Text style={{ fontSize: 18 }}>{this.state.emptyTrash}{' %'}</Text>
+            </ProgressCircle>
+          </View>
+
+
+        </ImageBackground>
+        <Overlay
+          isVisible={this.state.isVisible}
+          windowBackgroundColor="rgba(255, 255, 255, .5)"
+          // overlayBackgroundColor="#330011"
+          width="auto"
+          height="auto"
+
+        >
+
+          <Card
+            title='HELLO WORLD'
+          >
+            {this.state.motivate.map(m => (
+              m.id === this.state.messageNeeded &&
+              <Text style={{ marginBottom: 10 }}>{m.message}</Text>
+
+            ))}
+            
+              
+            <Button
+              icon={<Icon name='code' color='#ffffff' />}
+              backgroundColor='#03A9F4'
+              buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
+              title='VIEW NOW' 
+              onPress={isVisible => this.setState({isVisible: false})}/>
+
+          </Card>
+        </Overlay>
       </View>
 
     );
   }
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
 
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
 
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
 
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({

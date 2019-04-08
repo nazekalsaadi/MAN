@@ -30,10 +30,9 @@ export default class CalendarScreen extends React.Component {
   static navigationOptions = {
     title: 'Calendar ',
     headerStyle: {
-      backgroundColor: '#330000',
+      backgroundColor: '#e6e6e6',
     },
-    headerTintColor: '#fff',
-
+    headerTintColor: '#000000',
   };
 
   currentUser = firebase.auth().currentUser.email;

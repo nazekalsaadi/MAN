@@ -39,7 +39,12 @@ const NODE5_LONGITUDE = 51.4432;
 
 const { width, height } = Dimensions.get("window");
 
-export default class MapScreen extends React.Component {
+export default class CityScreen extends React.Component {
+  static navigationOptions = {
+    title: 'CityScreen',
+
+
+  };
   state = {
     Cities: [],
     region: {
@@ -74,43 +79,43 @@ export default class MapScreen extends React.Component {
           showsScale
           CustomMapStyle={myMapStyle}
 
-          //  style={{  width: width }}
+        //  style={{  width: width }}
         >
           {// console.log("MapView Cities: " , this.state.Cities) &&
-          this.state.Cities.map((marker, index) => {
-            return (
-              (CityCoordinate = {
-                latitude: marker.Location._lat,
-                longitude: marker.Location._long
-              }),
-              console.log("MapView Cities: ", this.state.Cities),
-              (
-                <TouchableOpacity key={index}>
-                  <MapView.Marker
-                    key={index}
-                    coordinate={CityCoordinate}
-                    onPress={() =>
-                      this.props.navigation.navigate(
-                        "CityStatusScreen",
-                        {
-                          place: marker.Name
-                        },
-                        console.log(marker.Name)
-                      )
-                    }
-                  >
-                    <Image
-                      source={listOfImages[0]}
-                      style={{
-                        width: (5 * width) / 100,
-                        height: (5 * height) / 100
-                      }}
-                    />
-                  </MapView.Marker>
-                </TouchableOpacity>
-              )
-            );
-          })}
+            this.state.Cities.map((marker, index) => {
+              return (
+                (CityCoordinate = {
+                  latitude: marker.Location._lat,
+                  longitude: marker.Location._long
+                }),
+                console.log("MapView Cities: ", this.state.Cities),
+                (
+                  <TouchableOpacity key={index}>
+                    <MapView.Marker
+                      key={index}
+                      coordinate={CityCoordinate}
+                      onPress={() =>
+                        this.props.navigation.navigate(
+                          "CityStatusScreen",
+                          {
+                            place: marker.Name
+                          },
+                          console.log(marker.Name)
+                        )
+                      }
+                    >
+                      <Image
+                        source={listOfImages[0]}
+                        style={{
+                          width: (5 * width) / 100,
+                          height: (5 * height) / 100
+                        }}
+                      />
+                    </MapView.Marker>
+                  </TouchableOpacity>
+                )
+              );
+            })}
         </MapView>
       </View>
     );

@@ -9,11 +9,13 @@ import {
   Button,
   TouchableOpacity,
   View,
-  ImageBackground
+  ImageBackground,
+  ProgressBarAndroid
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import NotificationScreen from '../screens/NotificationScreen';
 import ProgressCircle from 'react-native-progress-circle'
+import * as Progress from 'react-native-progress';
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
 import db from '../db.js'
@@ -27,6 +29,8 @@ import {
 import { Header, Overlay, Input, Card, Icon } from 'react-native-elements';
 
 // const { width, height } = Dimensions.get("window");
+import ProgressCircle from 'react-native-progress-circle'
+
 export default class HomeScreen extends React.Component {
 
   // static navigationOptions = {
@@ -53,8 +57,17 @@ export default class HomeScreen extends React.Component {
     UserName: "",
     currentUser: "",
     count: 4,
+
     isVisible: true,
     backgroundImage: require('../assets/images/background3.jpg'),
+
+    Events: [],
+    Users: [],
+    Trashs: [],
+    fullTrash: 0,
+    partialTrash: 0,
+    emptyTrash: 0,
+
     motivate: [],
     messageNeeded: "",
   }
@@ -71,8 +84,6 @@ export default class HomeScreen extends React.Component {
     { this.props.navigation.navigate('NotificationScreen') }
   }
 
-
- 
   async componentWillMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
@@ -111,7 +122,6 @@ export default class HomeScreen extends React.Component {
     await this.getMessage()
     //COMPLAINS
   }
-
   handleTrash = () => {
     console.log("im in")
     let fullness = 0;
@@ -131,6 +141,7 @@ export default class HomeScreen extends React.Component {
     }
     console.log("full", fullness)
   }
+
   render() {
 
     // const currentUser = localStorage.setItem("user", this.state.UserName);
@@ -153,6 +164,7 @@ export default class HomeScreen extends React.Component {
             />
           </View>
 
+
           <View style={styles.getStartedContainer}>
             <Button title="Notification"
               type="outline" onPress={this.Notify} color="#330000">
@@ -166,8 +178,11 @@ export default class HomeScreen extends React.Component {
 
                 <Button title="All Users"
                   type="outline" onPress={this.UserList} color="#330000" />
+
               </View>
             }
+
+            
           </View>
 
        <View style={styles.progress}>
@@ -251,6 +266,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  progress: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   developmentModeText: {
     marginBottom: 20,

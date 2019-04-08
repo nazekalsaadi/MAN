@@ -15,6 +15,7 @@ import CalendarScreen from '../screens/CalendarScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import NotificationScreen from '../screens/NotificationScreen';
+import Complain from '../screens/Complain';
 
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
@@ -82,6 +83,7 @@ Mapstack.navigationOptions = {
 
 const ProfileStack = createStackNavigator({
   Profile: ProfileScreen,
+  Complain :Complain
 });
 
 ProfileStack.navigationOptions = {

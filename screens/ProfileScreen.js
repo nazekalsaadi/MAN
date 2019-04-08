@@ -49,6 +49,10 @@ export default class Profile extends React.Component {
         console.log("Current users: ", this.User.length)
       })
   }
+  Complain = async () => {
+    { this.props.navigation.navigate('Complain') }
+
+  }
   call = (phone) => {
     //handler to make a call
     const args = {
@@ -87,6 +91,10 @@ export default class Profile extends React.Component {
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
                           <Text>Send a text/iMessage</Text>
+
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonContainer} onPress={this.Complain}>
+                          <Text>Complain</Text>
 
                         </TouchableOpacity>
                       </View>

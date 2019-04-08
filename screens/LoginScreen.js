@@ -14,7 +14,8 @@ import {
 import { WebBrowser } from 'expo';
 import { ImagePicker } from 'expo';
 import firebase from 'firebase'
-
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Input } from 'react-native-elements';
 import { MonoText } from '../components/StyledText';
 import db from '../db.js'
 import AppNavigator from '../navigation/AppNavigator';
@@ -31,7 +32,7 @@ export default class LoginScreen extends React.Component {
     password: "",
 
     flag: false,
-    backgroundImage: require('../assets/images/background2.jpg')
+    backgroundImage: require('../assets/images/q.jpg')
   }
 
 
@@ -67,8 +68,8 @@ export default class LoginScreen extends React.Component {
           { cancelable: false },
         );
       }
-      else{
-        console.log("current ma5loo2",firebase.auth().currentUser.UserName)
+      else {
+        console.log("current ma5loo2", firebase.auth().currentUser.UserName)
       }
     } catch (error) {
       // Handle Errors here.
@@ -88,57 +89,84 @@ export default class LoginScreen extends React.Component {
 
     return (
       <View style={styles.container}>
-      <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}> 
-       
-        {/* <View style={styles.contentContainer}> */}
-        {this.state.flag === false ? (
-          <View style={styles.welcomeContainer} >
-           
-            <Image
-              source={
-                require('../assets/images/logos2.png')
+        <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
 
-              }
-              style={styles.welcomeImage}
-            />
-            <Text  style={{ fontWeight:"800", color: "white" , paddingBottom: 50}}> Qatar Cleaning System (QLS)</Text>
-            <TextInput
-              style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-              autoCapitalize="none"
-              placeholder="  Email"
-              onChangeText={UserName => this.setState({ UserName })}
-              value={this.state.UserName}
-            />
+          {/* <View style={styles.contentContainer}> */}
+          {this.state.flag === false ? (
+            <View style={styles.welcomeContainer} >
 
-            <TextInput
-              style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-              autoCapitalize="none"
-              placeholder="  Password"
-              onChangeText={password => this.setState({ password })}
-              value={this.state.password}
-            />
+              <Image
+                source={
+                  require('../assets/images/qLogo.png')
 
-            <TouchableOpacity style={styles.buttonContainer} onPress={this.Login}>
+                }
+                style={styles.welcomeImage}
+              />
+              <Text style={{ fontWeight: "800", color: "white", paddingBottom: 50 }}> Qatar Cleaning System (QLS)</Text>
 
-              <Text style={{ color: "white" }}>Login</Text>
+              {/*             
 
-            </TouchableOpacity>
-            {/* <TouchableOpacity style={styles.buttonContainer} onPress={this.Register}>
+              <TextInput
+                style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
+                autoCapitalize="none"
+                placeholder="  Email"
+                onChangeText={UserName => this.setState({ UserName })}
+                value={this.state.UserName}
+              />
+
+              <TextInput
+                style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
+                autoCapitalize="none"
+                placeholder="  Password"
+                onChangeText={password => this.setState({ password })}
+                value={this.state.password}
+              /> */}
+
+              <TextInput style={styles.input}
+                autoCapitalize="none"
+                onChangeText={UserName => this.setState({ UserName })}
+                value={this.state.UserName}
+                autoCorrect={false}
+                keyboardType='email-address'
+                returnKeyType="next"
+                placeholder='Email or Mobile Num'
+                placeholderTextColor='rgb(51, 0, 16)' />
+
+              <TextInput style={styles.input}
+                returnKeyType="go"
+                onChangeText={password => this.setState({ password })}
+                value={this.state.password}
+                placeholder='Password'
+                placeholderTextColor='rgb(51, 0, 16)'
+                secureTextEntry
+                leftIcon={
+                  <AntDesign
+                    name='user'
+                    size={24}
+                    color='black'
+                  />
+                } />
+              <TouchableOpacity style={styles.buttonContainer} onPress={this.Login}>
+
+                <Text style={{ color: "white" }}>Login</Text>
+
+              </TouchableOpacity>
+              {/* <TouchableOpacity style={styles.buttonContainer} onPress={this.Register}>
 
                 <Text style={{color:"white"}}>Register</Text>
 
               </TouchableOpacity> */}
-            {/* <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} /> */}
+              {/* <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} /> */}
 
 
-          </View>
-        ) :
+            </View>
+          ) :
 
-          <AppNavigator />
-        }
-        {/* {console.log("Email: ", this.state.Username)} */}
+            <AppNavigator />
+          }
+          {/* {console.log("Email: ", this.state.Username)} */}
 
-         </ImageBackground> 
+        </ImageBackground>
       </View>
     )
   }
@@ -147,9 +175,9 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
   },
- 
+
   welcomeContainer: {
     alignItems: 'center',
     flexDirection: 'column',
@@ -157,9 +185,9 @@ const styles = StyleSheet.create({
     marginBottom: 150,
   },
   welcomeImage: {
-    width: 300,
-    height: 300,
-    resizeMode:'center',
+    width: 200,
+    height: 200,
+    resizeMode: 'cover',
 
 
   },
@@ -234,6 +262,26 @@ const styles = StyleSheet.create({
 
     textDecorationColor: "white",
     borderRadius: 30,
-    backgroundColor: "#ff6600",
+    backgroundColor: "#330011",
   },
+  input: {
+    height: "10%",
+    width: "80%",
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    padding: 10,
+    color: '#330011',
+    borderRadius: 50,
+    borderColor: "#330011",
+    fontWeight: '800'
+  },
+  // buttonContainer:{
+  //     backgroundColor: '#2980b6',
+  //     paddingVertical: 15
+  // },
+  buttonText: {
+    color: '#330011',
+    textAlign: 'center',
+    fontWeight: '800'
+  }
 });

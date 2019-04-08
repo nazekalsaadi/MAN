@@ -24,7 +24,8 @@ import {
   Entypo,
   Feather
 } from "@expo/vector-icons";
-import { Header, Icon } from "react-native-elements";
+import { Header, Overlay, Input, Card, Icon } from 'react-native-elements';
+
 // const { width, height } = Dimensions.get("window");
 export default class HomeScreen extends React.Component {
 
@@ -52,7 +53,10 @@ export default class HomeScreen extends React.Component {
     UserName: "",
     currentUser: "",
     count: 4,
-    backgroundImage: require('../assets/images/background3.jpg')
+    isVisible: true,
+    backgroundImage: require('../assets/images/background3.jpg'),
+    motivate: [],
+    messageNeeded: "",
   }
   Register = async () => {
     { this.props.navigation.navigate('RegisterScreen') }
@@ -68,33 +72,76 @@ export default class HomeScreen extends React.Component {
   }
 
 
-  async componentDidMount() {
+ 
+  async componentWillMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
-    //   chat = []
-    // await db.collection(`Chat`)
-    // .onSnapshot(querySnapshot => {
-    //   querySnapshot.forEach(doc => {
-    //     chat.push({ id: doc.id, ...doc.data() })
-    //   })
-    //   console.log("Current chat: ", this.state.chat.length)
-    //   console.log("Current chat: ", this.state.chat)
-    //   this.setState({chat})
 
-    // console.log("Current chat after method: ", this.state.chat)
+    //Trashs
+    db.collection("Trash")
+      .onSnapshot(querySnapshot => {
+        let Trashs = []
+        querySnapshot.forEach(doc => {
+          Trashs.push({ id: doc.id, ...doc.data() })
+        })
+        this.setState({ Trashs })
+        console.log("Current Trashs: ", this.state.Trashs.length)
+      })
+    //motivate
+    db.collection("motivate")
+      .onSnapshot(querySnapshot => {
+        let motivate = []
+        querySnapshot.forEach(doc => {
+          motivate.push({ id: doc.id, ...doc.data() })
+        })
+        let messageID = ""
+        for (let i = 0; i < querySnapshot.docs.length; i++) {
+          if (querySnapshot.docs[i].id === "Thank You For Your Hard Work") {
+            messageID = querySnapshot.docs[i].data().message
 
+          }
+          this.setState({ messageNeeded: messageID })
+        }
+        console.log("Worked", messageID)
+        this.setState({ motivate })
 
+      })
 
+    await this.handleTrash()
+    await this.getMessage()
+    //COMPLAINS
+  }
+
+  handleTrash = () => {
+    console.log("im in")
+    let fullness = 0;
+    let partiales = 0;
+    let empty = 0;
+    for (let i = 0; i < this.state.Trashs.length; i++) {
+      if (this.state.Trashs[i].Status === "Full") {
+        fullness = fullness + 1
+      }
+      if (this.state.Trashs[i].Status === "Partial") {
+        partiales = partiales + 1
+      }
+      if (this.state.Trashs[i].Status === "Empty") {
+        empty = empty + 1
+      }
+      this.setState({ fullTrash: fullness, partialTrash: partiales, emptyTrash: empty })
+    }
+    console.log("full", fullness)
   }
   render() {
 
     // const currentUser = localStorage.setItem("user", this.state.UserName);
 
     return (
-      <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}> 
-     
-        <ScrollView style={styles.container}>
-       
+      <View style={styles.container}>
+        <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
+
+
+
+
           <View style={styles.welcomeContainer}>
 
             <Image
@@ -122,55 +169,82 @@ export default class HomeScreen extends React.Component {
               </View>
             }
           </View>
-       
-          <ProgressCircle
-            percent={30}
-            radius={50}
-            borderWidth={8}
-            color="#3399FF"
-            shadowColor="#999"
-            bgColor="#fff"
-        >
-            <Text style={{ fontSize: 18 }}>{'30%'}</Text>
-        </ProgressCircle>
-        </ScrollView>
+
+       <View style={styles.progress}>
+            <ProgressCircle
+              percent={this.state.fullTrash}
+              radius={50}
+              borderWidth={8}
+              color="#b30000"
+              shadowColor="#000"
+              bgColor="#b30000"
+              style={{ marginRight: 40 }}
+            >
+              <Text style={{ fontSize: 18 }}>{this.state.fullTrash} {' %'}</Text>
+            </ProgressCircle>
+            <ProgressCircle
+              percent={this.state.partialTrash}
+              radius={50}
+              borderWidth={8}
+              color="#ff751a"
+              shadowColor="#000"
+              bgColor="#ff751a"
+              style={{ marginRight: 40 }}
+            >
+              <Text style={{ fontSize: 18 }}>{this.state.partialTrash} {' %'}</Text>
+            </ProgressCircle>
+
+            <ProgressCircle
+              percent={this.state.emptyTrash}
+              radius={50}
+              borderWidth={8}
+              color="#00b36b"
+              shadowColor="#000"
+              bgColor="#00b36b"
+              style={{ marginRight: 40 }}
+            >
+
+              <Text style={{ fontSize: 18 }}>{this.state.emptyTrash}{' %'}</Text>
+            </ProgressCircle>
+          </View>
+
+
         </ImageBackground>
+        <Overlay
+          isVisible={this.state.isVisible}
+          windowBackgroundColor="rgba(255, 255, 255, .5)"
+          // overlayBackgroundColor="#330011"
+          width="auto"
+          height="auto"
 
+        >
+
+          <Card
+            title='HELLO WORLD'
+          >
+            {this.state.motivate.map(m => (
+              m.id === this.state.messageNeeded &&
+              <Text style={{ marginBottom: 10 }}>{m.message}</Text>
+
+            ))}
+            
+              
+            <Button
+              icon={<Icon name='code' color='#ffffff' />}
+              backgroundColor='#03A9F4'
+              buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
+              title='VIEW NOW' 
+              onPress={isVisible => this.setState({isVisible: false})}/>
+
+          </Card>
+        </Overlay>
+      </View>
 
     );
   }
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
 
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
 
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
 
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({

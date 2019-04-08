@@ -26,8 +26,7 @@ const Home = createStackNavigator({
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
-  NotificationScreen: NotificationScreen,
-  ChatScreen: ChatScreen
+  NotificationScreen: NotificationScreen
 });
 
 const Loginstack = createStackNavigator({
@@ -127,7 +126,8 @@ SettingsStack.navigationOptions = {
 };
 
 const ChatUserStack = createStackNavigator({
-  ChatUserSelection: ChatUserSelection
+  ChatUserSelection: ChatUserSelection,
+  ChatScreen: ChatScreen
 });
 
 ChatUserSelection.navigationOptions = {

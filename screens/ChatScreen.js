@@ -1,59 +1,73 @@
 import React from "react";
-import { GiftedChat } from "react-native-gifted-chat";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  FlatList
+} from "react-native";
 import db from "../db.js";
+import firebase from "firebase";
 export default class ChatScreen extends React.Component {
   static navigationOptions = {
-    title: "Chat Room "
+    title: "ChatScreen"
   };
   state = {
     messages: [],
-    chat: []
+    chat: [],
+    user: "",
+    currentUser: ""
   };
+  user = this.props.navigation.getParam("user");
+  currentUser = firebase.auth().currentUser.email;
 
-  chat = [];
-  componentWillMount() {
-    this.setState({
-      messages: [
-        {
-          _id: 1,
-          text: "Hello from Manager",
-          createdAt: new Date(),
-          user: {
-            _id: 2,
-            name: "React Native",
-            avatar: "https://placeimg.com/140/140/any"
-          }
-        }
-      ]
-    });
-  }
-  componentDidMount() {
-    // go to db and get all the users
-    db.collection("Chat").onSnapshot(querySnapshot => {
-      this.chat = [];
-      querySnapshot.forEach(doc => {
-        this.chat.push({ id: doc.id, ...doc.data() });
+  async componentWillMount() {
+    const { navigation } = this.props;
+    const user = navigation.getParam("user");
+    this.setState({ user: user });
+    this.setState({ currentUser: firebase.auth().currentUser.email });
+
+    // go to db and get all the Sender Messages
+    db.collection("Chat")
+      // .where("Sender", "==", this.state.currentUser)
+      // .orderBy("Date")
+      .onSnapshot(async querySnapshot => {
+        let chat = [];
+        querySnapshot.forEach(doc => {
+          chat.push({ id: doc.id, ...doc.data() });
+        });
+        await this.setState({ chat });
+        console.log("Total Chat Messages : ", this.state.chat);
       });
-      this.setState({ chat: this.chat });
-      console.log("Current chat: ", this.chat.length);
-    });
-  }
-
-  onSend(messages = []) {
-    this.setState(previousState => ({
-      messages: GiftedChat.append(previousState.messages, messages)
-    }));
   }
 
   render() {
     return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={messages => this.onSend(messages)}
-        user={{
-          _id: 1
-        }}
-      />
+      <View>
+        {console.log("currentUser is ", this.state.currentUser)}
+        {console.log("ChattingWith ", this.state.user)}
+        {this.state.chat.map(m => (
+          <Text key={m.id}>
+            {m.Sender === this.state.currentUser &&
+              m.Receiver === this.state.user && (
+                <Text style={{ fontSize: 20 }}>
+                  {" "}
+                  {this.state.currentUser} : {m.Message}{" "}
+                </Text>
+              )}
+
+            {m.Sender === this.state.user &&
+              m.Receiver === this.state.currentUser && (
+                <Text style={{ color: "blue" }}>
+                  {" "}
+                  {this.state.user} : {m.Message}{" "}
+                </Text>
+              )}
+          </Text>
+        ))}
+      </View>
     );
   }
 }

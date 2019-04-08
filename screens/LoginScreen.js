@@ -17,17 +17,20 @@ import firebase from 'firebase'
 
 import { MonoText } from '../components/StyledText';
 import db from '../db.js'
-
-
+import AppNavigator from '../navigation/AppNavigator';
+import HomeScreen from "./HomeScreen";
+// const { width, height } = Dimensions.get("window");
 export default class LoginScreen extends React.Component {
   static navigationOptions = {
     title: 'Login ',
-    backgroundColor:"#cc6600"
-    
+    backgroundColor: "#cc6600"
+
   };
   state = {
     UserName: "",
     password: "",
+
+    flag: false,
     backgroundImage: require('../assets/images/background.jpg')
   }
 
@@ -48,15 +51,12 @@ export default class LoginScreen extends React.Component {
 
   Login = async () => {
     try {
-      if (this.state.UserName === "admin@admin.com") {
-        await firebase.auth().signInWithEmailAndPassword(this.state.UserName, this.state.password)
-        { this.props.navigation.navigate('HomeScreen') }
 
-      }
-      else if (this.state.UserName !== "admin@admin.com" && this.state.UserName !== "") {
-        { this.props.navigation.navigate('HomeScreen') }
-      }
-      else {
+      await firebase.auth().signInWithEmailAndPassword(this.state.UserName, this.state.password)
+      await db.collection('User').doc(this.state.UserName).update({ online: true })
+      this.push;
+      this.setState({ flag: true })
+      if (this.state.UserName === "") {
         Alert.alert(
           'Error UnValid Username/Password', "Please Enter a Valid Username/Password",
 
@@ -66,6 +66,9 @@ export default class LoginScreen extends React.Component {
           ],
           { cancelable: false },
         );
+      }
+      else{
+        console.log("current ma5loo2",firebase.auth().currentUser.UserName)
       }
     } catch (error) {
       // Handle Errors here.
@@ -81,46 +84,65 @@ export default class LoginScreen extends React.Component {
     this.props.navigation.navigate('RegisterScreen')
   }
   render() {
-    return (
+    const Email = this.state.UserName;
 
+    return (
       <View style={styles.container}>
         {/* <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
         </ImageBackground> */}
         {/* <View style={styles.contentContainer}> */}
-        <View style={styles.welcomeContainer}>
-          {/* <Image
+        {this.state.flag === false ? (
+          <View style={styles.welcomeContainer} >
+            {/* <Image
             source={
               require('../assets/images/logo.jpg')
             }
             style={styles.welcomeImage}
           /> */}
+            <Image
+              source={
+                require('../assets/images/logo.jpg')
 
-          <TextInput
-            style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-            autoCapitalize="none"
-            placeholder="  Email"
-            onChangeText={UserName => this.setState({ UserName })}
-            value={this.state.UserName}
-          />
+              }
+              style={styles.welcomeImage}
+            />
+            <TextInput
+              style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
+              autoCapitalize="none"
+              placeholder="  Email"
+              onChangeText={UserName => this.setState({ UserName })}
+              value={this.state.UserName}
+            />
 
-          <TextInput
-            style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-            autoCapitalize="none"
-            placeholder="  Password"
-            onChangeText={password => this.setState({ password })}
-            value={this.state.password}
-          />
+            <TextInput
+              style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
+              autoCapitalize="none"
+              placeholder="  Password"
+              onChangeText={password => this.setState({ password })}
+              value={this.state.password}
+            />
 
-          <View style={{ margin: "auto", marginTop: 25, flexDirection: "row", justifyContent: "space-between", marginLeft: 10 }}>
-            <Button onPress={this.Login} title="Login" color="#330000" />
+            <TouchableOpacity style={styles.buttonContainer} onPress={this.Login}>
+
+              <Text style={{ color: "white" }}>Login</Text>
+
+            </TouchableOpacity>
+            {/* <TouchableOpacity style={styles.buttonContainer} onPress={this.Register}>
+
+                <Text style={{color:"white"}}>Register</Text>
+
+              </TouchableOpacity> */}
             {/* <Button onPress={this.pickAvatar} title="Select Avatar" style={{ width: 100, paddingTop: 20 }} /> */}
-            <Button onPress={this.Register} title="Register" color="#330000" />
-          </View>
-        </View>
-      </View>
 
-      // </View>
-    );
+
+          </View>
+        ) :
+
+          <AppNavigator />
+        }
+        {/* {console.log("Email: ", this.state.Username)} */}
+      </View>
+    )
   }
 }
 
@@ -139,8 +161,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   welcomeImage: {
-    width: 100,
-    height: 80,
+    width: 300,
+    height: 150,
     resizeMode: 'contain',
 
 
@@ -204,5 +226,18 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: '#2e78b7',
+  },
+  buttonContainer: {
+    marginTop: 10,
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    width: 150,
+
+    textDecorationColor: "white",
+    borderRadius: 30,
+    backgroundColor: "#330000",
   },
 });

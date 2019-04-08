@@ -4,23 +4,24 @@ import { createStackNavigator, createBottomTabNavigator } from 'react-navigation
 
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
-import Map from '../screens/MapScreen';
+import Map from '../navigation/MapTabNavigator';
 import List from '../screens/UserList';
 import SettingsScreen from '../screens/SettingsScreen';
-
 import LoginScreen from '../screens/LoginScreen';
 import RegisterScreen from '../screens/RegisterScreen';
 import Table from '../screens/TableScreen';
 import UserList from '../screens/UserList';
 import CalendarScreen from '../screens/CalendarScreen';
 import ChatScreen from '../screens/ChatScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import NotificationScreen from '../screens/NotificationScreen';
 
 const Home = createStackNavigator({
-  LoginScreen: LoginScreen,
-  RegisterScreen: RegisterScreen,
+  // LoginScreen: LoginScreen,
   HomeScreen: HomeScreen,
-
-
+  RegisterScreen: RegisterScreen,
+  UserList: UserList,
+  NotificationScreen: NotificationScreen
 });
 
 const Loginstack = createStackNavigator({
@@ -37,11 +38,36 @@ Home.navigationOptions = {
   ),
 };
 
+// const NotificationStack = createStackNavigator({
+//   NotificationScreen: NotificationScreen
+// });
+
+// NotificationStack.navigationOptions = {
+//   tabBarLabel: 'NotificationScreen',
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+//       focused={focused}
+//       name={Platform.OS === 'ios' ? 'ios-people' : 'md-people'}
+//     />
+//   ),
+// };
+const UserStack = createStackNavigator({
+  User: UserList,
+});
+
+UserStack.navigationOptions = {
+  tabBarLabel: 'User',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === 'ios' ? 'ios-people' : 'md-people'}
+    />
+  ),
+};
 
 const Mapstack = createStackNavigator({
   Map: Map,
 });
-
 Mapstack.navigationOptions = {
   tabBarLabel: 'Map',
   tabBarIcon: ({ focused }) => (
@@ -52,16 +78,17 @@ Mapstack.navigationOptions = {
   ),
 };
 
-const UserStack = createStackNavigator({
-  User: UserList,
+
+const ProfileStack = createStackNavigator({
+  Profile: ProfileScreen,
 });
 
-UserStack.navigationOptions = {
-  tabBarLabel: 'User',
+ProfileStack.navigationOptions = {
+  tabBarLabel: 'Profile',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
+      name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'}
     />
   ),
 };
@@ -138,12 +165,14 @@ TableStack.navigationOptions = {
 export default createBottomTabNavigator({
   Home,
   Mapstack,
-  SettingsStack,
-  Liststack,
-  TableStack
+  // UserStack,
+  // SettingsStack,
   // Liststack,
-  ChatStack,
-  CalendStack
+  // TableStack,
+  // // Liststack,
+  // ChatStack,
+  CalendStack,
+  ProfileStack
 },
   {
     tabBarOptions: {

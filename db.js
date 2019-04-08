@@ -1,5 +1,8 @@
-import firebase from 'firebase'
-import 'firebase/firestore'
+import { firebase } from '@firebase/app';
+import '@firebase/firestore';
+import '@firebase/auth';
+
+
 var config = {
   apiKey: "AIzaSyA3sqHII5HUthniYvmgwtyM26Q4RqruFjE",
   authDomain: "manproject-8a2c9.firebaseapp.com",

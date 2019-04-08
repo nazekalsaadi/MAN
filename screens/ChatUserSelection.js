@@ -27,7 +27,7 @@ export default class ChatUserSelection extends React.Component {
 
   componentDidMount() {
     // go to db and get all the Users
-    db.collection("User").onSnapshot(async querySnapshot => {
+    db.collection("User").orderBy("GroupNo").onSnapshot(async querySnapshot => {
       const Users = [];
       querySnapshot.forEach(doc => {
         Users.push({ id: doc.id, ...doc.data() });
@@ -41,7 +41,6 @@ export default class ChatUserSelection extends React.Component {
     return (
       <View>
         <ScrollView>
-        <Text> Users List </Text>
 
         {this.state.Users.map(g => (
           <ListItem

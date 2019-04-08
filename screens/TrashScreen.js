@@ -22,6 +22,7 @@ import {
 } from "@expo/vector-icons";
 import db from "../db";
 import MapView from "react-native-maps";
+import MapViewDirections from 'react-native-maps-directions';
 
 const { width, height } = Dimensions.get("window");
 
@@ -33,7 +34,8 @@ export default class TrashScreen extends React.Component {
       longitude: 51.212769833,
       latitudeDelta: 2,
       longitudeDelta: 2
-    }
+    },
+    mylocation: null
   };
 
   componentDidMount() {
@@ -47,6 +49,18 @@ export default class TrashScreen extends React.Component {
       await this.setState({ Trash });
     });
   }
+
+  findCoordinates = () => {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        const location = JSON.stringify(position);
+
+        this.setState({ location });
+      },
+      error => Alert.alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
+  };
 
   render() {
     listOfImages = [
@@ -117,7 +131,10 @@ export default class TrashScreen extends React.Component {
                     <MapView.Callout>
                       <View>
                         <Text style={styles.calloutSearch}>
+                          City : {marker.City}
+                          Status : {marker.Status}
                           Level : {marker.Level}%
+
                         </Text>
 
                         {/* <TextInput

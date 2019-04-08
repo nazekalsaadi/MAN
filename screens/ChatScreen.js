@@ -18,7 +18,7 @@ import db from "../db.js";
 import firebase from "firebase";
 export default class ChatScreen extends React.Component {
   static navigationOptions = {
-    title: "ChatScreen"
+    title: "Chat"
   };
   state = {
     messages: [],
@@ -28,7 +28,7 @@ export default class ChatScreen extends React.Component {
     currentUser: "admin@admin.com"
   };
   user = this.props.navigation.getParam("user");
-  currentUser = firebase.auth().currentUser.email;
+  //currentUser = firebase.auth().currentUser.email;
 
   async componentWillMount() {
     const { navigation } = this.props;
@@ -50,8 +50,9 @@ export default class ChatScreen extends React.Component {
       });
   }
 
-  Send = async(message) =>{
-    await db.collection("Chat").doc().set({Sender: this.state.currentUser, Receiver: this.state.user, Message: message,Date: Date.now()})
+  Send = async() =>{
+    await db.collection("Chat").doc().set({Sender: this.state.currentUser, Receiver: this.state.user, Message: this.state.Text,Date: Date.now()})
+    this.setState({Text:""})
   }
 
   render() {
@@ -84,20 +85,6 @@ export default class ChatScreen extends React.Component {
             </View>
           ))}
           <View style={styles.send}>
-            <Input
-              placeholder='Type Here'
-              leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
-            />
-            <Button
-              icon={
-                <Icon
-                  name="arrow-right"
-                  size={15}
-                  color="white"
-                />
-              }
-              title="Button with icon component"
-            />
           </View>
         </ScrollView>
 

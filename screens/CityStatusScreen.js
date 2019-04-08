@@ -16,7 +16,8 @@ import { Card, ListItem, Button, CheckBox } from "react-native-elements";
 
 export default class CityStatusScreen extends React.Component {
   static navigationOptions = {
-    title: "CityStatusScreen"
+    title: "CityStatusScreen",
+    header:null
   };
 
   state = {
@@ -121,17 +122,17 @@ export default class CityStatusScreen extends React.Component {
               type="outline" color="#330000" />
           ))} */}
           </Card>
-          {this.state.Trash.map(t => (
+          
 
             <CheckBox
               title='Click Here Empty the Trush'
               checkedColor='red'
               // checkedIcon={<Image source={require("../assets/images/checked.png")} />}
               checked={this.state.checked}
-              onPress={() => this.handleEmpty(t.id)}
+              onPress={() => this.handleEmpty(this.state.Trash.map(t=> t.Status == "Full").id)}
             />
 
-          ))}
+      
         </ScrollView>
       </View>
     );

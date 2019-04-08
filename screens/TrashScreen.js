@@ -26,6 +26,11 @@ import MapView from "react-native-maps";
 const { width, height } = Dimensions.get("window");
 
 export default class TrashScreen extends React.Component {
+  static navigationOptions = {
+    title: 'TrashScreen',
+    header: null
+
+  };
   state = {
     Trash: [],
     region: {

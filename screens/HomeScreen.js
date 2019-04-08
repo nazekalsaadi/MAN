@@ -17,6 +17,7 @@ import NotificationScreen from '../screens/NotificationScreen';
 import ProgressCircle from 'react-native-progress-circle'
 import * as Progress from 'react-native-progress';
 import { MonoText } from '../components/StyledText';
+import { DrawerActions } from 'react-navigation-drawer';
 import firebase from 'firebase'
 import db from '../db.js'
 import {
@@ -26,10 +27,10 @@ import {
   Entypo,
   Feather
 } from "@expo/vector-icons";
-import { Header, Overlay, Input, Card, Icon } from 'react-native-elements';
+import { Header, Overlay, Input, Card, Icon, SocialIcon } from 'react-native-elements';
 
 // const { width, height } = Dimensions.get("window");
-import ProgressCircle from 'react-native-progress-circle'
+
 
 export default class HomeScreen extends React.Component {
 
@@ -48,9 +49,9 @@ export default class HomeScreen extends React.Component {
     title: 'Home',
     drawerLabel: 'Home',
     headerStyle: {
-      backgroundColor: '#e6e6e6',
+      backgroundColor: '#00334d',
     },
-    headerTintColor: '#000000',
+    headerTintColor: '#fff',
 
   };
   state = {
@@ -142,6 +143,9 @@ export default class HomeScreen extends React.Component {
     console.log("full", fullness)
   }
 
+  close = () => {
+    this.setState({ isVisible: false })
+  }
   render() {
 
     // const currentUser = localStorage.setItem("user", this.state.UserName);
@@ -182,10 +186,10 @@ export default class HomeScreen extends React.Component {
               </View>
             }
 
-            
+
           </View>
 
-       <View style={styles.progress}>
+          <View style={styles.progress}>
             <ProgressCircle
               percent={this.state.fullTrash}
               radius={50}
@@ -210,20 +214,42 @@ export default class HomeScreen extends React.Component {
             </ProgressCircle>
 
             <ProgressCircle
-              percent={this.state.emptyTrash}
+              percent={20}
               radius={50}
               borderWidth={8}
               color="#00b36b"
               shadowColor="#000"
-              bgColor="#00b36b"
+              bgColor="#fff"
               style={{ marginRight: 40 }}
             >
 
               <Text style={{ fontSize: 18 }}>{this.state.emptyTrash}{' %'}</Text>
             </ProgressCircle>
+
+
           </View>
 
+          <View>
+            <SocialIcon
+              title='View Users'
+              button
+              type='facebook'
+              onPress={this.UserList}
+            />
+            <SocialIcon
+             title='Register new User'
+             button
+             type='facebook'
+             onPress={this.Register}
+            />
+            <SocialIcon
+             title='Notification'
+             button
+             type='facebook'
+             onPress={this.Notify}
+            />
 
+          </View>
         </ImageBackground>
         <Overlay
           isVisible={this.state.isVisible}
@@ -235,21 +261,21 @@ export default class HomeScreen extends React.Component {
         >
 
           <Card
-            title='HELLO WORLD'
+            title={`Wlecome ${this.state.currentUser}`}
           >
             {this.state.motivate.map(m => (
               m.id === this.state.messageNeeded &&
               <Text style={{ marginBottom: 10 }}>{m.message}</Text>
 
             ))}
-            
-              
+
+
             <Button
               icon={<Icon name='code' color='#ffffff' />}
               backgroundColor='#03A9F4'
               buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
-              title='VIEW NOW' 
-              onPress={isVisible => this.setState({isVisible: false})}/>
+              title='Close'
+              onPress={this.close} />
 
           </Card>
         </Overlay>

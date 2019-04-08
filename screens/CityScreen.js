@@ -42,7 +42,7 @@ const { width, height } = Dimensions.get("window");
 export default class CityScreen extends React.Component {
   static navigationOptions = {
     title: 'CityScreen',
-
+    header: null
 
   };
   state = {

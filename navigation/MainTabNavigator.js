@@ -69,9 +69,11 @@ UserStack.navigationOptions = {
 
 const Mapstack = createStackNavigator({
   Map: Map,
+  
 });
 Mapstack.navigationOptions = {
   tabBarLabel: 'Map',
+  header: null,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -180,12 +182,12 @@ export default createBottomTabNavigator({
   {
     tabBarOptions: {
       style: {
-        backgroundColor: '#e6e6e6',//color you want to change
+        backgroundColor: '#00334d',//color you want to change
 
-      },pressColor:"#ff6600",
+      },pressColor:"#fff",
 
-      activeTintColor: "#ff6600",
-      inactiveTintColor: "#ff6600",
+      activeTintColor: "#fff",
+      inactiveTintColor: "#00334d",
       labelStyle: {
         fontWeight: "bold"
       }

@@ -121,13 +121,14 @@ export default class Profile extends React.Component {
 
 
 
-                </View>
+            
               }
 
             </View>
           )
         }
       </ScrollView>
+
 
     );
   }

@@ -7,8 +7,9 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  FlatList
+  ScrollView
 } from "react-native";
+import { ListItem } from 'react-native-elements'
 import db from "../db";
 
 export default class ChatUserSelection extends React.Component {
@@ -19,6 +20,10 @@ export default class ChatUserSelection extends React.Component {
   state = {
     Users: []
   };
+
+  avatarURL = (UserName) => {
+    return "avatars%2F" + this.state.Users.find(u => u.id === UserName).Avatar.replace("@", "%40")
+  }
 
   componentDidMount() {
     // go to db and get all the Users
@@ -35,11 +40,15 @@ export default class ChatUserSelection extends React.Component {
   render() {
     return (
       <View>
+        <ScrollView>
         <Text> Users List </Text>
 
         {this.state.Users.map(g => (
-          <TouchableOpacity
+          <ListItem
             key={g.id}
+            title={g.FirstName}
+            subtitle={'Group : ' + g.GroupNo}
+            leftAvatar={{ source: { uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(g.Avatar)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` } }}
             onPress={() =>
               this.props.navigation.navigate(
                 "ChatScreen",
@@ -53,8 +62,9 @@ export default class ChatUserSelection extends React.Component {
             <Text>
               Name : {g.FirstName} {g.LastName}
             </Text>
-          </TouchableOpacity>
+          </ListItem>
         ))}
+        </ScrollView>
       </View>
     );
   }

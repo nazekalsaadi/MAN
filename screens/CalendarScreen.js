@@ -64,7 +64,7 @@ export default class CalendarScreen extends React.Component {
           Events.push({ id: doc.id, ...doc.data() })
         })
         this.setState({ Events })
-        console.log("Current users: ", Events.length)
+        console.log("Current eventss: ", Events.length)
       })
   }
 

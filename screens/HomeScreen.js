@@ -9,9 +9,11 @@ import {
   Button,
   TouchableOpacity,
   View,
+  ProgressBarAndroid
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import NotificationScreen from '../screens/NotificationScreen';
+import * as Progress from 'react-native-progress';
 
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
@@ -25,6 +27,8 @@ import {
 } from "@expo/vector-icons";
 import { Header, Icon } from "react-native-elements";
 // const { width, height } = Dimensions.get("window");
+import ProgressCircle from 'react-native-progress-circle'
+
 export default class HomeScreen extends React.Component {
 
   static navigationOptions = {
@@ -42,7 +46,15 @@ export default class HomeScreen extends React.Component {
   state = {
     UserName: "",
     currentUser: "",
-    count: 4
+    count: 4,
+    Events: [],
+    Users: [],
+    Trashs: [],
+    fullTrash: 0,
+    partialTrash: 0,
+    emptyTrash: 0,
+    motivate: [],
+    messageNeeded: "",
   }
   Register = async () => {
     { this.props.navigation.navigate('RegisterScreen') }
@@ -58,24 +70,64 @@ export default class HomeScreen extends React.Component {
   }
 
 
-  async componentDidMount() {
+  async componentWillMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
-    //   chat = []
-    // await db.collection(`Chat`)
-    // .onSnapshot(querySnapshot => {
-    //   querySnapshot.forEach(doc => {
-    //     chat.push({ id: doc.id, ...doc.data() })
-    //   })
-    //   console.log("Current chat: ", this.state.chat.length)
-    //   console.log("Current chat: ", this.state.chat)
-    //   this.setState({chat})
 
-    // console.log("Current chat after method: ", this.state.chat)
+    //Trashs
+    db.collection("Trash")
+      .onSnapshot(querySnapshot => {
+        let Trashs = []
+        querySnapshot.forEach(doc => {
+          Trashs.push({ id: doc.id, ...doc.data() })
+        })
+        this.setState({ Trashs })
+        console.log("Current Trashs: ", this.state.Trashs.length)
+      })
+    //motivate
+    db.collection("motivate")
+      .onSnapshot(querySnapshot => {
+        let motivate = []
+        querySnapshot.forEach(doc => {
+          motivate.push({ id: doc.id, ...doc.data() })
+        })
+        let messageID = ""
+        for (let i = 0; i < querySnapshot.docs.length; i++) {
+          if (querySnapshot.docs[i].id === "Thank You For Your Hard Work") {
+            messageID = querySnapshot.docs[i].data().message
 
+          }
+          this.setState({ messageNeeded: messageID })
+        }
+        console.log("Worked", messageID)
+        this.setState({ motivate })
 
+      })
 
+    await this.handleTrash()
+    await this.getMessage()
+    //COMPLAINS
   }
+  handleTrash = () => {
+    console.log("im in")
+    let fullness = 0;
+    let partiales = 0;
+    let empty = 0;
+    for (let i = 0; i < this.state.Trashs.length; i++) {
+      if (this.state.Trashs[i].Status === "Full") {
+        fullness = fullness + 1
+      }
+      if (this.state.Trashs[i].Status === "Partial") {
+        partiales = partiales + 1
+      }
+      if (this.state.Trashs[i].Status === "Empty") {
+        empty = empty + 1
+      }
+      this.setState({ fullTrash: fullness, partialTrash: partiales, emptyTrash: empty })
+    }
+    console.log("full", fullness)
+  }
+
   render() {
 
     // const currentUser = localStorage.setItem("user", this.state.UserName);
@@ -97,6 +149,43 @@ export default class HomeScreen extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
+          <View style={styles.progress}>
+            <ProgressCircle
+              percent={this.state.fullTrash}
+              radius={50}
+              borderWidth={8}
+              color="#ffd232"
+              shadowColor="#000"
+              bgColor="red"
+              style={{ marginRight: 40 }}
+            >
+              <Text style={{ fontSize: 18 }}>{this.state.fullTrash} {' %'}</Text>
+            </ProgressCircle>
+            <ProgressCircle
+              percent={this.state.partialTrash}
+              radius={50}
+              borderWidth={8}
+              color="#ffd232"
+              shadowColor="#000"
+              bgColor="yellow"
+              style={{ marginRight: 40 }}
+            >
+              <Text style={{ fontSize: 18 }}>{this.state.partialTrash} {' %'}</Text>
+            </ProgressCircle>
+
+            <ProgressCircle
+              percent={this.state.emptyTrash}
+              radius={50}
+              borderWidth={8}
+              color="#ffd232"
+              shadowColor="#000"
+              bgColor="green"
+              style={{ marginRight: 40 }}
+            >
+
+              <Text style={{ fontSize: 18 }}>{this.state.emptyTrash}{' %'}</Text>
+            </ProgressCircle>
+          </View>
 
           <View style={styles.getStartedContainer}>
             <Button title="Notification"
@@ -112,10 +201,14 @@ export default class HomeScreen extends React.Component {
                 <Button title="All Users"
                   type="outline" onPress={this.UserList} color="#330000" />
 
-
-
               </View>
             }
+
+            {this.state.motivate.map(m => (
+              m.id === this.state.messageNeeded &&
+              <Text>{m.message}</Text>
+
+            ))}
           </View>
 
         </ScrollView>
@@ -162,6 +255,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  progress: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   developmentModeText: {
     marginBottom: 20,

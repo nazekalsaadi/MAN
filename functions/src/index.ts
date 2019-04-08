@@ -85,9 +85,9 @@ export const TruckTracking = functions.https.onRequest(async (req, res) => {
 
     // level from 0 to 100
     querySnapshot.forEach(async doc => {
-        let Latitude = doc.data().Latitude + Math.random() - 0.5
+        let Latitude = doc.data().Latitude + Math.random() + 0.5
         await admin.firestore().collection("Truck").doc(doc.id).update({ Latitude })
-        let longitude = doc.data().longitude + Math.random() - 0.5
+        let longitude = doc.data().longitude + Math.random() + 0.5
         await admin.firestore().collection("Truck").doc(doc.id).update({ longitude })
     })
 
@@ -100,6 +100,25 @@ export const TruckTracking = functions.https.onRequest(async (req, res) => {
 
 
 
+
+    res.status(200).send();
+})
+
+export const updateMotivation = functions.https.onRequest(async (req, res) => {
+    // find all images (users with captions)
+    const querySnapshot = await admin.firestore().collection("motivate").where("message", ">", "").get()
+    const Messages = new Array()
+    querySnapshot.forEach(doc =>
+        Messages.push(doc.id)
+    )
+    console.log("Messages", Messages.length)
+
+    // pick one at random
+    const message = Messages[Math.floor(Messages.length * Math.random())]
+    console.log("message", message)
+
+    // change user document in image collection
+    await admin.firestore().collection("motivate").doc("Thank You For Your Hard Work").update({ message: message })
 
     res.status(200).send();
 })

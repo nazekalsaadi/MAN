@@ -9,10 +9,13 @@ import {
   Button,
   TouchableOpacity,
   View,
+  FlatList
+
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import Communications from 'react-native-communications';
 import { MonoText } from '../components/StyledText';
+import { Card, Icon, Tooltip, Badge } from "react-native-elements";
 import firebase from 'firebase'
 import db from '../db.js'
 export default class Profile extends React.Component {
@@ -67,6 +70,10 @@ export default class Profile extends React.Component {
     call(args).catch(console.error);
   };
 
+  GoToCity = () => {
+    this.props.navigation.navigate('CityScreen')
+  }
+
   avatarURL = (UserName) => {
     return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
   }
@@ -78,7 +85,7 @@ export default class Profile extends React.Component {
         {
           this.state.user.map(v =>
             <View key={v.id}>
-              {this.state.currentUser != "admin@admin.com" ?
+              {this.state.currentUser != "admin@admin.com" &&
                 this.state.currentUser === v.UserName &&
                 <View>
                   <View style={styles.header}>
@@ -103,25 +110,21 @@ export default class Profile extends React.Component {
 
 
                 </View>
-                :
-
+              }
+              {this.state.currentUser === "admin@admin.com" &&
                 <View key={v.id}>
 
                   <View>
-
-
-                    <View style={styles.body} >
-                      {this.state.Trash.map(t => t.Status == "Full" &&
-                        <View style={styles.bodyContent}>
-                          <Text style={styles.name}> {t.City}</Text>
-
-
-
-                        </View>
-
-                      )}
+                    <View style={styles.name} >
+                      <Text> Admin </Text>
+                      {/* <ion-icon name="trash"></ion-icon> */}
+                      <Icon
+                        raised
+                        name='heartbeat'
+                        type='font-awesome'
+                        color='#f50'
+                        onPress={this.GoToCity} />
                     </View>
-
                   </View>
 
                 </View>
@@ -190,6 +193,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "#330000",
     fontWeight: '600',
+    textAlign: "center"
   },
   name2: {
     fontSize: 22,

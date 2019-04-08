@@ -55,27 +55,22 @@ export default class NotificationScreen extends Component {
                             }
                             style={styles.welcomeImage}
                         />
-                        <Badge value="Last Events" status="warning" style={{ width: "500" }}>  </Badge>
-                        <Card>
+                        <Badge value="Last Events" status="warning" style={{ width: "600" }}>  </Badge>
+                        <Card style={{ width: "800" }}>
                             {
                                 this.state.Events.map((v, i) => (
-                                    todayDate === (moment((v.Start_Time.toDate()).toString()).format("DD MMM YYYY")) ?
+                                    todayDate === (moment((v.Start_Time.toDate()).toString()).format("DD MMM YYYY")) &&
 
-                                        <View>
-                                            <Image
-                                                source={
-                                                    require('../assets/images/notification.jpg')
-                                                }
-                                                style={{ width: 20, height: 20 }}
+                                    <View>
+                                        <Image
+                                            source={
+                                                require('../assets/images/notification.jpg')
+                                            }
+                                            style={{ width: 20, height: 20 }}
 
-                                            />
-                                            <Text style={styles.name}> Event: {v.Description} Started At {moment((v.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
-                                        </View>
-
-                                        : <Tooltip popover={<Text>No events for today</Text>}>
-                                            <Text>Press me</Text>
-                                        </Tooltip>
-
+                                        />
+                                        <Text style={styles.name}> Event: {v.Description} Started At {moment((v.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+                                    </View>
                                 ))
                             }
                         </Card>

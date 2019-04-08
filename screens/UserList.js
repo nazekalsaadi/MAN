@@ -70,7 +70,7 @@ export default class UserList extends React.Component {
                 <View style={styles.bodyContent}>
                   <Text style={styles.name}>{v.FirstName + " "}{v.LastName + " "}</Text>
                   <Text style={styles.name2}>{v.Role + " "}</Text>
-                  <Text style={styles.description}>{v.Role + "  "}{v.FirstName + " "}{v.LastName + " "} Has Been Assigned To Group Number {" " + v.GroupNo}</Text>
+                  <Text style={styles.description}>Group Number {" " + v.GroupNo}</Text>
 
                   <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
 
@@ -131,7 +131,7 @@ export default class UserList extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#a82538",
+    backgroundColor: "#00BFFF",
     height: 200,
   },
   avatar: {

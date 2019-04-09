@@ -3,25 +3,33 @@ import { ExpoConfigView } from "@expo/samples";
 import {
   StyleSheet,
   Text,
+  ScrollView,
   View,
   Image,
   TouchableOpacity,
+  TouchableHighlight,
   Dimensions,
   FlatList
 } from "react-native";
 import { Button, Input, Icon, ListItem, Card, Rating, Divider } from 'react-native-elements';
 import db from "../db";
+
 import { ScrollView } from "react-native-gesture-handler";
+
+import { Card, ListItem, Button, CheckBox } from "react-native-elements";
+
 
 export default class CityStatusScreen extends React.Component {
   static navigationOptions = {
-    title: "CityStatusScreen"
+    title: "CityStatusScreen",
+    header:null
   };
   state = {
     Trash: [],
     Group: -1,
     RservedGroups: [],
-    Users: []
+    Users: [],
+    checked: false
   };
 
   componentDidMount() {
@@ -80,6 +88,7 @@ export default class CityStatusScreen extends React.Component {
       });
   }
 
+
   avatarURL = (UserName) => {
     return "avatars%2F" + this.state.Users.find(u => u.id === UserName).Avatar.replace("@", "%40")
   }
@@ -137,6 +146,7 @@ export default class CityStatusScreen extends React.Component {
           style={{ paddingVertical: 10 }}
         />
       </ScrollView>
+
     );
   }
 }

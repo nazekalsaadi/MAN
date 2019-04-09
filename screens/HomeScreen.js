@@ -9,11 +9,15 @@ import {
   Button,
   TouchableOpacity,
   View,
+  ImageBackground,
+  ProgressBarAndroid
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import NotificationScreen from '../screens/NotificationScreen';
-
+import ProgressCircle from 'react-native-progress-circle'
+import * as Progress from 'react-native-progress';
 import { MonoText } from '../components/StyledText';
+import { DrawerActions } from 'react-navigation-drawer';
 import firebase from 'firebase'
 import db from '../db.js'
 import {
@@ -23,25 +27,50 @@ import {
   Entypo,
   Feather
 } from "@expo/vector-icons";
-import { Header, Icon } from "react-native-elements";
+import { Header, Overlay, Input, Card, Icon, SocialIcon } from 'react-native-elements';
+
 // const { width, height } = Dimensions.get("window");
+
+
 export default class HomeScreen extends React.Component {
 
+  // static navigationOptions = {
+  //   title: 'Home',
+  //   headerStyle: {
+  //     backgroundColor: '#330000',
+  //   },
+  //   headerTintColor: '#fff',
+  //   headerRight: (
+  //     <Ionicons name="ios-notifications" size={30} color="#fff" backgroundColor="#fff" onPress={() => this.props.navigation.navigate('NotificationScreen')} />
+  //   ),
+
+  // };
   static navigationOptions = {
     title: 'Home',
+    drawerLabel: 'Home',
     headerStyle: {
-      backgroundColor: '#330000',
+      backgroundColor: '#00334d',
     },
     headerTintColor: '#fff',
-    headerRight: (
-      <Ionicons name="ios-notifications" size={30} color="#fff" backgroundColor="#fff" onPress={() => this.props.navigation.navigate('NotificationScreen')} />
-    ),
 
   };
-
   state = {
     UserName: "",
-    currentUser: ""
+    currentUser: "",
+    count: 4,
+
+    isVisible: true,
+    backgroundImage: require('../assets/images/background3.jpg'),
+
+    Events: [],
+    Users: [],
+    Trashs: [],
+    fullTrash: 0,
+    partialTrash: 0,
+    emptyTrash: 0,
+
+    motivate: [],
+    messageNeeded: "",
   }
   Register = async () => {
     { this.props.navigation.navigate('RegisterScreen') }
@@ -56,38 +85,80 @@ export default class HomeScreen extends React.Component {
     { this.props.navigation.navigate('NotificationScreen') }
   }
 
-
-  async componentDidMount() {
+  async componentWillMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
-    //   chat = []
-    // await db.collection(`Chat`)
-    // .onSnapshot(querySnapshot => {
-    //   querySnapshot.forEach(doc => {
-    //     chat.push({ id: doc.id, ...doc.data() })
-    //   })
-    //   console.log("Current chat: ", this.state.chat.length)
-    //   console.log("Current chat: ", this.state.chat)
-    //   this.setState({chat})
 
-    // console.log("Current chat after method: ", this.state.chat)
+    //Trashs
+    db.collection("Trash")
+      .onSnapshot(querySnapshot => {
+        let Trashs = []
+        querySnapshot.forEach(doc => {
+          Trashs.push({ id: doc.id, ...doc.data() })
+        })
+        this.setState({ Trashs })
+        console.log("Current Trashs: ", this.state.Trashs.length)
+      })
+    //motivate
+    db.collection("motivate")
+      .onSnapshot(querySnapshot => {
+        let motivate = []
+        querySnapshot.forEach(doc => {
+          motivate.push({ id: doc.id, ...doc.data() })
+        })
+        let messageID = ""
+        for (let i = 0; i < querySnapshot.docs.length; i++) {
+          if (querySnapshot.docs[i].id === "Thank You For Your Hard Work") {
+            messageID = querySnapshot.docs[i].data().message
 
+          }
+          this.setState({ messageNeeded: messageID })
+        }
+        console.log("Worked", messageID)
+        this.setState({ motivate })
 
+      })
 
+    await this.handleTrash()
+    await this.getMessage()
+    //COMPLAINS
+  }
+  handleTrash = () => {
+    console.log("im in")
+    let fullness = 0;
+    let partiales = 0;
+    let empty = 0;
+    for (let i = 0; i < this.state.Trashs.length; i++) {
+      if (this.state.Trashs[i].Status === "Full") {
+        fullness = fullness + 1
+      }
+      if (this.state.Trashs[i].Status === "Partial") {
+        partiales = partiales + 1
+      }
+      if (this.state.Trashs[i].Status === "Empty") {
+        empty = empty + 1
+      }
+      this.setState({ fullTrash: fullness, partialTrash: partiales, emptyTrash: empty })
+    }
+    console.log("full", fullness)
+  }
+
+  close = () => {
+    this.setState({ isVisible: false })
   }
   render() {
 
     // const currentUser = localStorage.setItem("user", this.state.UserName);
 
     return (
-
       <View style={styles.container}>
-        {/* <Header
-          placement="left"
-          rightComponent={<Ionicons name="ios-notifications" size={30} color="#fff" backgroundColor="#fff" onPress={() => this.props.navigation.navigate('NotificationScreen')} />}
-        /> */}
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
+        <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
+
+
+
+
           <View style={styles.welcomeContainer}>
+
             <Image
               source={
                 require('../assets/images/logo.jpg')
@@ -97,9 +168,12 @@ export default class HomeScreen extends React.Component {
             />
           </View>
 
+
           <View style={styles.getStartedContainer}>
             <Button title="Notification"
-              type="outline" onPress={this.Notify} color="#330000" />
+              type="outline" onPress={this.Notify} color="#330000">
+              {this.state.count}
+            </Button>
 
             {this.state.currentUser === "admin@admin.com" &&
               <View>
@@ -109,56 +183,119 @@ export default class HomeScreen extends React.Component {
                 <Button title="All Users"
                   type="outline" onPress={this.UserList} color="#330000" />
 
-
-
               </View>
             }
+
+
           </View>
 
-        </ScrollView>
+          <View style={styles.progress}>
+            <ProgressCircle
+              percent={this.state.fullTrash}
+              radius={50}
+              borderWidth={8}
+              color="#b30000"
+              shadowColor="#000"
+              bgColor="#b30000"
+              style={{ marginRight: 40 }}
+            >
+              <Text style={{ fontSize: 18 }}>{this.state.fullTrash} {' %'}</Text>
+            </ProgressCircle>
+            <ProgressCircle
+              percent={this.state.partialTrash}
+              radius={50}
+              borderWidth={8}
+              color="#ff751a"
+              shadowColor="#000"
+              bgColor="#ff751a"
+              style={{ marginRight: 40 }}
+            >
+              <Text style={{ fontSize: 18 }}>{this.state.partialTrash} {' %'}</Text>
+            </ProgressCircle>
 
+            <ProgressCircle
+              percent={20}
+              radius={50}
+              borderWidth={8}
+              color="#00b36b"
+              shadowColor="#000"
+              bgColor="#fff"
+              style={{ marginRight: 40 }}
+            >
+
+              <Text style={{ fontSize: 18 }}>{this.state.emptyTrash}{' %'}</Text>
+            </ProgressCircle>
+
+
+          </View>
+
+          <View>
+            <SocialIcon
+              title='View Users'
+              button
+              type='facebook'
+              onPress={this.UserList}
+            />
+            <SocialIcon
+             title='Register new User'
+             button
+             type='facebook'
+             onPress={this.Register}
+            />
+            <SocialIcon
+             title='Notification'
+             button
+             type='facebook'
+             onPress={this.Notify}
+            />
+
+          </View>
+        </ImageBackground>
+        <Overlay
+          isVisible={this.state.isVisible}
+          windowBackgroundColor="rgba(255, 255, 255, .5)"
+          // overlayBackgroundColor="#330011"
+          width="auto"
+          height="auto"
+
+        >
+
+          <Card
+            title={`Wlecome ${this.state.currentUser}`}
+          >
+            {this.state.motivate.map(m => (
+              m.id === this.state.messageNeeded &&
+              <Text style={{ marginBottom: 10 }}>{m.message}</Text>
+
+            ))}
+
+
+            <Button
+              icon={<Icon name='code' color='#ffffff' />}
+              backgroundColor='#03A9F4'
+              buttonStyle={{ borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0 }}
+              title='Close'
+              onPress={this.close} />
+
+          </Card>
+        </Overlay>
       </View>
 
     );
   }
-  _maybeRenderDevelopmentModeWarning() {
-    if (__DEV__) {
-      const learnMoreButton = (
-        <Text onPress={this._handleLearnMorePress} style={styles.helpLinkText}>
-          Learn more
-        </Text>
-      );
 
-      return (
-        <Text style={styles.developmentModeText}>
-          Development mode is enabled, your app will be slower but you can use useful development
-          tools. {learnMoreButton}
-        </Text>
-      );
-    } else {
-      return (
-        <Text style={styles.developmentModeText}>
-          You are not in development mode, your app will run at full speed.
-        </Text>
-      );
-    }
-  }
 
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
 
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  progress: {
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
   developmentModeText: {
     marginBottom: 20,

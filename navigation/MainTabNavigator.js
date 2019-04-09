@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Platform } from "react-native";
 import {
@@ -20,13 +21,14 @@ import ChatScreen from "../screens/ChatScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 
+
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
-
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
-  NotificationScreen: NotificationScreen
+  NotificationScreen: NotificationScreen,
+ 
 });
 
 const Loginstack = createStackNavigator({
@@ -71,10 +73,14 @@ UserStack.navigationOptions = {
 };
 
 const Mapstack = createStackNavigator({
-  Map: Map
+
+  Map: Map,
+  
 });
 Mapstack.navigationOptions = {
-  tabBarLabel: "Map",
+  tabBarLabel: 'Map',
+  header: null,
+
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -84,7 +90,10 @@ Mapstack.navigationOptions = {
 };
 
 const ProfileStack = createStackNavigator({
-  Profile: ProfileScreen
+
+  Profile: ProfileScreen,
+  Complain :Complain
+
 });
 
 ProfileStack.navigationOptions = {
@@ -199,11 +208,14 @@ export default createBottomTabNavigator(
   {
     tabBarOptions: {
       style: {
-        backgroundColor: "#330000" //color you want to change
-      },
 
-      activeTintColor: "white",
-      inactiveTintColor: "white",
+        backgroundColor: '#00334d',//color you want to change
+
+      },pressColor:"#fff",
+
+
+      activeTintColor: "#fff",
+      inactiveTintColor: "#00334d",
       labelStyle: {
         fontWeight: "bold"
       }

@@ -17,7 +17,7 @@ import {
 } from 'react-native';
 import moment, { now } from 'moment';
 import db from "../db";
-import { Card, Icon } from "react-native-elements";
+import { Card, Icon, Tooltip, Badge } from "react-native-elements";
 export default class NotificationScreen extends Component {
     static navigationOptions = {
         title: 'NotificationScreen',
@@ -55,21 +55,12 @@ export default class NotificationScreen extends Component {
                             }
                             style={styles.welcomeImage}
                         />
-                        <Text> Last Events </Text>
-                        {/* <FlatList
-                            data={this.state.Events}
-                            renderItem={({ item }) => <Text>{item.Description}  is happend at  {item.Start_Time} And Finished at |  {item.End_Time}</Text>}
-                        /> */}
-                        {/* {
-                            this.state.Events.map(v =>
-                                <Text key={v.id}>{v.Description}  </Text>
-                            )} */}
+                        <Badge value="Last Events" status="warning" style={{ width: "600" }}>  </Badge>
+                        <Card style={{ width: "800" }}>
+                            {
+                                this.state.Events.map((v, i) => (
+                                    todayDate === (moment((v.Start_Time.toDate()).toString()).format("DD MMM YYYY")) &&
 
-
-                        {
-                            this.state.Events.map(v => (
-                                todayDate === (moment((v.Start_Time.toDate()).toString()).format("DD MMM YYYY")) &&
-                                <Card key={v.id}>
                                     <View>
                                         <Image
                                             source={
@@ -80,22 +71,9 @@ export default class NotificationScreen extends Component {
                                         />
                                         <Text style={styles.name}> Event: {v.Description} Started At {moment((v.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
                                     </View>
-                                </Card>
-
-
-                            ))
-                        }
-                        {
-                            this.state.Events.map(i => i.id &&
-                                todayDate !== (moment((i.Start_Time.toDate()).toString()).format("DD MMM YYYY")) &&
-                                <Card>
-                                    <Text>No  </Text>
-                                </Card>
-
-
-                            )
-                        }
-
+                                ))
+                            }
+                        </Card>
                     </View>
                 </ScrollView>
 

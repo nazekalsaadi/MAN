@@ -1,8 +1,13 @@
-import React from "react";
-import { Platform, StatusBar, StyleSheet, View } from "react-native";
-import { Permissions, AppLoading, Asset, Font, Icon } from "expo";
-import AppNavigator from "./navigation/AppNavigator";
-import LoginScreen from "./screens/LoginScreen";
+
+import React from 'react';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { Permissions, AppLoading, Asset, Font, Icon } from 'expo';
+import AppNavigator from './navigation/AppNavigator';
+import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
+import NotificationScreen from './screens/NotificationScreen';
+import { createDrawerNavigator, createAppContainer } from 'react-navigation';
+
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false
@@ -64,6 +69,18 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#b71c1c"
-  }
+
+    backgroundColor: '#404040',
+  },
+
 });
+const MyDrawerNavigator = createDrawerNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
+  Notifications: {
+    screen: NotificationScreen,
+  },
+});
+
+const MyApp = createAppContainer(MyDrawerNavigator);

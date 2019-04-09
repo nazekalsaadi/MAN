@@ -2,7 +2,8 @@ import React from "react";
 import { Platform } from "react-native";
 import {
   createStackNavigator,
-  createBottomTabNavigator
+  createBottomTabNavigator,
+  createMaterialTopTabNavigator
 } from "react-navigation";
 
 import TabBarIcon from "../components/TabBarIcon";
@@ -15,6 +16,7 @@ import CitiesMapScreen from "../screens/CityScreen";
 //   TrashMapScreen: TrashMapScreen,
 
 // });
+
 
 const Citiesstack = createStackNavigator({
   CitiesMapScreen: CitiesMapScreen,
@@ -51,6 +53,7 @@ const CityStack = createStackNavigator({
 
 CityStack.navigationOptions = {
   tabBarLabel: "City Status",
+  
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -59,19 +62,21 @@ CityStack.navigationOptions = {
   )
 };
 
-export default createBottomTabNavigator(
+export default createMaterialTopTabNavigator(
+  
   {
+    
     Trashstack,
     Citiesstack
-  },
-  {
+  },{
     tabBarOptions: {
       style: {
-        backgroundColor: "#330000" //color you want to change
-      },
+        backgroundColor: '#00334d',//color you want to change
+
+      },pressColor:"#fff",
 
       activeTintColor: "#fff",
-      inactiveTintColor: "#fff",
+      inactiveTintColor: "#00334d",
       labelStyle: {
         fontWeight: "bold"
       }

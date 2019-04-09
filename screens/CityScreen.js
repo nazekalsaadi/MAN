@@ -25,7 +25,12 @@ import MapView from "react-native-maps";
 
 const { width, height } = Dimensions.get("window");
 
-export default class MapScreen extends React.Component {
+export default class CityScreen extends React.Component {
+  static navigationOptions = {
+    title: 'CityScreen',
+    header: null
+
+  };
   state = {
     Cities: [],
     region: {
@@ -60,9 +65,10 @@ export default class MapScreen extends React.Component {
           showsScale
           CustomMapStyle={myMapStyle}
 
-          //  style={{  width: width }}
+        //  style={{  width: width }}
         >
           {// console.log("MapView Cities: " , this.state.Cities) &&
+
           this.state.Cities.map((marker, index) => {
             return (
               (CityCoordinate = {
@@ -98,6 +104,7 @@ export default class MapScreen extends React.Component {
               )
             );
           })}
+
         </MapView>
       </View>
     );

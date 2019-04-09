@@ -109,6 +109,7 @@ export default class AdminDashboard extends React.Component {
             // </ScrollView>
             <ScrollView>
 
+                
                 <Card title="Users and Managers List">
                     {this.state.Users.map(g => (
                         <ListItem
@@ -121,7 +122,7 @@ export default class AdminDashboard extends React.Component {
                     ))}
                 </Card>
 
-                <View style={{
+                {/* <View style={{
                     flex: 0.5,
                     flexDirection: "column",
                     justifyContent: "space-between"
@@ -135,7 +136,7 @@ export default class AdminDashboard extends React.Component {
                             <Badge value={t.City} status="success" containerStyle={{ width: "100%" }} />
                     ))}
 
-                </View>
+                </View> */}
 
 
                 {this.state.flag === false ?

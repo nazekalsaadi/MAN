@@ -238,99 +238,6 @@ export default class CalendarScreen extends React.Component {
               </ScrollView>
 
             )}
-            <View style={styles.getStartedContainer}>
-              {this.state.flag === false ?
-
-
-                <TouchableOpacity
-                  style={{
-                    flexDirection: "column"
-                    , alignItems: 'center', justifyContent: "center",
-                    height: "50%"
-                    , width: "30%", marginBottom: 10, arginBottom: 20,
-                    borderRadius: 10, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
-                  }}
-                  onPress={this.openFlag}
-                >
-                  <View style={{ alignItems: 'center', justifyContent: "center" }}>
-
-                    <Text style={{ fontWeight: "bold", color: "white" }}> Add Event </Text>
-                  </View>
-                </TouchableOpacity>
-
-
-        <ScrollView>
-
-          <CalendarPicker
-            startFromSunday={true}
-            allowRangeSelection={true}
-            minDate={minDate}
-            maxDate={maxDate}
-            weekdays={['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']}
-            months={[
-              'January',
-              'Febraury',
-              'March',
-              'April',
-              'May',
-              'June',
-              'July',
-              'August',
-              'September',
-              'October',
-              'November',
-              'December',
-            ]}
-            previousTitle="<"
-            nextTitle=">"
-            todayBackgroundColor="#b30000"
-            selectedDayColor="#330000"
-            selectedDayTextColor="#fff"
-            scaleFactor={375}
-            textStyle={{
-
-              color: '#000000',
-            }}
-            onDateChange={this.onDateChange}
-          />
-
-
-          {/* Place the dialog component at end of your views and assign the references, event handlers to it.*/}
-          <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
-
-          {this.state.Events.map((x, i) =>
-            <ScrollView key={x.id} >
-              {todayDate === (moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")) ?
-
-                <ScrollView style={{ backgroundColor: "#b30000", maxHeight: "100%" }}>
-                  <Text style={{ color: "white", fontSize: 20, textAlign: 'left' }} > Events on {moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
-                  <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Description: {x.Description} </Text>
-                  <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event wil End in  {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
-
-
-                  <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>
-                </ScrollView> : null
-
-              }
-              {moment(startDate).format("DD MMM YYYY") === (moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")) &&
-
-                <ScrollView style={{ backgroundColor: "#330000", maxHeight: "100%" }}>
-                  <Text style={{ color: "white", fontSize: 20, textAlign: 'left' }} > Events on {moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
-                  <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Description: {x.Description} </Text>
-                  {(todayDate) > moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY") ?
-                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event Ended Since {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")}</Text>
-                    :
-                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event will End in  {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
-                  }
-
-                  <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>
-                </ScrollView>
-              }
-
-
-            </ScrollView>
-
-          )}
           <View style={styles.getStartedContainer}>
             {this.state.flag === false ?
 
@@ -373,8 +280,11 @@ export default class CalendarScreen extends React.Component {
             }
           </View>
         </ScrollView>
+        </ImageBackground>
+</View>
 
-      </View>
+     
+      
     );
   }
 }

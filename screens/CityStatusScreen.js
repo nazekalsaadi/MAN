@@ -14,9 +14,6 @@ import {
 import { Button, Input, Icon, ListItem, Card, Rating, Divider,CheckBox } from 'react-native-elements';
 import db from "../db";
 
-
-
-
 export default class CityStatusScreen extends React.Component {
   static navigationOptions = {
     title: "CityStatusScreen",
@@ -99,6 +96,9 @@ export default class CityStatusScreen extends React.Component {
     // )
     this.setState({ checked: true })
   }
+  avatarURL = (UserName) => {
+    return "avatars%2F" + this.state.Users.find(u => u.id === UserName).Avatar.replace("@", "%40")
+  }
   render() {
     return (
       <View>
@@ -140,15 +140,10 @@ export default class CityStatusScreen extends React.Component {
 
           ))}
         </ScrollView>
-      </View>
+    
 
 
 
-  avatarURL = (UserName) => {
-    return "avatars%2F" + this.state.Users.find(u => u.id === UserName).Avatar.replace("@", "%40")
-  }
-  render() {
-    return (
       <ScrollView>
         <Card title="Group">
           <Text h2>Group No : {this.state.Group}</Text>
@@ -202,7 +197,7 @@ export default class CityStatusScreen extends React.Component {
         />
       </ScrollView>
 
-
+  </View>
     );
   }
 }

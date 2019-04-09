@@ -322,6 +322,37 @@ export default class HomeScreen extends React.Component {
                   </TouchableOpacity>
 
                 </View>}
+
+                  { this.state.Users.map(u => i.Role === "employee") &&
+                <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column", alignItems: 'center', justifyContent: "center",
+                      height: "80%", width: "20%", marginBottom: 10, borderRadius: 15, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.Notify}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
+
+                      <Text style={{ fontWeight: "bold", color: "white" }}> Notifications</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column", alignItems: 'center', justifyContent: "center",
+                      height: "80%", width: "20%", marginBottom: 10, borderRadius: 15, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.Groups}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
+
+                      <Text style={{ fontWeight: "bold", color: "white", textAlign: "center" }}> My Group Members</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                </View>}
             </View>
           </ScrollView>
         </ImageBackground>

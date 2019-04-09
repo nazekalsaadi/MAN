@@ -29,14 +29,9 @@ const Home = createStackNavigator({
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
-
   NotificationScreen: NotificationScreen,
-  AdminDashboard: AdminDashboard
-
-  MyCities: MyCities,
-
- 
-
+  AdminDashboard: AdminDashboard,
+  MyCities: MyCities
 });
 
 const Loginstack = createStackNavigator({

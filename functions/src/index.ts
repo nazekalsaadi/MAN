@@ -8,13 +8,13 @@ export const helloWorld = functions.https.onRequest((request, response) => {
 });
 
 export const addMessage = functions.https.onCall((data, context) => {
-    const Text = data.message
-    const id = data.id
+    const Message = data.Message
+    const Receiver= data.Receiver
     const email = context.auth.token.email || null
-    console.log("Success!!!!", Text)
+    console.log("Success!!!!", Message)
 
 
-    return admin.firestore().collection(`Chat`).doc(id).collection("Messages").add({ Sender_id: email, Text, Time: new Date() })
+    return admin.firestore().collection("Chat").add({ Sender: email, Message, Receiver, Time: new Date() })
 
 
 })

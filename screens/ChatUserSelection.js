@@ -7,7 +7,8 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  ScrollView
+  ScrollView,
+  ImageBackground
 } from "react-native";
 import { ListItem } from 'react-native-elements'
 import db from "../db";
@@ -18,7 +19,8 @@ export default class ChatUserSelection extends React.Component {
   };
 
   state = {
-    Users: []
+    Users: [],
+    backgroundImage: require('../assets/images/crop.jpeg'),
   };
 
   avatarURL = (UserName) => {
@@ -40,6 +42,7 @@ export default class ChatUserSelection extends React.Component {
   render() {
     return (
       <View>
+          <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
         <ScrollView>
 
         {this.state.Users.map(g => (
@@ -64,6 +67,7 @@ export default class ChatUserSelection extends React.Component {
           </ListItem>
         ))}
         </ScrollView>
+        </ImageBackground>
       </View>
     );
   }

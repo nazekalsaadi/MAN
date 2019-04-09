@@ -10,7 +10,8 @@ import {
   ScrollView,
   Platform,
   KeyboardAvoidingView,
-  TextInput
+  TextInput,
+  ImageBackground
 } from "react-native";
 import { Button, Input, Icon } from 'react-native-elements';
 
@@ -22,10 +23,11 @@ export default class ChatScreen extends React.Component {
   };
   state = {
     messages: [],
-    Text: "",
+    message: "",
     chat: [],
     user: "",
-    currentUser: "admin@admin.com"
+    currentUser: "admin@admin.com",
+    backgroundImage: require('../assets/images/crop.jpeg'),
   };
   user = this.props.navigation.getParam("user");
   //currentUser = firebase.auth().currentUser.email;
@@ -50,61 +52,70 @@ export default class ChatScreen extends React.Component {
       });
   }
 
-  Send = async() =>{
-    await db.collection("Chat").doc().set({Sender: this.state.currentUser, Receiver: this.state.user, Message: this.state.Text,Date: Date.now()})
-    this.setState({Text:""})
+  // Send = async () => {
+  //   await db.collection("Chat").doc().set({ Sender: this.state.currentUser, Receiver: this.state.user, Message: this.state.Text, Date: Date.now() })
+  //   this.setState({ words: "" })
+  // }
+  send = async () => {
+    const addMessage = firebase.functions().httpsCallable('addMessage')
+
+    const result = await addMessage({ message: this.state.message, Receiver: this.state.user })
+    this.setState({ message: "" })
   }
 
   render() {
     return (
       <View>
-        <ScrollView>
-          {console.log("currentUser is ", this.state.currentUser)}
-          {console.log("ChattingWith ", this.state.user)}
-          {this.state.chat.map(m => (
-            <View key={m.id}>
-              {m.Sender === this.state.currentUser &&
-                m.Receiver === this.state.user && (
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
-                    <Text style={{ backgroundColor: "lightblue", color: "white" }}>
-                      {" "}
-                      {m.Message}{" "}
-                    </Text>
-                  </View>
-                )}
+        <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
+          <ScrollView>
+            {console.log("currentUser is ", this.state.currentUser)}
+            {console.log("ChattingWith ", this.state.user)}
+            {this.state.chat.map(m => (
+              <View key={m.id}>
+                {m.Sender === this.state.currentUser &&
+                  m.Receiver === this.state.user && (
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-start' }}>
+                      <Text style={styles.toMe}>
+                        {" "}
+                        {m.Message}{" "}
+                      </Text>
+                    </View>
+                  )}
 
-              {m.Sender === this.state.user &&
-                m.Receiver === this.state.currentUser && (
-                  <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
-                    <Text style={{ backgroundColor: "lightgrey", color: "white" }}>
-                      {" "}
-                      {m.Message}{" "}
-                    </Text>
-                  </View>
-                )}
+                {m.Sender === this.state.user &&
+                  m.Receiver === this.state.currentUser && (
+                    <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                      <Text style={{ backgroundColor: "lightgrey", color: "white" }}>
+                        {" "}
+                        {m.Message}{" "}
+                      </Text>
+                    </View>
+                  )}
+              </View>
+            ))}
+            <View style={styles.send}>
             </View>
-          ))}
-          <View style={styles.send}>
-          </View>
-        </ScrollView>
+          </ScrollView>
 
-        <KeyboardAvoidingView behavior="padding">
-          <View style={styles.footer}>
-            <TextInput
-              value={this.state.Text}
-              style={styles.input}
-              underlineColorAndroid="transparent"
-              placeholder="Write Message Here"
-              onChangeText={Text => this.setState({ Text })}
-            />
+          <KeyboardAvoidingView behavior="padding">
+            <View style={styles.footer}>
+              <TextInput
+                value={this.state.words}
+                style={styles.input}
+                underlineColorAndroid="transparent"
+                placeholder="Write Message Here"
+                onChangeText={words => this.setState({ words })}
 
-            <TouchableOpacity onPress={this.Send}>
-              <Text style={styles.send}>Send</Text>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
+              />
+              <View >
+                <TouchableOpacity onPress={this.send}>
+                  <Text style={styles.send}>Send</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
 
-
+        </ImageBackground>
       </View>
     );
   }
@@ -121,6 +132,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 19,
     textAlign: "center"
+  },
+  toMe:{
+  color: "blue",
+  alignSelf: "flex-start",
+  backgroundColor: "#E5E5EA",
+  },
+  footer: {
+    marginTop: "100%",
   },
   contentContainer: {
     paddingTop: 15

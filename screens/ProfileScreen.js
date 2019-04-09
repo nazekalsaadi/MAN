@@ -9,9 +9,17 @@ import {
   Button,
   TouchableOpacity,
   View,
-  FlatList
+  FlatList,
+  Header
 
 } from 'react-native';
+import {
+  Ionicons,
+  Octicons,
+  Foundation,
+  Entypo,
+  Feather
+} from "@expo/vector-icons";
 import { WebBrowser } from 'expo';
 import Communications from 'react-native-communications';
 import { MonoText } from '../components/StyledText';
@@ -21,6 +29,7 @@ import db from '../db.js'
 export default class Profile extends React.Component {
   static navigationOptions = {
     title: 'My Profile',
+    header:null,
     headerStyle: {
       backgroundColor: '#e6e6e6',
     },
@@ -85,7 +94,14 @@ export default class Profile extends React.Component {
 
     return (
       <ScrollView style={styles.container}>
-
+                    {/* <Header
+                        backgroundColor="#00334d"
+                        placement="center"
+                        // leftComponent={<Ionicons name="ios-arrow-back
+                        // " color="white" size={30} onPress={() => this.props.navigation.navigate('Home')} />}
+                        centerComponent={{ text: 'Profile', style: { color: '#fff', fontSize: 25 } }}
+                        rightComponent={<Ionicons name="ios-chatboxes" color="white" size={30} onPress={() => this.props.navigation.navigate('ChatUserSelection')} />}
+                    /> */}
         {
           this.state.user.map(v =>
             <View key={v.id}>
@@ -103,14 +119,14 @@ export default class Profile extends React.Component {
                         <Text style={styles.name}>{v.FirstName + " "}{v.LastName + " "}</Text>
                         <Text style={styles.name2}>{v.Role + " "}</Text>
                         <Text style={styles.description}> GroupNo is {" " + v.GroupNo}</Text>
+                    
+                        {/* // <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
+                        //   <Text>Contact {v.FirstName}</Text>
+                        // </TouchableOpacity>
+                        // <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
+                        //   <Text>Send a text/iMessage</Text>
 
-                        <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
-                          <Text>Contact {v.FirstName}</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
-                          <Text>Send a text/iMessage</Text>
-
-                        </TouchableOpacity>
+                        // </TouchableOpacity> */}
                         <TouchableOpacity style={styles.buttonContainer} onPress={this.Complain}>
                           <Text>Complain</Text>
 

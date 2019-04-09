@@ -18,15 +18,17 @@ import UserList from "../screens/UserList";
 import CalendarScreen from "../screens/CalendarScreen";
 import ChatUserSelection from "../screens/ChatUserSelection";
 import ChatScreen from "../screens/ChatScreen";
+import Complain from "../screens/Complain";
 import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
-
-
+import MyCities from "../screens/MyCities";
+import oneCityStatusScreen from "../screens/onCity";
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
+  MyCities: MyCities,
   NotificationScreen: NotificationScreen,
  
 });
@@ -178,6 +180,21 @@ Liststack.navigationOptions = {
   )
 };
 
+const cityStack = createStackNavigator({
+  MyCities: MyCities,
+  oneCityStatusScreen: oneCityStatusScreen
+});
+
+cityStack.navigationOptions = {
+  tabBarLabel: "List",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+    />
+  )
+};
+
 const TableStack = createStackNavigator({
   TableScreen: Table
 });
@@ -203,7 +220,8 @@ export default createBottomTabNavigator(
 
     ChatUserStack,
     CalendStack,
-    ProfileStack
+    ProfileStack,
+    cityStack
   },
   {
     tabBarOptions: {

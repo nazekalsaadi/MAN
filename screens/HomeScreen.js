@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import NotificationScreen from '../screens/NotificationScreen';
+import MyCities from '../screens/MyCities';
 import ProgressCircle from 'react-native-progress-circle'
 import * as Progress from 'react-native-progress';
 import { MonoText } from '../components/StyledText';
@@ -48,6 +49,7 @@ export default class HomeScreen extends React.Component {
   static navigationOptions = {
     title: 'Home',
     drawerLabel: 'Home',
+    header: null,
     headerStyle: {
       backgroundColor: '#00334d',
     },
@@ -84,7 +86,12 @@ export default class HomeScreen extends React.Component {
   Notify = async () => {
     { this.props.navigation.navigate('NotificationScreen') }
   }
-
+  Comp = async () => {
+    { this.props.navigation.navigate('AllComplain') }
+  }
+  MyCities = async () => {
+    { this.props.navigation.navigate('AllCities') }
+  }
   async componentWillMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
@@ -153,103 +160,144 @@ export default class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
+          <Header
+            backgroundColor="#00334d"
+            placement="center"
 
+            centerComponent={{ text: 'Home', style: { color: '#fff', fontSize: 25 } }}
+            rightComponent={<Ionicons name="ios-notifications" color="white" size={30} onPress={() => this.props.navigation.navigate('NotificationScreen')} />}
+          />
 
 
 
           <View style={styles.welcomeContainer}>
 
-            <Image
+            {/* <Image
               source={
                 require('../assets/images/logo.jpg')
 
               }
               style={styles.welcomeImage}
-            />
+            /> */}
+            <View style={{ alignContent: "center", justifyContent: "center", flexDirection: "row", paddingVertical: 50 }}>
+              <Text style={{ fontSize: "28", fontWeight: "bold", color: "#00334d" }}>
+                Loged in As {this.state.currentUser}
+              </Text>
+            </View>
           </View>
+          <ScrollView>
+          <View style={{ flexDirection: "comlumn", justifyContent: "space-evenly", paddingBottom: "5%" }}>
+           
+              {this.state.currentUser === "admin@admin.com" ?
+                <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
 
 
-          <View style={styles.getStartedContainer}>
-            <Button title="Notification"
-              type="outline" onPress={this.Notify} color="#330000">
-              {this.state.count}
-            </Button>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column"
+                      , alignItems: 'center', justifyContent: "center",
+                      height: "80%"
+                      , width: "20%", marginBottom: 10, arginBottom: 20,
+                      borderRadius: 10, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.UserList}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
 
-            {this.state.currentUser === "admin@admin.com" &&
-              <View>
-                <Button title="Add Users"
-                  type="outline" onPress={this.Register} color="#330000" />
+                      <Text style={{ fontWeight: "bold", color: "white" }}> Users </Text>
+                    </View>
+                  </TouchableOpacity>
 
-                <Button title="All Users"
-                  type="outline" onPress={this.UserList} color="#330000" />
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column", alignItems: 'center', justifyContent: "center",
+                      height: "80%", width: "20%", marginBottom: 10, arginBottom: 20,
+                      borderRadius: 15, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.Notify}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
 
-              </View>
-            }
+                      <Text style={{ fontWeight: "bold", color: "white" }}> Notifications</Text>
+                    </View>
+                  </TouchableOpacity>
+                  <Text>{`/n`}</Text>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column", alignItems: 'center', justifyContent: "center",
+                      height: "80%", width: "20%", marginBottom: 10, arginBottom: 20,
+                      borderRadius: 15, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.Register}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
 
+                      <Text style={{ fontWeight: "bold", color: "white", textAlign: "center" }}> Register User </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column", alignItems: 'center', justifyContent: "center",
+                      height: "80%", width: "20%", marginBottom: 10, arginBottom: 20,
+                      borderRadius: 15, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.MyCities}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
 
-          </View>
+                      <Text style={{ fontWeight: "bold", color: "white", textAlign: "center" }}> Cities </Text>
+                    </View>
+                  </TouchableOpacity>
 
-          <View style={styles.progress}>
-            <ProgressCircle
-              percent={this.state.fullTrash}
-              radius={50}
-              borderWidth={8}
-              color="#b30000"
-              shadowColor="#000"
-              bgColor="#b30000"
-              style={{ marginRight: 40 }}
-            >
-              <Text style={{ fontSize: 18 }}>{this.state.fullTrash} {' %'}</Text>
-            </ProgressCircle>
-            <ProgressCircle
-              percent={this.state.partialTrash}
-              radius={50}
-              borderWidth={8}
-              color="#ff751a"
-              shadowColor="#000"
-              bgColor="#ff751a"
-              style={{ marginRight: 40 }}
-            >
-              <Text style={{ fontSize: 18 }}>{this.state.partialTrash} {' %'}</Text>
-            </ProgressCircle>
-
-            <ProgressCircle
-              percent={20}
-              radius={50}
-              borderWidth={8}
-              color="#00b36b"
-              shadowColor="#000"
-              bgColor="#fff"
-              style={{ marginRight: 40 }}
-            >
-
-              <Text style={{ fontSize: 18 }}>{this.state.emptyTrash}{' %'}</Text>
-            </ProgressCircle>
+                </View> :
+                this.state.Users.map(u => i.Role === "manager") &&
+                <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
 
 
-          </View>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column"
+                      , alignItems: 'center', justifyContent: "center",
+                      height: "50%"
+                      , width: "20%", marginBottom: 10, borderRadius: 10, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.UserList}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
 
-          <View>
-            <SocialIcon
-              title='View Users'
-              button
-              type='facebook'
-              onPress={this.UserList}
-            />
-            <SocialIcon
-             title='Register new User'
-             button
-             type='facebook'
-             onPress={this.Register}
-            />
-            <SocialIcon
-             title='Notification'
-             button
-             type='facebook'
-             onPress={this.Notify}
-            />
+                      <Text style={{ fontWeight: "bold", color: "white" }}> My City </Text>
+                    </View>
+                  </TouchableOpacity>
 
-          </View>
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column", alignItems: 'center', justifyContent: "center",
+                      height: "80%", width: "20%", marginBottom: 10, borderRadius: 15, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.Notify}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
+
+                      <Text style={{ fontWeight: "bold", color: "white" }}> Notifications</Text>
+                    </View>
+                  </TouchableOpacity>
+
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "column", alignItems: 'center', justifyContent: "center",
+                      height: "80%", width: "20%", marginBottom: 10, borderRadius: 15, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                    }}
+                    onPress={this.Groups}
+                  >
+                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
+
+                      <Text style={{ fontWeight: "bold", color: "white", textAlign: "center" }}> My Group </Text>
+                    </View>
+                  </TouchableOpacity>
+
+                </View>}
+            </View>
+          </ScrollView>
         </ImageBackground>
         <Overlay
           isVisible={this.state.isVisible}

@@ -19,8 +19,8 @@ import db from '../db.js'
 import { Header, Overlay, Input, Card } from 'react-native-elements';
 export default class Complain extends React.Component {
   static navigationOptions = {
-    title: 'Complain',
-    header:null,
+    title: 'AllComplain',
+   
     headerStyle: {
       backgroundColor: '#e6e6e6',
     },
@@ -84,72 +84,33 @@ export default class Complain extends React.Component {
               }
               style={styles.welcomeImage}
             />
-            <Card width={"90%"} >
+              {this.state.complain.map(g => (
+          <ListItem
+            key={g.id}
+            title={g.userId}
+            subtitle={g.message}
+            leftAvatar={{ source: { uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(g.uerId)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` } }}
+            onPress={() =>
+              this.props.navigation.navigate(
+                "oneComplain",
+                {
+                  user: g.id
+                },
+                console.log(g.id)
+              )
+            }
+          >
+            <Text>
+              From : {g.userId}
+              <Text>{`/n`} </Text>
+              Complain: {g.message}
+            </Text>
+          </ListItem>
+        ))}
 
 
-
-
-              <Text>{'\n'}</Text>
-              <Text style={{ fontWeight: "bold", color: "#330011", textAlign:"center" }}>Your Complain/Feedback  </Text>
-
-
-
-              <TextInput style={styles.input}
-                numberOfLines={4}
-                autoCapitalize="none"
-                onChangeText={message => this.setState({ message })}
-                value={this.state.message}
-                autoCorrect={false}
-                keyboardType='email-address'
-                returnKeyType="next"
-                placeholder='Your Complain/Feedback'
-                placeholderTextColor='#fff'
-                 />
-
-              <View style={{ width: "15%", height: "16%", paddingTop: "3%" }}>
-
-                <TouchableOpacity
-                  style={{
-                    alignItems: 'center',
-                    justifyContent: 'flex-end',
-                    backgroundColor: '#330011',
-                    color: "white",
-
-
-                  }}
-                  onPress={this.addComplain} >
-                  <Text style={{ fontWeight: "bold", color: "#fff", backgroundColor: "#330011" }} >Submit </Text>
-                </TouchableOpacity>
-
-              </View>
-
-
-            </Card>
-            <Overlay
-              isVisible={this.state.isVisible}
-              windowBackgroundColor="rgba(255, 255, 255, .5)"
-              // overlayBackgroundColor="#330011"
-              width="auto"
-              height="auto"
-
-            >
-            <Text style={{ fontWeight: "1000", color: "#330011" }} >Thank You ! </Text>
-            <Text>{'\n'}</Text>
-              <Text style={{ fontWeight: "1000", color: "#330011" }}>Your Complain has been Submited </Text>
-              
-              <TouchableOpacity
-                style={{
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  backgroundColor: '#330011',
-                  color: "white",
-
-
-                }}
-                onPress={isVisible => this.setState({ isVisible: false })} >
-                <Text style={{ fontWeight: "bold", color: "#fff" }} >Close </Text>
-              </TouchableOpacity>
-            </Overlay>
+     
+           
           </View>
         </ImageBackground>
       </View>

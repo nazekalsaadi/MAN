@@ -19,8 +19,8 @@ import db from "../db";
 
 export default class CityStatusScreen extends React.Component {
   static navigationOptions = {
-    title: "CityStatusScreen",
-    header:null
+    title: "oneCityStatusScreen",
+  
   };
   state = {
     Trash: [],

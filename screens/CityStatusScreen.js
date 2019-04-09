@@ -11,15 +11,19 @@ import {
   Dimensions,
   FlatList
 } from "react-native";
+import { Button, Input, Icon, ListItem, Card, Rating, Divider } from 'react-native-elements';
 import db from "../db";
+
+import { ScrollView } from "react-native-gesture-handler";
+
 import { Card, ListItem, Button, CheckBox } from "react-native-elements";
+
 
 export default class CityStatusScreen extends React.Component {
   static navigationOptions = {
     title: "CityStatusScreen",
     header:null
   };
-
   state = {
     Trash: [],
     Group: -1,
@@ -83,58 +87,66 @@ export default class CityStatusScreen extends React.Component {
         await this.setState({ Users });
       });
   }
-  handleEmpty = async (id) => {
-    await db.collection('Trash').doc(id).update({ Level: 0 })
-    this.setState({ checked: true })
+
+
+  avatarURL = (UserName) => {
+    return "avatars%2F" + this.state.Users.find(u => u.id === UserName).Avatar.replace("@", "%40")
   }
   render() {
     return (
-      <View>
-        <ScrollView>
-          <Card>
-            <Text style={{ textAlign: "center", fontWeight: "600" }}>Group Number : {this.state.Group}</Text>
-            <Text style={{ textAlign: "center", fontWeight: "600" }}>Assistant Groups :  {
-              this.state.RservedGroups.map(g =>
-                <Text key={g.id}>{g.id} </Text>
-              )}
-            </Text>
-          </Card>
-          <Card>
-            <Text style={{ textAlign: "center", fontWeight: "600" }}> Trash List </Text>
-            <FlatList
-              data={this.state.Trash}
-              renderItem={({ item }) => <Text style={{ textAlign: "center" }}>{item.City} has a trash with level |  {item.Level}% |  {item.Status}</Text>}
-            />
-          </Card>
-          <Card>
-            <Text style={{ textAlign: "center", fontWeight: "600" }}> Users List </Text>
+      <ScrollView>
+        <Card title="Group">
+          <Text h2>Group No : {this.state.Group}</Text>
+        </Card>
+        <Card title="Assistant Groups">
+          {
+            this.state.RservedGroups.map(g =>
+              <ListItem
+                key={g.id}
+                title={g.id + " " + g.City}
+                leftIcon={{ name: 'users', type: 'font-awesome' }}
+              >
+              </ListItem>
+            )}
+        </Card>
 
-            <FlatList
-              data={this.state.Users}
-              renderItem={({ item }) => <Text style={{ textAlign: "center" }}>Name : {item.FirstName} {item.LastName}  |  Role : {item.Role}</Text>}
-            />
-          </Card>
+        <Card title="Trashcans Related to This City">
+          {this.state.Trash.map(u => (
+            <ListItem
+              key={u.id}
+              title={u.City + u.id}
+              subtitle={u.level + "% | " + u.Status}
+              leftIcon={{ name: 'trash', type: 'font-awesome' }}
+            >
+            </ListItem>
+          )
+          )}
+        </Card>
 
-          <Card>
+        <Card title="Users Related to this City">
+          {this.state.Users.map(u => (
+            <ListItem
+              key={u.id}
+              title={u.FirstName + " " + u.LastName}
+              subtitle={u.Role}
+              leftAvatar={{ source: { uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(u.Avatar)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` } }}
+            >
+            </ListItem>
+          )
+          )}
+        </Card>
 
-            {/* {this.state.Trash.map(t => (
-            <Button title="CheckOut" onPress={() => this.handleEmpty(t.id)}
-              type="outline" color="#330000" />
-          ))} */}
-          </Card>
-          
+        <Rating
+          showRating
+          type="star"
+          fractions={1}
+          startingValue={3.6}
+          readonly
+          imageSize={40}
+          style={{ paddingVertical: 10 }}
+        />
+      </ScrollView>
 
-            <CheckBox
-              title='Click Here Empty the Trush'
-              checkedColor='red'
-              // checkedIcon={<Image source={require("../assets/images/checked.png")} />}
-              checked={this.state.checked}
-              onPress={() => this.handleEmpty(this.state.Trash.map(t=> t.Status == "Full").id)}
-            />
-
-      
-        </ScrollView>
-      </View>
     );
   }
 }

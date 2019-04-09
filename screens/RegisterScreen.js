@@ -14,6 +14,7 @@ import {
     Header,
     ImageBackground
 } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { WebBrowser } from 'expo';
 import { MonoText } from '../components/StyledText';
 import firebase from 'firebase'
@@ -41,10 +42,14 @@ export default class RegisterScreen extends React.Component {
         End_Date: Date,
         Start_Date: Date,
         online: Boolean,
-        backgroundImage: require('../assets/images/background.jpg')
+        backgroundImage: require('../assets/images/q5!.jpg')
     }
     static navigationOptions = {
         title: 'Register',
+        headerStyle: {
+            backgroundColor: '#00334d',
+          },
+          headerTintColor: '#fff',
     };
     pickAvatar = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -113,91 +118,121 @@ export default class RegisterScreen extends React.Component {
         // });
         return (
             <View style={styles.container}>
+                <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
+                  
+                    <Text style={{ color: "#330000", textAlign: "center", fontSize: 28, fontWeight: "bold", marginTop: 80 }}>Registeration Page</Text>
+                    <View style={styles.welcomeContainer} >
 
-                <Text style={{ color: "#330000", textAlign: "center", fontSize: 28, fontWeight: "bold", marginTop: 80 }}>Registeration Page</Text>
+                        {
+                            this.state.Avatar
+                            &&
+                            <Image
+                                style={styles.welcomeImage}
+                                source={{ uri: this.state.Avatar }}
+                            />
+                        }
 
-                <View style={styles.getStartedContainer}>
-                    {
-                        this.state.Avatar
-                        &&
-                        <Image
-                            style={{ width: 25, height: 25 }}
-                            source={{ uri: this.state.Avatar }}
+
+
+
+                        <TextInput style={styles.input}
+                            returnKeyType="next"
+                            placeholder="FirstName"
+                            onChangeText={FirstName => this.setState({ FirstName })}
+                            value={this.state.FirstName}
+                            placeholderTextColor='rgb(51, 0, 16)'
+
                         />
-                    }
-                    <TextInput
-                        style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-                        autoCapitalize="none"
-                        placeholder="  Email"
-                        onChangeText={UserName => this.setState({ UserName })}
-                        value={this.state.UserName}
-                    />
+                        <TextInput style={styles.input}
+                            returnKeyType="next"
+                            placeholder="LastName"
+                            onChangeText={LastName => this.setState({ LastName })}
+                            value={this.state.LastName}
+                            placeholderTextColor='rgb(51, 0, 16)'
 
-                    <TextInput
-                        style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-                        autoCapitalize="none"
-                        placeholder="  Password"
-                        onChangeText={password => this.setState({ password })}
-                        value={this.state.password}
-                    />
 
-                    <TextInput
-                        style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-                        autoCapitalize="none"
-                        placeholder="  FirstName"
-                        onChangeText={FirstName => this.setState({ FirstName })}
-                        value={this.state.FirstName}
-                    />
+                        />
+                        <TextInput style={styles.input}
+                            returnKeyType="next"
+                            onChangeText={UserName => this.setState({ UserName })}
+                            value={this.state.UserName}
+                            placeholder='Username'
+                            placeholderTextColor='rgb(51, 0, 16)'
 
-                    <TextInput
-                        style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-                        autoCapitalize="none"
-                        placeholder="  LastName"
-                        onChangeText={LastName => this.setState({ LastName })}
-                        value={this.state.LastName}
-                    />
 
-                    <TextInput
-                        style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-                        autoCapitalize="none"
-                        placeholder="  Role"
-                        onChangeText={Role => this.setState({ Role })}
-                        value={this.state.Role}
-                    />
+                        />
+                        <TextInput style={styles.input}
+                            autoCapitalize="none"
+                            onChangeText={Phone => this.setState({ Phone })}
+                            value={this.state.Phone}
+                            autoCorrect={false}
+                            keyboardType='email-address'
+                            returnKeyType="next"
+                            placeholder='Mobile Num'
+                            placeholderTextColor='rgb(51, 0, 16)' />
 
-                    <TextInput
-                        style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-                        autoCapitalize="none"
-                        placeholder="  GroupNo"
-                        onChangeText={GroupNo => this.setState({ GroupNo })}
-                        value={this.state.GroupNo}
-                    />
-                    <TextInput
-                        style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
-                        autoCapitalize="none"
-                        placeholder="  Phone"
-                        onChangeText={Phone => this.setState({ Phone })}
-                        value={this.state.Phone}
-                    />
-                    {/* <TextInput
+                        <TextInput style={styles.input}
+                            returnKeyType="next"
+                            onChangeText={GroupNo => this.setState({ GroupNo })}
+                            value={this.state.GroupNo}
+                            placeholder='Group'
+                            placeholderTextColor='rgb(51, 0, 16)'
+
+
+                        />
+                        <TextInput style={styles.input}
+                            returnKeyType="next"
+                            placeholder="Password"
+                            onChangeText={password => this.setState({ password })}
+                            value={this.state.password}
+                            placeholderTextColor='rgb(51, 0, 16)'
+                            secureTextEntry
+
+                        />
+                        <TextInput style={styles.input}
+                            returnKeyType="next"
+                            placeholder="Role"
+                            onChangeText={Role => this.setState({ Role })}
+                            value={this.state.Role}
+                            placeholderTextColor='rgb(51, 0, 16)'
+
+
+                        />
+
+                        <TouchableOpacity style={styles.buttonContainer} onPress={this.pickAvatar}>
+
+                            <Text style={{ color: "white" }}>Select Avatar</Text>
+
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonContainer} onPress={this.Register}>
+
+                            <Text style={{ color: "white" }}>Register</Text>
+
+                        </TouchableOpacity>
+                        {/* <TextInput
                         style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
                         autoCapitalize="none"
                         placeholder="  Status"
                         onChangeText={Status => this.setState({ Status })}
                         value={this.state.Status}
                     /> */}
-                    {/* <TextInput
+                        {/* <TextInput
                             style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
                             autoCapitalize="none"
                             placeholder="  Shifts"
                             onChangeText={Shifts => this.setState({ Status })}
                             value={this.state.Status}
                         /> */}
-                    <Button onPress={this.Register} title="Register" type="outline" color="#330000" />
-                    <Button onPress={this.pickAvatar} title="Select Avatar" color="#330000" />
-                </View>
 
+
+
+                    </View>
+                </ImageBackground>
             </View>
+
+
+
+
         );
     }
 
@@ -322,5 +357,16 @@ const styles = StyleSheet.create({
     helpLinkText: {
         fontSize: 14,
         color: '#2e78b7',
+    },
+    input: {
+        height: "10%",
+        width: "80%",
+        backgroundColor: '#fff',
+        marginBottom: 10,
+        padding: 10,
+        color: '#330011',
+        borderRadius: 50,
+        borderColor: "#330011",
+        fontWeight: '800'
     },
 });

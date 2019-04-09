@@ -9,7 +9,19 @@ import {
   Button,
   TouchableOpacity,
   View,
+
+  FlatList,
+  Header
+
+
 } from 'react-native';
+import {
+  Ionicons,
+  Octicons,
+  Foundation,
+  Entypo,
+  Feather
+} from "@expo/vector-icons";
 import { WebBrowser } from 'expo';
 import Communications from 'react-native-communications';
 import { MonoText } from '../components/StyledText';
@@ -18,10 +30,11 @@ import db from '../db.js'
 export default class Profile extends React.Component {
   static navigationOptions = {
     title: 'My Profile',
+    header:null,
     headerStyle: {
-      backgroundColor: '#330000',
+      backgroundColor: '#e6e6e6',
     },
-    headerTintColor: '#fff',
+    headerTintColor: '#000000',
 
   };
 
@@ -49,6 +62,10 @@ export default class Profile extends React.Component {
         console.log("Current users: ", this.User.length)
       })
   }
+  Complain = async () => {
+    { this.props.navigation.navigate('Complain') }
+
+  }
   call = (phone) => {
     //handler to make a call
     const args = {
@@ -65,37 +82,58 @@ export default class Profile extends React.Component {
 
     return (
       <ScrollView style={styles.container}>
-
+                    {/* <Header
+                        backgroundColor="#00334d"
+                        placement="center"
+                        // leftComponent={<Ionicons name="ios-arrow-back
+                        // " color="white" size={30} onPress={() => this.props.navigation.navigate('Home')} />}
+                        centerComponent={{ text: 'Profile', style: { color: '#fff', fontSize: 25 } }}
+                        rightComponent={<Ionicons name="ios-chatboxes" color="white" size={30} onPress={() => this.props.navigation.navigate('ChatUserSelection')} />}
+                    /> */}
         {
           this.state.user.map(v =>
             <View key={v.id}>
+
+
               {this.state.currentUser === v.UserName &&
-                <View>
-                  <View style={styles.header}>
-                    <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
+                
+                  <View>
+                    <View style={styles.header}>
+                      <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
 
-                  </View>
-                  <View style={styles.body}>
-                    <View style={styles.bodyContent}>
-                      <Text style={styles.name}>{v.FirstName + " "}{v.LastName + " "}</Text>
-                      <Text style={styles.name2}>{v.Role + " "}</Text>
-                      <Text style={styles.description}> GroupNo is {" " + v.GroupNo}</Text>
 
-                      <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
-                        <Text>Contact {v.FirstName}</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
-                        <Text>Send a text/iMessage</Text>
+                    </View>
+                    <View style={styles.body}>
+                      <View style={styles.bodyContent}>
+                        <Text style={styles.name}>{v.FirstName + " "}{v.LastName + " "}</Text>
+                        <Text style={styles.name2}>{v.Role + " "}</Text>
+                        <Text style={styles.description}> GroupNo is {" " + v.GroupNo}</Text>
+                    
+                        {/* // <TouchableOpacity style={styles.buttonContainer} onPress={() => this.call(v.Phone)}>
+                        //   <Text>Contact {v.FirstName}</Text>
+                        // </TouchableOpacity>
+                        // <TouchableOpacity style={styles.buttonContainer} onPress={() => Communications.text(v.Phone)}>
+                        //   <Text>Send a text/iMessage</Text>
 
-                      </TouchableOpacity>
+                        // </TouchableOpacity> */}
+                        <TouchableOpacity style={styles.buttonContainer} onPress={this.Complain}>
+                          <Text>Complain</Text>
+
+                        </TouchableOpacity>
+                      </View>
                     </View>
                   </View>
-                </View>
+
+
+
+            
+
               }
             </View>
           )
         }
       </ScrollView>
+
 
     );
   }
@@ -136,7 +174,9 @@ export default class Profile extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
+
     backgroundColor: "#fff",
+
     height: 200,
   },
   avatar: {

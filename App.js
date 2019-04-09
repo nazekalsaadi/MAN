@@ -1,21 +1,24 @@
+
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { Permissions, AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
 import LoginScreen from './screens/LoginScreen';
+import HomeScreen from './screens/HomeScreen';
+import NotificationScreen from './screens/NotificationScreen';
+import { createDrawerNavigator, createAppContainer } from 'react-navigation';
+
 export default class App extends React.Component {
   state = {
-    isLoadingComplete: false,
+    isLoadingComplete: false
   };
 
-
   async componentWillMount() {
-    console.disableYellowBox = true
-    const prompt = await Permissions.askAsync(Permissions.CAMERA_ROLL)
-    console.log("Camera permission 1: ", prompt)
-    const result = await Permissions.getAsync(Permissions.CAMERA_ROLL)
-    console.log("Camera permission 2: ", result)
-
+    console.disableYellowBox = true;
+    const prompt = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    console.log("Camera permission 1: ", prompt);
+    const result = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+    console.log("Camera permission 2: ", result);
   }
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -29,28 +32,27 @@ export default class App extends React.Component {
     } else {
       return (
         <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          {/* <AppNavigator /> */}
-          <LoginScreen />
+          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+          {/* { <AppNavigator /> } */}
+          {<LoginScreen />}
         </View>
       );
     }
   }
 
-
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
-        require('./assets/images/robot-dev.png'),
-        require('./assets/images/robot-prod.png'),
+        require("./assets/images/robot-dev.png"),
+        require("./assets/images/robot-prod.png")
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
         // We include SpaceMono because we use it in HomeScreen.js. Feel free
         // to remove this if you are not using it in your app
-        'space-mono': require('./assets/fonts/SpaceMono-Regular.ttf'),
-      }),
+        "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
+      })
     ]);
   };
 
@@ -63,11 +65,22 @@ export default class App extends React.Component {
   _handleFinishLoading = () => {
     this.setState({ isLoadingComplete: true });
   };
-
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#b71c1c',
+
+    backgroundColor: '#404040',
+  },
+
+});
+const MyDrawerNavigator = createDrawerNavigator({
+  Home: {
+    screen: HomeScreen,
+  },
+  Notifications: {
+    screen: NotificationScreen,
   },
 });
+
+const MyApp = createAppContainer(MyDrawerNavigator);

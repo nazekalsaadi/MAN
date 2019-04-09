@@ -11,7 +11,8 @@ import {
   View,
   Table,
   Row,
-  Rows
+  Rows,
+  ImageBackground
 } from 'react-native';
 import firebase from 'firebase'
 import { WebBrowser } from 'expo';
@@ -25,15 +26,21 @@ import moment, { now } from 'moment';
 // import "react-datepicker/dist/react-datepicker.css";
 import CalendarPicker from 'react-native-calendar-picker';
 import Moment from 'react-moment';
-
+import {
+  Ionicons,
+  Octicons,
+  Foundation,
+  Entypo,
+  Feather
+} from "@expo/vector-icons";
 export default class CalendarScreen extends React.Component {
   static navigationOptions = {
     title: 'Calendar ',
+    header: null,
     headerStyle: {
-      backgroundColor: '#330000',
+      backgroundColor: '#004080',
     },
-    headerTintColor: '#fff',
-
+    headerTintColor: '#000000',
   };
 
   currentUser = firebase.auth().currentUser.email;
@@ -49,7 +56,8 @@ export default class CalendarScreen extends React.Component {
       chosenDate: '',
       Description: "",
       Start_Time: "",
-      flag: false
+      flag: false,
+      backgroundImage: require('../assets/images/q5!.jpg'),
 
     };
     this.onDateChange = this.onDateChange.bind(this);
@@ -154,6 +162,102 @@ export default class CalendarScreen extends React.Component {
     console.log("ekhteyari: ", this.state.Start_Time)
     return (
       <View style={styles.container}>
+        <ImageBackground source={this.state.backgroundImage} style={{ width: '100%', height: '100%' }}>
+          <ScrollView>
+
+            <CalendarPicker
+              startFromSunday={true}
+              allowRangeSelection={true}
+              minDate={minDate}
+              maxDate={maxDate}
+              weekdays={['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']}
+              months={[
+                'January',
+                'Febraury',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December',
+              ]}
+              previousTitle="<"
+              nextTitle=">"
+              todayBackgroundColor="#b30000"
+              selectedDayColor="#330000"
+              selectedDayTextColor="#fff"
+              scaleFactor={375}
+              textStyle={{
+
+                color: '#000000',
+              }}
+              onDateChange={this.onDateChange}
+            />
+
+
+            {/* Place the dialog component at end of your views and assign the references, event handlers to it.*/}
+            <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
+
+            {this.state.Events.map((x, i) =>
+              <ScrollView key={x.id} >
+                {todayDate === (moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")) ?
+
+                  <ScrollView style={{ backgroundColor: "#b30000", maxHeight: "100%" }}>
+                    <Text style={{ color: "white", fontSize: 20, textAlign: 'left' }} > Events on {moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Description: {x.Description} </Text>
+                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event wil End in  {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+
+
+                    <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>
+
+
+
+                  </ScrollView> : null
+
+                }
+                {moment(startDate).format("DD MMM YYYY") === (moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")) &&
+
+                  <ScrollView style={{ backgroundColor: "#330000", maxHeight: "100%" }}>
+                    <Text style={{ color: "white", fontSize: 20, textAlign: 'left' }} > Events on {moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Description: {x.Description} </Text>
+                    {(todayDate) > moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY") ?
+                      <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event Ended Since {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")}</Text>
+                      :
+                      <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event will End in  {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+                    }
+
+                    <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>
+                  </ScrollView>
+                }
+
+
+              </ScrollView>
+
+            )}
+            <View style={styles.getStartedContainer}>
+              {this.state.flag === false ?
+
+
+                <TouchableOpacity
+                  style={{
+                    flexDirection: "column"
+                    , alignItems: 'center', justifyContent: "center",
+                    height: "50%"
+                    , width: "30%", marginBottom: 10, arginBottom: 20,
+                    borderRadius: 10, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
+                  }}
+                  onPress={this.openFlag}
+                >
+                  <View style={{ alignItems: 'center', justifyContent: "center" }}>
+
+                    <Text style={{ fontWeight: "bold", color: "white" }}> Add Event </Text>
+                  </View>
+                </TouchableOpacity>
+
 
         <ScrollView>
 
@@ -269,6 +373,7 @@ export default class CalendarScreen extends React.Component {
             }
           </View>
         </ScrollView>
+
       </View>
     );
   }
@@ -280,6 +385,7 @@ export default class CalendarScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
     paddingTop: 50,
     backgroundColor: '#fff',
   },
@@ -365,6 +471,17 @@ const styles = StyleSheet.create({
   helpLinkText: {
     fontSize: 14,
     color: '#2e78b7',
+  },
+  input: {
+    height: "10%",
+    width: "80%",
+    backgroundColor: '#fff',
+    marginBottom: 10,
+    padding: 10,
+    color: '#330011',
+    borderRadius: 50,
+    borderColor: "#330011",
+    fontWeight: '800'
   },
   head: { height: 40, backgroundColor: '#f1f8ff' },
   text: { margin: 6 }

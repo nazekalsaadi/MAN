@@ -1,29 +1,42 @@
-import React from 'react';
-import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
-import TabBarIcon from '../components/TabBarIcon';
-import HomeScreen from '../screens/HomeScreen';
-import Map from '../navigation/MapTabNavigator';
-import List from '../screens/UserList';
-import SettingsScreen from '../screens/SettingsScreen';
-import LoginScreen from '../screens/LoginScreen';
-import RegisterScreen from '../screens/RegisterScreen';
-import Table from '../screens/TableScreen';
-import UserList from '../screens/UserList';
-import CalendarScreen from '../screens/CalendarScreen';
-import ChatScreen from '../screens/ChatScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import NotificationScreen from '../screens/NotificationScreen';
+import React from "react";
+import { Platform } from "react-native";
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from "react-navigation";
+
+import TabBarIcon from "../components/TabBarIcon";
+import HomeScreen from "../screens/HomeScreen";
+import Map from "../navigation/MapTabNavigator";
+import List from "../screens/UserList";
+import SettingsScreen from "../screens/SettingsScreen";
+import LoginScreen from "../screens/LoginScreen";
+import RegisterScreen from "../screens/RegisterScreen";
+import Table from "../screens/TableScreen";
+import UserList from "../screens/UserList";
+import CalendarScreen from "../screens/CalendarScreen";
+import ChatUserSelection from "../screens/ChatUserSelection";
+import ChatScreen from "../screens/ChatScreen";
+import Complain from "../screens/Complain";
+import ProfileScreen from "../screens/ProfileScreen";
+import NotificationScreen from "../screens/NotificationScreen";
+import MyCities from "../screens/MyCities";
+import oneCityStatusScreen from "../screens/onCity";
 import AdminDashboard from '../screens/AdminDashboard';
-
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
+
   NotificationScreen: NotificationScreen,
   AdminDashboard: AdminDashboard
+
+  MyCities: MyCities,
+
+ 
+
 });
 
 const Loginstack = createStackNavigator({
@@ -31,13 +44,13 @@ const Loginstack = createStackNavigator({
 });
 
 Home.navigationOptions = {
-  tabBarLabel: 'Home',
+  tabBarLabel: "Home",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-home' : 'md-home'}
+      name={Platform.OS === "ios" ? "ios-home" : "md-home"}
     />
-  ),
+  )
 };
 
 // const NotificationStack = createStackNavigator({
@@ -54,137 +67,179 @@ Home.navigationOptions = {
 //   ),
 // };
 const UserStack = createStackNavigator({
-  User: UserList,
+  User: UserList
 });
 
 UserStack.navigationOptions = {
-  tabBarLabel: 'User',
+  tabBarLabel: "User",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-people' : 'md-people'}
+      name={Platform.OS === "ios" ? "ios-people" : "md-people"}
     />
-  ),
+  )
 };
 
 const Mapstack = createStackNavigator({
+
   Map: Map,
+  
 });
 Mapstack.navigationOptions = {
   tabBarLabel: 'Map',
+  header: null,
+
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-map' : 'md-map'}
+      name={Platform.OS === "ios" ? "ios-map" : "md-map"}
     />
-  ),
+  )
 };
 
-
 const ProfileStack = createStackNavigator({
+
   Profile: ProfileScreen,
+  Complain :Complain
+
 });
 
 ProfileStack.navigationOptions = {
-  tabBarLabel: 'Profile',
+  tabBarLabel: "Profile",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-person' : 'md-person'}
+      name={Platform.OS === "ios" ? "ios-person" : "md-person"}
     />
-  ),
+  )
 };
 
 const CalendStack = createStackNavigator({
-  CalendarScreen: CalendarScreen,
+  CalendarScreen: CalendarScreen
 });
 
 CalendStack.navigationOptions = {
-  tabBarLabel: 'Calendar',
+  tabBarLabel: "Calendar",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-calendar' : 'md-calendar'}
+      name={Platform.OS === "ios" ? "ios-calendar" : "md-calendar"}
     />
-  ),
+  )
 };
 
 const SettingsStack = createStackNavigator({
-  Settings: SettingsScreen,
+  Settings: SettingsScreen
 });
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: 'Settings',
+  tabBarLabel: "Settings",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
+      name={Platform.OS === "ios" ? "ios-settings" : "md-settings"}
     />
-  ),
+  )
 };
 
-const ChatStack = createStackNavigator({
-  ChatScreen: ChatScreen,
+const ChatUserStack = createStackNavigator({
+  ChatUserSelection: ChatUserSelection,
+  ChatScreen: ChatScreen
 });
 
-ChatStack.navigationOptions = {
-  tabBarLabel: 'Chat',
+ChatUserSelection.navigationOptions = {
+  tabBarLabel: "Chat",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-chatbubbles' : 'md-chatbubbles'}
+      name={Platform.OS === "ios" ? "ios-chatbubbles" : "md-chatbubbles"}
     />
-  ),
+  )
 };
 
+// const ChatStack = createStackNavigator({
+//   ChatScreen: ChatScreen
+// });
+
+// ChatStack.navigationOptions = {
+//   tabBarLabel: "Chat",
+//   tabBarIcon: ({ focused }) => (
+//     <TabBarIcon
+
+//       focused={focused}
+//       name={Platform.OS === "ios" ? "ios-chatbubbles" : "md-chatbubbles"}
+//     />
+//   )
+// };
+
 const Liststack = createStackNavigator({
-  List: List,
+  List: List
 });
 
 Liststack.navigationOptions = {
-  tabBarLabel: 'List',
+  tabBarLabel: "List",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
     />
-  ),
+  )
+};
+
+const cityStack = createStackNavigator({
+  MyCities: MyCities,
+  oneCityStatusScreen: oneCityStatusScreen
+});
+
+cityStack.navigationOptions = {
+  tabBarLabel: "List",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-link" : "md-link"}
+    />
+  )
 };
 
 const TableStack = createStackNavigator({
-  TableScreen: Table,
+  TableScreen: Table
 });
 
 TableStack.navigationOptions = {
-  tabBarLabel: 'Table',
+  tabBarLabel: "Table",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-settings' : 'md-settings'}
+      name={Platform.OS === "ios" ? "ios-settings" : "md-settings"}
     />
-  ),
+  )
 };
-export default createBottomTabNavigator({
-  Home,
-  Mapstack,
-  // UserStack,
-  // SettingsStack,
-  // Liststack,
-  // TableStack,
-  // // Liststack,
-  // ChatStack,
-  CalendStack,
-  ProfileStack
-},
+export default createBottomTabNavigator(
+  {
+    Home,
+    Mapstack,
+    // UserStack,
+    // SettingsStack,
+    // Liststack,
+    // TableStack,
+    // // Liststack,
+
+    ChatUserStack,
+    CalendStack,
+    ProfileStack,
+    cityStack
+  },
   {
     tabBarOptions: {
       style: {
-        backgroundColor: '#330000',//color you want to change
 
-      },
+        backgroundColor: '#00334d',//color you want to change
 
-      activeTintColor: "white",
-      inactiveTintColor: "white",
+      },pressColor:"#fff",
+
+
+      activeTintColor: "#fff",
+      inactiveTintColor: "#00334d",
       labelStyle: {
         fontWeight: "bold"
       }

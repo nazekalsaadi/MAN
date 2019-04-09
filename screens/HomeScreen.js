@@ -67,6 +67,8 @@ export default class HomeScreen extends React.Component {
     Events: [],
     Users: [],
     Trashs: [],
+
+
     fullTrash: 0,
     partialTrash: 0,
     emptyTrash: 0,
@@ -86,26 +88,47 @@ export default class HomeScreen extends React.Component {
   Notify = async () => {
     { this.props.navigation.navigate('NotificationScreen') }
   }
+
+
+  Admin = async () => {
+    { this.props.navigation.navigate('AdminDashboard') }
+  }
+
+
+
   Comp = async () => {
     { this.props.navigation.navigate('AllComplain') }
   }
   MyCities = async () => {
     { this.props.navigation.navigate('AllCities') }
   }
+
   async componentWillMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
 
     //Trashs
-    db.collection("Trash")
-      .onSnapshot(querySnapshot => {
-        let Trashs = []
-        querySnapshot.forEach(doc => {
-          Trashs.push({ id: doc.id, ...doc.data() })
-        })
-        this.setState({ Trashs })
-        console.log("Current Trashs: ", this.state.Trashs.length)
-      })
+    // db.collection("Trash")
+    //   .onSnapshot(querySnapshot => {
+    //     let Trashs = []
+    //     querySnapshot.forEach(doc => {
+    //       Trashs.push({ id: doc.id, ...doc.data() })
+    //     })
+    //     let fullness = 0;
+    //     let partiales = 0;
+    //     let empty = 0;
+    //     for (let i = 0; i < querySnapshot.docs.length; i++) {
+    //       if (querySnapshot.docs[i].Status === "Full") {
+    //         fullness = fullness + 1
+    //         fullness++
+    //       }
+
+    //       this.setState({ fullTrash: fullness })
+    //       this.setState({ Trashs })
+    //     }
+    //     console.log("fulllll", fullTrash)
+    //     console.log("Current Trashs: ", this.state.Trashs.length)
+    //   })
     //motivate
     db.collection("motivate")
       .onSnapshot(querySnapshot => {
@@ -127,28 +150,27 @@ export default class HomeScreen extends React.Component {
       })
 
     await this.handleTrash()
-    await this.getMessage()
     //COMPLAINS
   }
-  handleTrash = () => {
-    console.log("im in")
-    let fullness = 0;
-    let partiales = 0;
-    let empty = 0;
-    for (let i = 0; i < this.state.Trashs.length; i++) {
-      if (this.state.Trashs[i].Status === "Full") {
-        fullness = fullness + 1
-      }
-      if (this.state.Trashs[i].Status === "Partial") {
-        partiales = partiales + 1
-      }
-      if (this.state.Trashs[i].Status === "Empty") {
-        empty = empty + 1
-      }
-      this.setState({ fullTrash: fullness, partialTrash: partiales, emptyTrash: empty })
-    }
-    console.log("full", fullness)
-  }
+  // handleTrash = () => {
+  //   console.log("im in")
+  //   let fullness = 0;
+  //   let partiales = 0;
+  //   let empty = 0;
+  //   for (let i = 0; i < this.state.Trashs.length; i++) {
+  //     if (this.state.Trashs[i].Status === "Full") {
+  //       fullness = fullness + 1
+  //     }
+  //     if (this.state.Trashs[i].Status === "Partial") {
+  //       partiales = partiales + 1
+  //     }
+  //     if (this.state.Trashs[i].Status === "Empty") {
+  //       empty = empty + 1
+  //     }
+  //     this.setState({ fullTrash: fullness, partialTrash: partiales, emptyTrash: empty })
+  //   }
+  //   console.log("full", fullness)
+  // }
 
   close = () => {
     this.setState({ isVisible: false })
@@ -185,6 +207,10 @@ export default class HomeScreen extends React.Component {
               </Text>
             </View>
           </View>
+
+
+
+
           <ScrollView>
           <View style={{ flexDirection: "comlumn", justifyContent: "space-evenly", paddingBottom: "5%" }}>
            
@@ -311,6 +337,7 @@ export default class HomeScreen extends React.Component {
           <Card
             title={`Wlecome ${this.state.currentUser}`}
           >
+
             {this.state.motivate.map(m => (
               m.id === this.state.messageNeeded &&
               <Text style={{ marginBottom: 10 }}>{m.message}</Text>

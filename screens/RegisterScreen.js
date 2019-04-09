@@ -73,7 +73,7 @@ export default class RegisterScreen extends React.Component {
                 await uploadImageAsync("avatars", this.state.Avatar, this.state.UserName)
             }
             console.log("Avatar upload: ", Avatar)
-            await db.collection('User').doc(this.state.UserName).set({ Avatar, online: false })
+            // await db.collection('User').doc(this.state.UserName).set({ Avatar, online: false })
 
 
             // await db.collection('User/nazek@nazek.com/Shifts').doc().set({
@@ -223,6 +223,7 @@ export default class RegisterScreen extends React.Component {
                             onChangeText={Shifts => this.setState({ Status })}
                             value={this.state.Status}
                         /> */}
+
 
 
                     </View>

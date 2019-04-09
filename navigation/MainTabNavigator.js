@@ -23,14 +23,20 @@ import ProfileScreen from "../screens/ProfileScreen";
 import NotificationScreen from "../screens/NotificationScreen";
 import MyCities from "../screens/MyCities";
 import oneCityStatusScreen from "../screens/onCity";
+import AdminDashboard from '../screens/AdminDashboard';
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
-  MyCities: MyCities,
+
   NotificationScreen: NotificationScreen,
+  AdminDashboard: AdminDashboard
+
+  MyCities: MyCities,
+
  
+
 });
 
 const Loginstack = createStackNavigator({

@@ -258,70 +258,122 @@ export default class CalendarScreen extends React.Component {
                   </View>
                 </TouchableOpacity>
 
-                : this.state.flag === true &&
 
-                <View>
-                  <TextInput style={styles.input}
-                    returnKeyType="next"
-                    placeholder="Description"
-                    onChangeText={Description => this.setState({ Description })}
-                    value={this.state.Description}
-                    placeholderTextColor='#004080'
-                    
+        <ScrollView>
 
-                  />
-                  <TextInput style={styles.input}
-                    returnKeyType="next"
-                    placeholder="Username"
-                    onChangeText={UserName => this.setState({ currentUser })}
-                    value={this.currentUser}
-                    placeholderTextColor="#004080"
-                    
+          <CalendarPicker
+            startFromSunday={true}
+            allowRangeSelection={true}
+            minDate={minDate}
+            maxDate={maxDate}
+            weekdays={['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat']}
+            months={[
+              'January',
+              'Febraury',
+              'March',
+              'April',
+              'May',
+              'June',
+              'July',
+              'August',
+              'September',
+              'October',
+              'November',
+              'December',
+            ]}
+            previousTitle="<"
+            nextTitle=">"
+            todayBackgroundColor="#b30000"
+            selectedDayColor="#330000"
+            selectedDayTextColor="#fff"
+            scaleFactor={375}
+            textStyle={{
 
-                  />
-                  <TextInput style={styles.input}
-                    returnKeyType="next"
-                    placeholder="Role"
-                    onChangeText={Role => this.setState({ Role })}
-                    value={this.state.Role}
-                    placeholderTextColor='#004080'
-                    
-
-                  />
-                  <TouchableOpacity style={styles.buttonContainer} onPress={this.DatePickerMainFunctionCall.bind(this)}>
-
-                    <Text style={styles.datePickerText}
-                      onChangeText={Start_Time => this.setState({ Start_Time: moment(this.state.DateText).format("DD MMMM YYYY [at] hh:mm:ss") })}
-                    > Event Date: {(this.state.DateText)}</Text>
-
-
-                  </TouchableOpacity>
+              color: '#000000',
+            }}
+            onDateChange={this.onDateChange}
+          />
 
 
-                  <TouchableOpacity
-                    style={{
-                      flexDirection: "column"
-                      , alignItems: 'center', justifyContent: "center",
-                      height: "30%"
-                      , width: "50%", marginBottom: 10, arginBottom: 20,
-                      borderRadius: 10, backgroundColor: "#004080", borderColor: "white", borderWidth: 2, borderStyle: "solid"
-                    }}
-                    onPress={this.openFlag}
-                  >
-                    <View style={{ alignItems: 'center', justifyContent: "center" }}>
+          {/* Place the dialog component at end of your views and assign the references, event handlers to it.*/}
+          <DatePickerDialog ref="DatePickerDialog" onDatePicked={this.onDatePickedFunction.bind(this)} />
 
-                      <Text style={{ fontWeight: "bold", color: "white" }}> Create Event </Text>
-                    </View>
-                  </TouchableOpacity>
+          {this.state.Events.map((x, i) =>
+            <ScrollView key={x.id} >
+              {todayDate === (moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")) ?
 
-                  {console.log("Time5ara", moment(this.state.DateText).format("DD MMMM YYYY [at] hh:mm:ss"))}
-                  <Button title={"Create Event"}
-                    type="outline" onPress={this.CreateEvent} color="#330000" />
-                </View>
+                <ScrollView style={{ backgroundColor: "#b30000", maxHeight: "100%" }}>
+                  <Text style={{ color: "white", fontSize: 20, textAlign: 'left' }} > Events on {moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+                  <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Description: {x.Description} </Text>
+                  <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event wil End in  {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+
+
+                  <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>
+                </ScrollView> : null
+
               }
-            </View>
-          </ScrollView>
-        </ImageBackground>
+              {moment(startDate).format("DD MMM YYYY") === (moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")) &&
+
+                <ScrollView style={{ backgroundColor: "#330000", maxHeight: "100%" }}>
+                  <Text style={{ color: "white", fontSize: 20, textAlign: 'left' }} > Events on {moment((x.Start_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+                  <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Description: {x.Description} </Text>
+                  {(todayDate) > moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY") ?
+                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event Ended Since {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")}</Text>
+                    :
+                    <Text style={{ color: "white", fontSize: 18, textAlign: 'left' }} > Event will End in  {moment((x.End_Time.toDate()).toString()).format("DD MMM YYYY")} </Text>
+                  }
+
+                  <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>
+                </ScrollView>
+              }
+
+
+            </ScrollView>
+
+          )}
+          <View style={styles.getStartedContainer}>
+            {this.state.flag === false ?
+
+              <Button title={"Add Event"}
+                type="outline" onPress={this.openFlag} color="#330000" />
+
+              : this.state.flag === true &&
+
+              <View>
+                <TextInput
+                  style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
+                  autoCapitalize="none"
+                  placeholder="Description"
+                  onChangeText={Description => this.setState({ Description })}
+                  value={this.state.Description}
+                />
+
+
+                <TextInput
+                  style={{ width: 200, height: 40, borderColor: 'gray', borderWidth: 1, backgroundColor: "white" }}
+                  autoCapitalize="none"
+                  placeholder="Username"
+                  onChangeText={UserName => this.setState({ currentUser })}
+                  value={this.currentUser}
+                />
+
+                <TouchableOpacity onPress={this.DatePickerMainFunctionCall.bind(this)} >
+
+                  <Text style={styles.datePickerText}
+                    onChangeText={Start_Time => this.setState({ Start_Time: moment(this.state.DateText).format("DD MMMM YYYY [at] hh:mm:ss") })}
+                  > Event Date: {(this.state.DateText)}</Text>
+
+
+
+                </TouchableOpacity>
+                {console.log("Time is", moment(this.state.DateText).format("DD MMMM YYYY [at] hh:mm:ss"))}
+                <Button title={"Create Event"}
+                  type="outline" onPress={this.CreateEvent} color="#330000" />
+              </View>
+            }
+          </View>
+        </ScrollView>
+
       </View>
     );
   }

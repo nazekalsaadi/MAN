@@ -86,6 +86,63 @@ export default class CityStatusScreen extends React.Component {
       });
   }
 
+  handleEmpty = async (id) => {
+    await db.collection('Trash').doc(id).update({ Level: 0 })
+
+    // await db.collection('TrashHistory').doc().set(
+    //   {
+    //     Trash_id: this.state.Trash.id,
+    //     Date: new Date(),
+    //     City: place,
+    //     GroupNo: this.state.Group
+    //   }
+    // )
+    this.setState({ checked: true })
+  }
+  render() {
+    return (
+      <View>
+        <ScrollView>
+          <Card>
+            <Text style={{ textAlign: "center", fontWeight: "600" }}>Group Number : {this.state.Group}</Text>
+            <Text style={{ textAlign: "center", fontWeight: "600" }}>Assistant Groups :  {
+              this.state.RservedGroups.map(g =>
+                <Text key={g.id}>{g.id} </Text>
+              )}
+            </Text>
+          </Card>
+          <Card>
+            <Text style={{ textAlign: "center", fontWeight: "600" }}> Trash List </Text>
+            <FlatList
+              data={this.state.Trash}
+              renderItem={({ item }) => <Text style={{ textAlign: "center" }}>{item.City} has a trash with level |  {item.Level}% |  {item.Status}</Text>}
+            />
+          </Card>
+          <Card>
+            <Text style={{ textAlign: "center", fontWeight: "600" }}> Users List </Text>
+
+            <FlatList
+              data={this.state.Users}
+              renderItem={({ item }) => <Text style={{ textAlign: "center" }}>Name : {item.FirstName} {item.LastName}  |  Role : {item.Role}</Text>}
+            />
+          </Card>
+
+
+          {this.state.Trash.map(t => (
+
+            <CheckBox
+              title='Click Here Empty the Trush'
+              checkedColor='red'
+              // checkedIcon={<Image source={require("../assets/images/checked.png")} />}
+              checked={this.state.checked}
+              onPress={() => this.handleEmpty(t.id)}
+            />
+
+          ))}
+        </ScrollView>
+      </View>
+
+
 
   avatarURL = (UserName) => {
     return "avatars%2F" + this.state.Users.find(u => u.id === UserName).Avatar.replace("@", "%40")
@@ -144,6 +201,7 @@ export default class CityStatusScreen extends React.Component {
           style={{ paddingVertical: 10 }}
         />
       </ScrollView>
+
 
     );
   }

@@ -50,9 +50,9 @@ export default class HomeScreen extends React.Component {
     Events: [],
     Users: [],
     Trashs: [],
-    fullTrash: 0,
-    partialTrash: 0,
-    emptyTrash: 0,
+    // fullTrash: 0,
+    // partialTrash: 0,
+    // emptyTrash: 0,
     motivate: [],
     messageNeeded: "",
   }
@@ -69,21 +69,37 @@ export default class HomeScreen extends React.Component {
     { this.props.navigation.navigate('NotificationScreen') }
   }
 
+  Admin = async () => {
+    { this.props.navigation.navigate('AdminDashboard') }
+  }
+
 
   async componentWillMount() {
     console.log("the email logged in is ", firebase.auth().currentUser.email)
     this.setState({ currentUser: firebase.auth().currentUser.email })
 
     //Trashs
-    db.collection("Trash")
-      .onSnapshot(querySnapshot => {
-        let Trashs = []
-        querySnapshot.forEach(doc => {
-          Trashs.push({ id: doc.id, ...doc.data() })
-        })
-        this.setState({ Trashs })
-        console.log("Current Trashs: ", this.state.Trashs.length)
-      })
+    // db.collection("Trash")
+    //   .onSnapshot(querySnapshot => {
+    //     let Trashs = []
+    //     querySnapshot.forEach(doc => {
+    //       Trashs.push({ id: doc.id, ...doc.data() })
+    //     })
+    //     let fullness = 0;
+    //     let partiales = 0;
+    //     let empty = 0;
+    //     for (let i = 0; i < querySnapshot.docs.length; i++) {
+    //       if (querySnapshot.docs[i].Status === "Full") {
+    //         fullness = fullness + 1
+    //         fullness++
+    //       }
+
+    //       this.setState({ fullTrash: fullness })
+    //       this.setState({ Trashs })
+    //     }
+    //     console.log("fulllll", fullTrash)
+    //     console.log("Current Trashs: ", this.state.Trashs.length)
+    //   })
     //motivate
     db.collection("motivate")
       .onSnapshot(querySnapshot => {
@@ -105,28 +121,27 @@ export default class HomeScreen extends React.Component {
       })
 
     await this.handleTrash()
-    await this.getMessage()
     //COMPLAINS
   }
-  handleTrash = () => {
-    console.log("im in")
-    let fullness = 0;
-    let partiales = 0;
-    let empty = 0;
-    for (let i = 0; i < this.state.Trashs.length; i++) {
-      if (this.state.Trashs[i].Status === "Full") {
-        fullness = fullness + 1
-      }
-      if (this.state.Trashs[i].Status === "Partial") {
-        partiales = partiales + 1
-      }
-      if (this.state.Trashs[i].Status === "Empty") {
-        empty = empty + 1
-      }
-      this.setState({ fullTrash: fullness, partialTrash: partiales, emptyTrash: empty })
-    }
-    console.log("full", fullness)
-  }
+  // handleTrash = () => {
+  //   console.log("im in")
+  //   let fullness = 0;
+  //   let partiales = 0;
+  //   let empty = 0;
+  //   for (let i = 0; i < this.state.Trashs.length; i++) {
+  //     if (this.state.Trashs[i].Status === "Full") {
+  //       fullness = fullness + 1
+  //     }
+  //     if (this.state.Trashs[i].Status === "Partial") {
+  //       partiales = partiales + 1
+  //     }
+  //     if (this.state.Trashs[i].Status === "Empty") {
+  //       empty = empty + 1
+  //     }
+  //     this.setState({ fullTrash: fullness, partialTrash: partiales, emptyTrash: empty })
+  //   }
+  //   console.log("full", fullness)
+  // }
 
   render() {
 
@@ -149,14 +164,14 @@ export default class HomeScreen extends React.Component {
               style={styles.welcomeImage}
             />
           </View>
-          <View style={styles.progress}>
+          {/* <View style={styles.progress}>
             <ProgressCircle
               percent={this.state.fullTrash}
               radius={50}
               borderWidth={8}
               color="#ffd232"
               shadowColor="#000"
-              bgColor="red"
+              bgColor="lightred"
               style={{ marginRight: 40 }}
             >
               <Text style={{ fontSize: 18 }}>{this.state.fullTrash} {' %'}</Text>
@@ -167,7 +182,7 @@ export default class HomeScreen extends React.Component {
               borderWidth={8}
               color="#ffd232"
               shadowColor="#000"
-              bgColor="yellow"
+              bgColor="lightyellow"
               style={{ marginRight: 40 }}
             >
               <Text style={{ fontSize: 18 }}>{this.state.partialTrash} {' %'}</Text>
@@ -179,18 +194,22 @@ export default class HomeScreen extends React.Component {
               borderWidth={8}
               color="#ffd232"
               shadowColor="#000"
-              bgColor="green"
+              bgColor="lightgreen"
               style={{ marginRight: 40 }}
             >
 
               <Text style={{ fontSize: 18 }}>{this.state.emptyTrash}{' %'}</Text>
             </ProgressCircle>
-          </View>
+          </View> */}
 
           <View style={styles.getStartedContainer}>
             <Button title="Notification"
               type="outline" onPress={this.Notify} color="#330000">
               {this.state.count}
+            </Button>
+
+            <Button title="Admin"
+              type="outline" onPress={this.Admin} color="#330000">
             </Button>
 
             {this.state.currentUser === "admin@admin.com" &&

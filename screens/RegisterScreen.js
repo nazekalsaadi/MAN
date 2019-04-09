@@ -20,7 +20,7 @@ import firebase from 'firebase'
 import db from '../db.js'
 import { ImagePicker } from 'expo';
 import t from 'tcomb-form-native';
-import {uploadImageAsync} from '../ImageUtils'
+import { uploadImageAsync } from '../ImageUtils'
 export default class RegisterScreen extends React.Component {
     static navigationOptions = {
         header: null,
@@ -68,7 +68,7 @@ export default class RegisterScreen extends React.Component {
                 await uploadImageAsync("avatars", this.state.Avatar, this.state.UserName)
             }
             console.log("Avatar upload: ", Avatar)
-            await db.collection('User').doc(this.state.UserName).set({ Avatar, online: false })
+            // await db.collection('User').doc(this.state.UserName).set({ Avatar, online: false })
 
 
             // await db.collection('User/nazek@nazek.com/Shifts').doc().set({
@@ -193,8 +193,8 @@ export default class RegisterScreen extends React.Component {
                             onChangeText={Shifts => this.setState({ Status })}
                             value={this.state.Status}
                         /> */}
-                    <Button onPress={this.Register} title="Register" type="outline"  color="#330000"/>
-                    <Button onPress={this.pickAvatar} title="Select Avatar"  color="#330000" />
+                    <Button onPress={this.Register} title="Register" type="outline" color="#330000" />
+                    <Button onPress={this.pickAvatar} title="Select Avatar" color="#330000" />
                 </View>
 
             </View>

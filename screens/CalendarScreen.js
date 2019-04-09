@@ -205,9 +205,6 @@ export default class CalendarScreen extends React.Component {
 
 
                   <Text style={{ color: "white", fontSize: 12, textAlign: 'right' }} > Created By {x.Users} </Text>
-
-
-
                 </ScrollView> : null
 
               }
@@ -265,7 +262,7 @@ export default class CalendarScreen extends React.Component {
 
 
                 </TouchableOpacity>
-                {console.log("Time5ara", moment(this.state.DateText).format("DD MMMM YYYY [at] hh:mm:ss"))}
+                {console.log("Time is", moment(this.state.DateText).format("DD MMMM YYYY [at] hh:mm:ss"))}
                 <Button title={"Create Event"}
                   type="outline" onPress={this.CreateEvent} color="#330000" />
               </View>

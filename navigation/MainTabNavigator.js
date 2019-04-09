@@ -15,13 +15,15 @@ import CalendarScreen from '../screens/CalendarScreen';
 import ChatScreen from '../screens/ChatScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import NotificationScreen from '../screens/NotificationScreen';
+import AdminDashboard from '../screens/AdminDashboard';
 
 const Home = createStackNavigator({
   // LoginScreen: LoginScreen,
   HomeScreen: HomeScreen,
   RegisterScreen: RegisterScreen,
   UserList: UserList,
-  NotificationScreen: NotificationScreen
+  NotificationScreen: NotificationScreen,
+  AdminDashboard: AdminDashboard
 });
 
 const Loginstack = createStackNavigator({

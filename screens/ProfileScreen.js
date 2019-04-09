@@ -9,13 +9,10 @@ import {
   Button,
   TouchableOpacity,
   View,
-  FlatList
-
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import Communications from 'react-native-communications';
 import { MonoText } from '../components/StyledText';
-import { Card, Icon, Tooltip, Badge } from "react-native-elements";
 import firebase from 'firebase'
 import db from '../db.js'
 export default class Profile extends React.Component {
@@ -35,8 +32,7 @@ export default class Profile extends React.Component {
     LastName: "",
     GroupNo: "",
     user: [],
-    currentUser: "",
-    Trash: []
+    currentUser: ""
 
   }
   User = []
@@ -52,14 +48,6 @@ export default class Profile extends React.Component {
         this.setState({ user })
         console.log("Current users: ", this.User.length)
       })
-
-    db.collection("Trash").onSnapshot(async querySnapshot => {
-      const Trash = [];
-      querySnapshot.forEach(doc => {
-        Trash.push({ id: doc.id, ...doc.data() });
-      });
-      this.setState({ Trash });
-    });
   }
   call = (phone) => {
     //handler to make a call
@@ -69,10 +57,6 @@ export default class Profile extends React.Component {
     };
     call(args).catch(console.error);
   };
-
-  GoToCity = () => {
-    this.props.navigation.navigate('CityScreen')
-  }
 
   avatarURL = (UserName) => {
     return "avatars%2F" + this.state.user.find(u => u.id === UserName).Avatar.replace("@", "%40")
@@ -85,8 +69,7 @@ export default class Profile extends React.Component {
         {
           this.state.user.map(v =>
             <View key={v.id}>
-              {this.state.currentUser != "admin@admin.com" &&
-                this.state.currentUser === v.UserName &&
+              {this.state.currentUser === v.UserName &&
                 <View>
                   <View style={styles.header}>
                     <Image style={styles.avatar} source={{ uri: `https://firebasestorage.googleapis.com/v0/b/manproject-8a2c9.appspot.com/o/${this.avatarURL(v.UserName)}?alt=media&token=a1e02d9e-3e8c-4996-973f-2c7340be54d5` }} />
@@ -107,30 +90,8 @@ export default class Profile extends React.Component {
                       </TouchableOpacity>
                     </View>
                   </View>
-
-
                 </View>
               }
-              {this.state.currentUser === "admin@admin.com" &&
-                <View key={v.id}>
-
-                  <View>
-                    <View style={styles.name} >
-                      <Text> Admin </Text>
-                      {/* <ion-icon name="trash"></ion-icon> */}
-                      <Icon
-                        raised
-                        name='heartbeat'
-                        type='font-awesome'
-                        color='#f50'
-                        onPress={this.GoToCity} />
-                    </View>
-                  </View>
-
-                </View>
-
-              }
-
             </View>
           )
         }
@@ -175,7 +136,7 @@ export default class Profile extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#fff",
     height: 200,
   },
   avatar: {
@@ -193,7 +154,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: "#330000",
     fontWeight: '600',
-    textAlign: "center"
   },
   name2: {
     fontSize: 22,

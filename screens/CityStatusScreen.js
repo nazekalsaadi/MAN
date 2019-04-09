@@ -84,6 +84,15 @@ export default class CityStatusScreen extends React.Component {
   }
   handleEmpty = async (id) => {
     await db.collection('Trash').doc(id).update({ Level: 0 })
+
+    // await db.collection('TrashHistory').doc().set(
+    //   {
+    //     Trash_id: this.state.Trash.id,
+    //     Date: new Date(),
+    //     City: place,
+    //     GroupNo: this.state.Group
+    //   }
+    // )
     this.setState({ checked: true })
   }
   render() {
@@ -114,13 +123,7 @@ export default class CityStatusScreen extends React.Component {
             />
           </Card>
 
-          <Card>
 
-            {/* {this.state.Trash.map(t => (
-            <Button title="CheckOut" onPress={() => this.handleEmpty(t.id)}
-              type="outline" color="#330000" />
-          ))} */}
-          </Card>
           {this.state.Trash.map(t => (
 
             <CheckBox
